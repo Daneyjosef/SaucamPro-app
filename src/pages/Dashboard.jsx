@@ -22,11 +22,12 @@ export default function Dashboard() {
   const watchlist = useAppStore((s) => s.watchlist);
   const toggleWatchlist = useAppStore((s) => s.toggleWatchlist);
   const portfolio = useAppStore((s) => s.portfolio);
+  const currency = useAppStore((s) => s.currency);
   const [chartRange, setChartRange] = useState("7");
 
   const { data: globalData } = useGlobalData();
-  const { data: coins } = useCoins({ sparkline: true });
-  const { data: topMovers } = useTopMovers();
+  const { data: coins } = useCoins({ currency, sparkline: true });
+  const { data: topMovers } = useTopMovers({ currency });
 
   // Simulated portfolio chart data
   const portfolioChartData = useMemo(() => {

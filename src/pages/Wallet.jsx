@@ -14,12 +14,12 @@ import axios from "axios";
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 
-const fetchWalletPrices = async (coinIds) => {
+const fetchWalletPrices = async (coinIds, currency) => {
   if (!coinIds.length) return {};
   const { data } = await axios.get(`${COINGECKO_BASE}/simple/price`, {
     params: {
       ids: coinIds.join(","),
-      vs_currencies: "usd",
+      vs_currencies: currency,
       include_24hr_change: "true",
     },
   });
@@ -50,6 +50,7 @@ const MOCK_TX = [
 export default function Wallet() {
   const navigate = useNavigate();
   const { portfolio, removeFromPortfolio } = useAppStore();
+  const currency = useAppStore((s) => s.currency);
   const { formatPrice } = useCurrency();
   const [modalOpen, setModalOpen] = useState(false);
   const [sendTarget, setSendTarget] = useState(null);
@@ -61,8 +62,8 @@ export default function Wallet() {
   );
 
   const { data: prices } = useQuery({
-    queryKey: ["wallet-prices", coinIds],
-    queryFn: () => fetchWalletPrices(coinIds),
+    queryKey: ["wallet-prices", coinIds, currency],
+    queryFn: () => fetchWalletPrices(coinIds, currency),
     enabled: coinIds.length > 0,
     refetchInterval: 30_000,
     staleTime: 15_000,
@@ -73,8 +74,8 @@ export default function Wallet() {
       portfolio.map((a) => {
         const coinId = SYMBOL_TO_ID[a.coin];
         const live = prices?.[coinId];
-        const currentPrice = live?.usd ?? a.buyPrice;
-        const change24h = live?.usd_24h_change;
+        const currentPrice = live?.[currency] ?? a.buyPrice;
+        const change24h = live?.[`${currency}_24h_change`];
         const currentValue = a.amount * currentPrice;
         const costBasis = a.amount * a.buyPrice;
         const pnl = currentValue - costBasis;

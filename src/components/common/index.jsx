@@ -1,13 +1,18 @@
 import React, { useMemo, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAppStore } from "../../store/useAppStore";
+import { CURRENCY_SYMBOLS } from "../../lib/constants";
 
 export const AnimatedCounter = React.memo(function AnimatedCounter({
   value,
   decimals = 2,
-  prefix = "$",
+  prefix,
   className = "",
 }) {
+  const currency = useAppStore((s) => s.currency);
+  const resolvedPrefix = prefix !== undefined ? prefix : (CURRENCY_SYMBOLS[currency] ?? "$");
+
   const display = useMemo(
     () =>
       value?.toLocaleString("en-US", {
@@ -24,7 +29,7 @@ export const AnimatedCounter = React.memo(function AnimatedCounter({
       animate={{ opacity: 1, y: 0 }}
       key={value}
     >
-      {prefix}
+      {resolvedPrefix}
       {display}
     </motion.span>
   );

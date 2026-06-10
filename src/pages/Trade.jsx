@@ -13,12 +13,14 @@ export default function Trade() {
   const { coinId } = useParams();
   const { formatPrice, formatLargeNumber, formatPercent } = useCurrency();
   const addNotification = useAppStore((s) => s.addNotification);
+  const currency = useAppStore((s) => s.currency);
   const [timeRange, setTimeRange] = useState("7");
   const [tradeType, setTradeType] = useState("buy");
   const [amount, setAmount] = useState("");
 
   const { data: coin, isLoading: coinLoading } = useCoinById(coinId);
   const { data: chartData } = useMarketChart(coinId, {
+    currency,
     days: timeRange,
   });
 
@@ -38,7 +40,7 @@ export default function Trade() {
     );
   }
 
-  const currentPrice = coin.market_data?.current_price?.usd || 0;
+  const currentPrice = coin.market_data?.current_price?.[currency] ?? coin.market_data?.current_price?.usd ?? 0;
   const priceChange24h = coin.market_data?.price_change_percentage_24h || 0;
   const prices = chartData?.prices?.map((p) => p[1]) || [];
 

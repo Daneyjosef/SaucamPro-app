@@ -148,10 +148,10 @@ export default function Portfolio() {
                       </td>
                       <td className="py-3 px-2 text-right text-text-primary text-sm">{asset.amount}</td>
                       <td className="py-3 px-2 text-right text-text-secondary text-sm">
-                        ${asset.buyPrice?.toLocaleString()}
+                        {formatPrice(asset.buyPrice)}
                       </td>
                       <td className="py-3 px-2 text-right text-text-primary font-medium text-sm">
-                        ${(asset.amount * asset.buyPrice).toLocaleString()}
+                        {formatPrice(asset.amount * asset.buyPrice)}
                       </td>
                       <td className="py-3 px-2 text-center">
                         <motion.button

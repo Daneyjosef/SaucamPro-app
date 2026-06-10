@@ -63,14 +63,14 @@ export default function TopBar() {
   useEffect(() => {
     const loadTicker = async () => {
       try {
-        const data = await fetchCoins({ currency: "usd", perPage: 10, order: "volume_desc" });
+        const data = await fetchCoins({ currency, perPage: 10, order: "volume_desc" });
         setTickerCoins(data);
       } catch {}
     };
     loadTicker();
     const interval = setInterval(loadTicker, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [currency]);
 
   // Search
   useEffect(() => {

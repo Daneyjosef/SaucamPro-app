@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
   fetchGlobalData,
   fetchCoins,
@@ -25,6 +25,7 @@ export const useCoins = ({ currency = "usd", page = 1, perPage = 20, order = "ma
       fetchCoins({ currency, page, perPage, order, sparkline, category }),
     staleTime: 30 * 1000,
     refetchInterval: 30 * 1000,
+    placeholderData: keepPreviousData,
   });
 
 export const useCoinById = (id) =>
@@ -43,6 +44,7 @@ export const useMarketChart = (id, { currency = "usd", days = "7" } = {}) =>
     enabled: !!id,
     staleTime: 30 * 1000,
     refetchInterval: 30 * 1000,
+    placeholderData: keepPreviousData,
   });
 
 export const useTrending = () =>
@@ -59,6 +61,7 @@ export const useTopMovers = ({ currency = "usd" } = {}) =>
     queryFn: () => fetchTopMovers({ currency }),
     staleTime: 30 * 1000,
     refetchInterval: 30 * 1000,
+    placeholderData: keepPreviousData,
   });
 
 export const useSearch = (query) =>
