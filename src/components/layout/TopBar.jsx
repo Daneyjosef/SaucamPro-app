@@ -5,15 +5,59 @@ import { useAppStore } from "../../store/useAppStore";
 import { CURRENCIES } from "../../lib/constants";
 import { fetchCoins, searchCoins } from "../../lib/api";
 
+const NOTIF_ICONS = {
+  portfolio_add: "➕",
+  portfolio_remove: "➖",
+  watchlist_add: "⭐",
+  send: "↑",
+  receive: "↓",
+  buy: "🛒",
+};
+
+const NOTIF_COLORS = {
+  portfolio_add: "text-gain",
+  portfolio_remove: "text-loss",
+  watchlist_add: "text-yellow-400",
+  send: "text-loss",
+  receive: "text-gain",
+  buy: "text-primary-accent",
+};
+
 export default function TopBar() {
   const { theme, toggleTheme, currency, setCurrency } = useAppStore();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [currencyDropdown, setCurrencyDropdown] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [tickerCoins, setTickerCoins] = useState([]);
   const searchRef = useRef(null);
+  const notifRef = useRef(null);
   const navigate = useNavigate();
+
+  const notifications = useAppStore((s) => s.notifications);
+  const markRead = useAppStore((s) => s.markNotificationRead);
+  const markAllRead = useAppStore((s) => s.markAllNotificationsRead);
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  // Close notification dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const formatNotifTime = (iso) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    if (diff < 60000) return "just now";
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+    return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  };
 
   // Fetch ticker data
   useEffect(() => {
@@ -216,16 +260,106 @@ export default function TopBar() {
           </motion.button>
 
           {/* Notification Bell */}
-          <motion.button
-            className="w-9 h-9 flex items-center justify-center bg-primary-card border border-primary-border rounded-btn text-text-secondary hover:text-text-primary transition-colors relative"
-            whileTap={{ scale: 0.9 }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-loss rounded-full" />
-          </motion.button>
+          <div className="relative" ref={notifRef}>
+            <motion.button
+              onClick={() => {
+                setNotifOpen(!notifOpen);
+                setCurrencyDropdown(false);
+                setSearchOpen(false);
+              }}
+              className="w-9 h-9 flex items-center justify-center bg-primary-card border border-primary-border rounded-btn text-text-secondary hover:text-text-primary transition-colors relative"
+              whileTap={{ scale: 0.9 }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-loss text-white text-[10px] font-bold rounded-full px-1">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </motion.button>
+
+            <AnimatePresence>
+              {notifOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className="absolute right-0 top-12 w-[380px] bg-primary-card border border-primary-border rounded-card shadow-2xl overflow-hidden z-50"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-primary-border">
+                    <h3 className="text-text-primary font-bold text-sm">Notifications</h3>
+                    <div className="flex gap-2">
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); markAllRead(); }}
+                          className="text-primary-accent text-xs font-medium hover:underline"
+                        >
+                          Mark all read
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* List */}
+                  <div className="max-h-[360px] overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="px-4 py-10 text-center text-text-secondary text-sm">
+                        <div className="text-3xl mb-2">🔔</div>
+                        No notifications yet
+                      </div>
+                    ) : (
+                      notifications.map((n) => (
+                        <motion.div
+                          key={n.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className={`flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors ${
+                            n.read ? "opacity-60" : "bg-primary-accent/5"
+                          } hover:bg-primary-border`}
+                          onClick={() => markRead(n.id)}
+                        >
+                          {/* Icon */}
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0 ${
+                              NOTIF_COLORS[n.type] || "text-text-secondary"
+                            }`}
+                            style={{
+                              background: n.read
+                                ? "rgba(255,255,255,0.05)"
+                                : "rgba(0,82,255,0.1)",
+                            }}
+                          >
+                            {NOTIF_ICONS[n.type] || "•"}
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-text-primary text-sm font-medium">{n.title}</p>
+                            <p className="text-text-secondary text-xs mt-0.5">{n.description}</p>
+                          </div>
+
+                          {/* Time + unread dot */}
+                          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                            <span className="text-text-secondary text-[10px] whitespace-nowrap">
+                              {formatNotifTime(n.timestamp)}
+                            </span>
+                            {!n.read && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-primary-accent" />
+                            )}
+                          </div>
+                        </motion.div>
+                      ))
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </header>

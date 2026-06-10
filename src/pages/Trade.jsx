@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useCoinById, useMarketChart } from "../hooks/useCoins";
 import { useCurrency } from "../hooks/useCurrency";
+import { useAppStore } from "../store/useAppStore";
 import { PriceAreaChart } from "../components/charts";
 import { CoinLogo, PriceChange, AnimatedCounter } from "../components/common";
 import { TIME_RANGES } from "../lib/constants";
@@ -11,6 +12,7 @@ import { TIME_RANGES } from "../lib/constants";
 export default function Trade() {
   const { coinId } = useParams();
   const { formatPrice, formatLargeNumber, formatPercent } = useCurrency();
+  const addNotification = useAppStore((s) => s.addNotification);
   const [timeRange, setTimeRange] = useState("7");
   const [tradeType, setTradeType] = useState("buy");
   const [amount, setAmount] = useState("");
@@ -45,6 +47,12 @@ export default function Trade() {
       toast.error("Please enter a valid amount");
       return;
     }
+    addNotification({
+      type: tradeType === "buy" ? "buy" : "send",
+      title: `${tradeType === "buy" ? "Bought" : "Sold"} ${coin.symbol?.toUpperCase()}`,
+      description: `${tradeType === "buy" ? "Bought" : "Sold"} ${amount} ${coin.symbol?.toUpperCase()} at ${formatPrice(currentPrice)}`,
+      coin: coin.symbol,
+    });
     toast.success(
       `${tradeType === "buy" ? "Bought" : "Sold"} ${amount} ${coin.symbol?.toUpperCase()} successfully!`
     );

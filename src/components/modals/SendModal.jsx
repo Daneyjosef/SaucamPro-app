@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import { useAppStore } from "../../store/useAppStore";
 
 export function SendModal({ isOpen, onClose, coin, maxAmount }) {
+  const addNotification = useAppStore((s) => s.addNotification);
   const [address, setAddress] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -16,6 +18,12 @@ export function SendModal({ isOpen, onClose, coin, maxAmount }) {
       toast.error(`Insufficient ${coin} balance`);
       return;
     }
+    addNotification({
+      type: "send",
+      title: `Sent ${coin}`,
+      description: `${amount} ${coin} sent to ${address.slice(0, 6)}...${address.slice(-4)}`,
+      coin,
+    });
     toast.success(
       `Sent ${amount} ${coin} to ${address.slice(0, 6)}...${address.slice(-4)}`
     );
