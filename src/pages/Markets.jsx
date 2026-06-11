@@ -228,7 +228,48 @@ export default function Markets() {
         </div>
       </div>
 
+      {/* Skeleton table shown only on initial load before any coins arrive */}
+      {allCoins.length === 0 && isLoading && (
+        <div className="card overflow-hidden p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-primary-border">
+                  <th className="py-3 px-2 w-8" />
+                  <th className="py-3 px-2 text-left text-text-secondary text-xs font-medium">Coin</th>
+                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium">Price</th>
+                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium">24h</th>
+                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium hidden lg:table-cell">7d</th>
+                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium hidden xl:table-cell">Mkt Cap</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <tr key={i} className="border-b border-primary-border">
+                    <td className="py-3 px-2"><div className="h-3 w-4 bg-primary-border rounded animate-pulse" /></td>
+                    <td className="py-3 px-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-primary-border animate-pulse" />
+                        <div className="space-y-1">
+                          <div className="h-3 w-12 bg-primary-border rounded animate-pulse" />
+                          <div className="h-2 w-20 bg-primary-border/60 rounded animate-pulse hidden sm:block" />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-2 text-right"><div className="h-3 w-16 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3 px-2 text-right"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3 px-2 text-right hidden lg:table-cell"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3 px-2 text-right hidden xl:table-cell"><div className="h-3 w-20 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* Virtualized Table */}
+      {allCoins.length > 0 && (
       <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -346,6 +387,7 @@ export default function Markets() {
           </table>
         </div>
       </div>
+      )}
     </motion.div>
   );
 }

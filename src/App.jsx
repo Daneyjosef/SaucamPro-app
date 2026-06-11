@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { useAppStore } from "./store/useAppStore";
 import Sidebar from "./components/layout/Sidebar";
@@ -30,7 +30,18 @@ const queryClient = new QueryClient({
 
 function AppContent() {
   const theme = useAppStore((s) => s.theme);
+  const currency = useAppStore((s) => s.currency);
+  const queryClient = useQueryClient();
   const [tickerCoins, setTickerCoins] = useState([]);
+
+  // Prefetch first page of Markets data immediately so it's cached before the user navigates there
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ["coins", currency, 1, 20, "market_cap_desc", true, undefined],
+      queryFn: () => fetchCoins({ currency, page: 1, perPage: 20, sparkline: true }),
+      staleTime: 30 * 1000,
+    });
+  }, [currency, queryClient]);
 
   useEffect(() => {
     const load = async () => {
