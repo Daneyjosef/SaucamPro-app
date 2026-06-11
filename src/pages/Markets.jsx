@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import { useCoins, useTrending, useSearch } from "../hooks/useCoins";
 import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
@@ -21,8 +20,7 @@ export default function Markets() {
   const [sortField, setSortField] = useState("market_cap_rank");
   const [sortDir, setSortDir] = useState("asc");
 
-  // Refs for virtualizer and infinite scroll
-  const tableContainerRef = useRef(null);
+  // Ref for infinite scroll sentinel
   const loaderRef = useRef(null);
 
   // Pass category to the API so filter actually changes results
@@ -104,14 +102,6 @@ export default function Markets() {
       return ((a[key] || 0) - (b[key] || 0)) * dir;
     });
   }, [allCoins, searchQuery, searchResults, sortField, sortDir]);
-
-  // Virtualizer
-  const virtualizer = useVirtualizer({
-    count: filteredCoins.length + (isLoading ? 1 : 0),
-    getScrollElement: () => tableContainerRef.current,
-    estimateSize: () => 53,
-    overscan: 5,
-  });
 
   const handleSort = useCallback((field) => {
     setSortField((prev) => {
@@ -219,194 +209,116 @@ export default function Markets() {
         </div>
       </div>
 
-      {/* Skeleton table shown only on initial load before any coins arrive */}
-      {allCoins.length === 0 && isLoading && (
-        <div className="card overflow-hidden p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed">
-              <colgroup>
-                <col style={{ width: "48px" }} />
-                <col />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "100px" }} />
-                <col className="hidden lg:table-cell" style={{ width: "100px" }} />
-                <col className="hidden xl:table-cell" style={{ width: "120px" }} />
-              </colgroup>
+      {/* Single-table layout (same as Dashboard Market Overview) */}
+      <div className="card overflow-hidden p-0">
+        <div className="overflow-x-auto">
+          <div className="inline-block min-w-full align-middle">
+            <table className="min-w-full">
               <thead>
                 <tr className="border-b border-primary-border">
-                  <th className="py-3.5 px-3" />
-                  <th className="py-3.5 px-3 text-left text-text-secondary text-xs font-medium">Coin</th>
-                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium">Price</th>
-                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium">24h</th>
-                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium hidden lg:table-cell">7d</th>
-                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium hidden xl:table-cell">Mkt Cap</th>
+                  <th className="text-left text-text-secondary text-xs font-medium pb-3 pr-2 py-2 w-8 cursor-pointer hover:text-text-primary select-none" onClick={() => handleSort("market_cap_rank")}>
+                    # <SortArrow field="market_cap_rank" />
+                  </th>
+                  <th className="text-left text-text-secondary text-xs font-medium pb-3 px-2 py-2 select-none">Coin</th>
+                  <th className="text-right text-text-secondary text-xs font-medium pb-3 px-2 py-2 whitespace-nowrap cursor-pointer hover:text-text-primary select-none" onClick={() => handleSort("current_price")}>
+                    Price <SortArrow field="current_price" />
+                  </th>
+                  <th className="text-right text-text-secondary text-xs font-medium pb-3 px-2 py-2 whitespace-nowrap select-none">24h</th>
+                  <th className="text-right text-text-secondary text-xs font-medium pb-3 px-2 py-2 whitespace-nowrap select-none hidden lg:table-cell">7d</th>
+                  <th className="text-right text-text-secondary text-xs font-medium pb-3 px-2 py-2 whitespace-nowrap select-none hidden xl:table-cell cursor-pointer hover:text-text-primary" onClick={() => handleSort("market_cap")}>
+                    Mkt Cap <SortArrow field="market_cap" />
+                  </th>
+                  <th className="text-right text-text-secondary text-xs font-medium pb-3 px-2 py-2 select-none hidden 2xl:table-cell">7D Chart</th>
+                  <th className="text-center text-text-secondary text-xs font-medium pb-3 pl-2 py-2 w-8 select-none"></th>
                 </tr>
               </thead>
               <tbody>
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <tr key={i} className="border-b border-primary-border">
-                    <td className="py-3.5 px-3"><div className="h-3 w-4 bg-primary-border rounded animate-pulse" /></td>
-                    <td className="py-3.5 px-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-primary-border animate-pulse" />
-                        <div className="space-y-1">
-                          <div className="h-3 w-12 bg-primary-border rounded animate-pulse" />
-                          <div className="h-2 w-20 bg-primary-border/60 rounded animate-pulse hidden sm:block" />
+                {allCoins.length === 0 && isLoading ? (
+                  Array.from({ length: 12 }).map((_, i) => (
+                    <tr key={i} className="border-b border-primary-border">
+                      <td className="py-3 pr-2 w-8"><div className="h-3 w-4 bg-primary-border rounded animate-pulse" /></td>
+                      <td className="py-3 px-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-primary-border animate-pulse" />
+                          <div className="space-y-1">
+                            <div className="h-3 w-12 bg-primary-border rounded animate-pulse" />
+                            <div className="h-2 w-20 bg-primary-border/60 rounded animate-pulse hidden sm:block" />
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-3 text-right"><div className="h-3 w-16 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                    <td className="py-3.5 px-3 text-right"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                    <td className="py-3.5 px-3 text-right hidden lg:table-cell"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                    <td className="py-3.5 px-3 text-right hidden xl:table-cell"><div className="h-3 w-20 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="py-3 px-2 text-right"><div className="h-3 w-16 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                      <td className="py-3 px-2 text-right"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                      <td className="py-3 px-2 text-right hidden lg:table-cell"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                      <td className="py-3 px-2 text-right hidden xl:table-cell"><div className="h-3 w-20 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                      <td className="py-3 px-2 text-right hidden 2xl:table-cell"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                      <td className="py-3 pl-2 text-center w-8" />
+                    </tr>
+                  ))
+                ) : (
+                  filteredCoins.map((coin, idx) => (
+                    <motion.tr
+                      key={coin.id}
+                      className="border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
+                      onClick={() => handleNavigate(coin.id)}
+                    >
+                      <td className="py-3 pr-2 text-text-secondary text-sm tabular-nums w-8">{coin.market_cap_rank || idx + 1}</td>
+                      <td className="py-3 px-2">
+                        <div className="flex items-center gap-2">
+                          <CoinLogo src={coin.image} alt={coin.name} size={24} />
+                          <div className="min-w-0">
+                            <p className="text-text-primary font-medium text-sm truncate max-w-[80px] sm:max-w-none">{coin.symbol?.toUpperCase()}</p>
+                            <p className="text-text-secondary text-xs truncate hidden sm:block">{coin.name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-2 text-right text-text-primary font-medium text-sm tabular-nums whitespace-nowrap">
+                        {formatPrice(coin.current_price)}
+                      </td>
+                      <td className="py-3 px-2 text-right text-sm tabular-nums whitespace-nowrap">
+                        <PriceChange value={coin.price_change_percentage_24h} />
+                      </td>
+                      <td className="py-3 px-2 text-right text-sm tabular-nums whitespace-nowrap hidden lg:table-cell">
+                        <PriceChange value={coin.price_change_percentage_7d_in_currency} />
+                      </td>
+                      <td className="py-3 px-2 text-right text-text-secondary text-sm tabular-nums whitespace-nowrap hidden xl:table-cell">
+                        {formatLargeNumber(coin.market_cap)}
+                      </td>
+                      <td className="py-3 px-2 text-right hidden 2xl:table-cell">
+                        {coin.sparkline_in_7d?.price && (
+                          <Sparkline data={coin.sparkline_in_7d.price} />
+                        )}
+                      </td>
+                      <td className="py-3 pl-2 text-center w-8">
+                        <motion.button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleWatchlist(coin.id);
+                          }}
+                          className={`text-base ${
+                            watchlist.includes(coin.id) ? "text-yellow-400" : "text-text-secondary opacity-0 group-hover:opacity-100"
+                          }`}
+                          whileTap={{ scale: 1.4 }}
+                        >
+                          {watchlist.includes(coin.id) ? "★" : "☆"}
+                        </motion.button>
+                      </td>
+                    </motion.tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
-      )}
-
-      {/* Virtualized Table — uses table-fixed + colgroup to keep header/body columns aligned */}
-      {allCoins.length > 0 && (
-      <div className="card overflow-hidden p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full table-fixed">
-            <colgroup>
-              <col style={{ width: "48px" }} />
-              <col />
-              <col style={{ width: "120px" }} />
-              <col style={{ width: "100px" }} />
-              <col className="hidden lg:table-cell" style={{ width: "100px" }} />
-              <col className="hidden xl:table-cell" style={{ width: "120px" }} />
-              <col className="hidden 2xl:table-cell" style={{ width: "90px" }} />
-              <col style={{ width: "40px" }} />
-            </colgroup>
-            <thead className="sticky top-0 bg-primary-card z-10">
-              <tr className="border-b border-primary-border">
-                <th
-                  className="text-left text-text-secondary text-xs font-medium py-3.5 px-3 cursor-pointer hover:text-text-primary transition-colors select-none"
-                  onClick={() => handleSort("market_cap_rank")}
-                >
-                  # <SortArrow field="market_cap_rank" />
-                </th>
-                <th className="text-left text-text-secondary text-xs font-medium py-3.5 px-3 select-none">Coin</th>
-                <th
-                  className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 cursor-pointer hover:text-text-primary transition-colors select-none whitespace-nowrap"
-                  onClick={() => handleSort("current_price")}
-                >
-                  Price <SortArrow field="current_price" />
-                </th>
-                <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 select-none whitespace-nowrap">24h</th>
-                <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 select-none whitespace-nowrap hidden lg:table-cell">7d</th>
-                <th
-                  className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 whitespace-nowrap hidden xl:table-cell cursor-pointer hover:text-text-primary transition-colors select-none"
-                  onClick={() => handleSort("market_cap")}
-                >
-                  Mkt Cap <SortArrow field="market_cap" />
-                </th>
-                <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 whitespace-nowrap hidden 2xl:table-cell select-none">7D Chart</th>
-                <th className="text-center text-text-secondary text-xs font-medium py-3.5 px-3 select-none"></th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-
-        {/* Virtualized scroll container */}
-        <div ref={tableContainerRef} className="overflow-auto" style={{ maxHeight: "calc(100vh - 340px)" }}>
-          <table className="w-full table-fixed">
-            <colgroup>
-              <col style={{ width: "48px" }} />
-              <col />
-              <col style={{ width: "120px" }} />
-              <col style={{ width: "100px" }} />
-              <col className="hidden lg:table-cell" style={{ width: "100px" }} />
-              <col className="hidden xl:table-cell" style={{ width: "120px" }} />
-              <col className="hidden 2xl:table-cell" style={{ width: "90px" }} />
-              <col style={{ width: "40px" }} />
-            </colgroup>
-            <tbody
-              style={{
-                height: `${virtualizer.getTotalSize()}px`,
-                position: "relative",
-              }}
-            >
-              {virtualizer.getVirtualItems().map((virtualRow) => {
-                const isLoaderRow = virtualRow.index >= filteredCoins.length;
-                const coin = filteredCoins[virtualRow.index];
-
-                if (isLoaderRow) {
-                  return (
-                    <tr key="loader" ref={loaderRef} style={{ height: 53, transform: `translateY(${virtualRow.start}px)` }} className="absolute w-full">
-                      <td colSpan={8} className="text-center py-4">
-                        <div className="flex items-center justify-center gap-2 text-text-secondary text-sm">
-                          <div className="w-5 h-5 border-2 border-primary-accent border-t-transparent rounded-full animate-spin" />
-                          Loading more...
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                }
-
-                return (
-                  <tr
-                    key={coin.id}
-                    style={{
-                      height: `${virtualRow.size}px`,
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                    className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-primary-card transition-colors"
-                    onClick={() => handleNavigate(coin.id)}
-                  >
-                    <td className="py-3.5 px-3 text-text-secondary text-sm tabular-nums">{coin.market_cap_rank || virtualRow.index + 1}</td>
-                    <td className="py-3.5 px-3">
-                      <div className="flex items-center gap-2">
-                        <CoinLogo src={coin.image} alt={coin.name} size={24} />
-                        <div className="min-w-0">
-                          <p className="text-text-primary font-medium text-sm truncate">{coin.symbol?.toUpperCase()}</p>
-                          <p className="text-text-secondary text-xs truncate hidden sm:block">{coin.name}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-3 text-right text-text-primary font-medium text-sm tabular-nums whitespace-nowrap">
-                      {formatPrice(coin.current_price)}
-                    </td>
-                    <td className="py-3.5 px-3 text-right text-sm tabular-nums whitespace-nowrap">
-                      <PriceChange value={coin.price_change_percentage_24h} />
-                    </td>
-                    <td className="py-3.5 px-3 text-right text-sm tabular-nums whitespace-nowrap hidden lg:table-cell">
-                      <PriceChange value={coin.price_change_percentage_7d_in_currency} />
-                    </td>
-                    <td className="py-3.5 px-3 text-right text-text-secondary text-sm tabular-nums whitespace-nowrap hidden xl:table-cell">
-                      {formatLargeNumber(coin.market_cap)}
-                    </td>
-                    <td className="py-3.5 px-3 text-right hidden 2xl:table-cell">
-                      {coin.sparkline_in_7d?.price && (
-                        <Sparkline data={coin.sparkline_in_7d.price} />
-                      )}
-                    </td>
-                    <td className="py-3.5 px-3 text-center">
-                      <motion.button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleToggleWatchlist(coin.id);
-                        }}
-                        className={`text-base ${
-                          watchlist.includes(coin.id) ? "text-yellow-400" : "text-text-secondary opacity-0 group-hover:opacity-100"
-                        }`}
-                        whileTap={{ scale: 1.4 }}
-                      >
-                        {watchlist.includes(coin.id) ? "★" : "☆"}
-                      </motion.button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        {/* Infinite scroll sentinel */}
+        <div ref={loaderRef} className="py-4 flex items-center justify-center">
+          {isLoading && (
+            <div className="flex items-center gap-2 text-text-secondary text-sm">
+              <div className="w-5 h-5 border-2 border-primary-accent border-t-transparent rounded-full animate-spin" />
+              Loading more...
+            </div>
+          )}
         </div>
       </div>
-      )}
     </motion.div>
   );
 }
