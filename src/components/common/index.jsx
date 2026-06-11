@@ -42,13 +42,12 @@ export const PriceChange = React.memo(function PriceChange({ value, className = 
 
   return (
     <motion.span
-      className={`inline-flex items-center gap-1 font-semibold ${
+      className={`inline-flex items-center font-medium ${
         isPositive ? "text-gain" : "text-loss"
       } ${className}`}
     >
-      <span>{isPositive ? "▲" : "▼"}</span>
-      {prefix}
-      {value.toFixed(2)}%
+      <span className="mr-0.5 text-[10px]">{isPositive ? "▲" : "▼"}</span>
+      <span>{prefix}{value.toFixed(2)}%</span>
     </motion.span>
   );
 });

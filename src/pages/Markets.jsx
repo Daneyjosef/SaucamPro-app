@@ -330,7 +330,7 @@ export default function Markets() {
                     className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-primary-card transition-colors"
                     onClick={() => handleNavigate(coin.id)}
                   >
-                    <td className="py-3.5 px-3 text-text-secondary text-sm whitespace-nowrap w-8">{coin.market_cap_rank || virtualRow.index + 1}</td>
+                    <td className="py-3.5 px-3 text-text-secondary text-sm tabular-nums w-8">{coin.market_cap_rank || virtualRow.index + 1}</td>
                     <td className="py-3.5 px-3">
                       <div className="flex items-center gap-2.5">
                         <CoinLogo src={coin.image} alt={coin.name} size={24} />
@@ -340,16 +340,16 @@ export default function Markets() {
                         </div>
                       </div>
                     </td>
-                    <td className="py-3.5 px-3 text-right text-text-primary font-medium text-sm whitespace-nowrap">
+                    <td className="py-3.5 px-3 text-right text-text-primary font-medium text-sm tabular-nums whitespace-nowrap">
                       {formatPrice(coin.current_price)}
                     </td>
-                    <td className="py-3.5 px-3 text-right whitespace-nowrap">
+                    <td className="py-3.5 px-3 text-right text-sm tabular-nums whitespace-nowrap">
                       <PriceChange value={coin.price_change_percentage_24h} />
                     </td>
-                    <td className="py-3.5 px-3 text-right whitespace-nowrap hidden lg:table-cell">
+                    <td className="py-3.5 px-3 text-right text-sm tabular-nums whitespace-nowrap hidden lg:table-cell">
                       <PriceChange value={coin.price_change_percentage_7d_in_currency} />
                     </td>
-                    <td className="py-3.5 px-3 text-right text-text-secondary text-sm whitespace-nowrap hidden xl:table-cell">
+                    <td className="py-3.5 px-3 text-right text-text-secondary text-sm tabular-nums whitespace-nowrap hidden xl:table-cell">
                       {formatLargeNumber(coin.market_cap)}
                     </td>
                     <td className="py-3.5 px-3 text-right hidden 2xl:table-cell">
