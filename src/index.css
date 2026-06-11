@@ -55,44 +55,7 @@
 }
 
 /* ═══════════════════════════════════════
-   LIGHT MODE — Direct class overrides
-   ═══════════════════════════════════════ */
-.light {
-  color-scheme: light;
-  --toast-bg: #FFFFFF;
-  --toast-color: #0A0B0D;
-  --toast-border: #DEE6F0;
-}
-
-.light body {
-  background-color: #FFFFFF !important;
-  color: #0A0B0D !important;
-}
-
-.light .bg-primary-bg { background-color: #FFFFFF; }
-.light .bg-primary-card { background-color: #F5F8FF; }
-.light .border-primary-border { border-color: #DEE6F0; }
-.light .text-text-primary { color: #0A0B0D; }
-.light .text-text-secondary { color: #5A6B87; }
-
-.light .hover\:bg-primary-card:hover { background-color: #EEF4FF; }
-.light .hover\:bg-primary-border:hover { background-color: #E5EDF8; }
-.light .hover\:text-text-primary:hover { color: #0A0B0D; }
-
-.light .sidebar-link:hover { background-color: #EEF4FF; color: #0A0B0D; }
-.light .sidebar-link.active { color: #0052FF; background-color: rgba(0, 82, 255, 0.08); }
-
-.light .card {
-  background-color: #F5F8FF;
-  border-color: #DEE6F0;
-  box-shadow: 0 1px 3px rgba(0, 82, 255, 0.06);
-}
-
-.light ::-webkit-scrollbar-track { background: #F0F4FF; }
-.light ::-webkit-scrollbar-thumb { background: #C5D0E0; border-radius: 3px; }
-
-/* ═══════════════════════════════════════
-   DARK MODE (default — no overrides needed)
+   DARK MODE only — light mode removed
    ═══════════════════════════════════════ */
 .dark {
   color-scheme: dark;

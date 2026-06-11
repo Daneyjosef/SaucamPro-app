@@ -53,16 +53,11 @@ function AppContent() {
     load();
   }, []);
 
-  // Apply theme class
+  // Apply dark mode only
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    }
-  }, [theme]);
+    document.documentElement.classList.add("dark");
+    document.documentElement.classList.remove("light");
+  }, []);
 
   return (
     <div className="min-h-screen bg-primary-bg text-text-primary">

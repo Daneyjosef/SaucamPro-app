@@ -3,7 +3,7 @@ import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES } from "../lib/constants";
 
 export default function Settings() {
-  const { theme, toggleTheme, currency, setCurrency } = useAppStore();
+  const { currency, setCurrency } = useAppStore();
 
   return (
     <motion.div
@@ -16,9 +16,9 @@ export default function Settings() {
         <p className="text-text-secondary text-sm mt-1">Customize your experience</p>
       </div>
 
-      {/* Theme */}
+      {/* Theme — dark mode only */}
       <motion.div
-        className="card"
+        className="card opacity-60"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -26,21 +26,11 @@ export default function Settings() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-text-primary font-medium">Dark Mode</p>
-            <p className="text-text-secondary text-sm">Toggle dark and light theme</p>
+            <p className="text-text-secondary text-sm">Dark mode is enabled</p>
           </div>
-          <motion.button
-            onClick={toggleTheme}
-            className={`w-14 h-7 rounded-full p-1 transition-colors ${
-              theme === "dark" ? "bg-primary-accent" : "bg-primary-border"
-            }`}
-            whileTap={{ scale: 0.95 }}
-          >
-            <motion.div
-              className="w-5 h-5 bg-white rounded-full shadow-md"
-              animate={{ x: theme === "dark" ? 28 : 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            />
-          </motion.button>
+          <div className="w-14 h-7 rounded-full p-1 bg-primary-accent opacity-50 cursor-not-allowed">
+            <div className="w-5 h-5 bg-white rounded-full shadow-md ml-7" />
+          </div>
         </div>
       </motion.div>
 

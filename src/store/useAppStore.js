@@ -1,11 +1,8 @@
 import { create } from "zustand";
 
 const getInitialTheme = () => {
-  const stored = localStorage.getItem("saucampro-theme");
-  if (stored) return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  localStorage.setItem("saucampro-theme", "dark");
+  return "dark";
 };
 
 const getInitialCurrency = () => {
@@ -33,20 +30,15 @@ const getInitialWatchlist = () => {
 export const useAppStore = create((set, get) => ({
   // Theme
   theme: getInitialTheme(),
-  setTheme: (theme) => {
-    localStorage.setItem("saucampro-theme", theme);
-    set({ theme });
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    }
+  setTheme: () => {
+    // Dark mode only
+    localStorage.setItem("saucampro-theme", "dark");
+    set({ theme: "dark" });
+    document.documentElement.classList.add("dark");
+    document.documentElement.classList.remove("light");
   },
   toggleTheme: () => {
-    const newTheme = get().theme === "dark" ? "light" : "dark";
-    get().setTheme(newTheme);
+    // Dark mode only — no-op
   },
 
   // Currency
