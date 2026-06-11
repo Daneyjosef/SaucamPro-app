@@ -8,56 +8,6 @@ import { useAppStore } from "../store/useAppStore";
 import { CoinLogo, PriceChange, Sparkline } from "../components/common";
 import { CATEGORY_FILTERS } from "../lib/constants";
 
-// Memoized coin row to prevent re-renders of off-screen rows
-const CoinRow = React.memo(({ coin, rank, formatPrice, formatLargeNumber, watchlist, onToggleWatchlist, onNavigate }) => (
-  <motion.tr
-    className="border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
-    onClick={() => onNavigate(coin.id)}
-  >
-    <td className="py-3 px-4 text-text-secondary text-sm whitespace-nowrap">{rank}</td>
-    <td className="py-3 px-2">
-      <div className="flex items-center gap-2">
-        <CoinLogo src={coin.image} alt={coin.name} size={24} />
-        <div>
-          <p className="text-text-primary font-medium text-sm">{coin.symbol?.toUpperCase()}</p>
-          <p className="text-text-secondary text-xs hidden sm:block">{coin.name}</p>
-        </div>
-      </div>
-    </td>
-    <td className="py-3 px-2 text-right text-text-primary font-medium text-sm whitespace-nowrap">
-      {formatPrice(coin.current_price)}
-    </td>
-    <td className="py-3 px-2 text-right whitespace-nowrap">
-      <PriceChange value={coin.price_change_percentage_24h} />
-    </td>
-    <td className="py-3 px-2 text-right hidden md:table-cell whitespace-nowrap">
-      <PriceChange value={coin.price_change_percentage_7d_in_currency} />
-    </td>
-    <td className="py-3 px-2 text-right text-text-secondary text-sm hidden lg:table-cell whitespace-nowrap">
-      {formatLargeNumber(coin.market_cap)}
-    </td>
-    <td className="py-3 px-2 text-right hidden lg:table-cell">
-      {coin.sparkline_in_7d?.price && (
-        <Sparkline data={coin.sparkline_in_7d.price} />
-      )}
-    </td>
-    <td className="py-3 px-2 text-center">
-      <motion.button
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggleWatchlist(coin.id);
-        }}
-        className={`text-lg ${
-          watchlist.includes(coin.id) ? "text-yellow-400" : "text-text-secondary opacity-0 group-hover:opacity-100"
-        }`}
-        whileTap={{ scale: 1.4 }}
-      >
-        {watchlist.includes(coin.id) ? "★" : "☆"}
-      </motion.button>
-    </td>
-  </motion.tr>
-));
-
 export default function Markets() {
   const navigate = useNavigate();
   const currency = useAppStore((s) => s.currency);
@@ -221,9 +171,9 @@ export default function Markets() {
         </div>
       )}
 
-      {/* Filters — streamlined layout */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex gap-1 border border-primary-border rounded-lg p-0.5">
+      {/* Filters — compact and cohesive */}
+      <div className="card flex flex-wrap items-center gap-3 p-2">
+        <div className="flex gap-1">
           {CATEGORY_FILTERS.map((cat) => (
             <motion.button
               key={cat.key}
@@ -231,7 +181,7 @@ export default function Markets() {
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 activeCategory === cat.key
                   ? "bg-primary-accent text-white shadow-sm"
-                  : "text-text-secondary hover:text-text-primary"
+                  : "text-text-secondary hover:text-text-primary hover:bg-primary-border/30"
               }`}
               whileTap={{ scale: 0.95 }}
             >
@@ -240,18 +190,28 @@ export default function Markets() {
           ))}
         </div>
 
-        <div className="flex-1 min-w-[200px] max-w-xs ml-auto relative">
+        <div className="flex-1 min-w-[180px] max-w-xs ml-auto relative">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
           <input
             type="text"
             placeholder="Search coins..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full border border-primary-border rounded-lg px-4 py-2 pr-10 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent focus:ring-1 focus:ring-primary-accent/20 text-sm bg-transparent"
+            className="w-full border border-primary-border rounded-lg pl-9 pr-8 py-2 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent focus:ring-1 focus:ring-primary-accent/20 text-sm bg-primary-bg"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary text-lg leading-none"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary text-base leading-none"
             >
               ×
             </button>
@@ -266,20 +226,20 @@ export default function Markets() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-primary-border">
-                  <th className="py-3 px-2 w-8" />
-                  <th className="py-3 px-2 text-left text-text-secondary text-xs font-medium">Coin</th>
-                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium">Price</th>
-                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium">24h</th>
-                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium hidden lg:table-cell">7d</th>
-                  <th className="py-3 px-2 text-right text-text-secondary text-xs font-medium hidden xl:table-cell">Mkt Cap</th>
+                  <th className="py-3 px-3 w-8" />
+                  <th className="py-3 px-3 text-left text-text-secondary text-xs font-medium">Coin</th>
+                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium">Price</th>
+                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium">24h</th>
+                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium hidden lg:table-cell">7d</th>
+                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium hidden xl:table-cell">Mkt Cap</th>
                 </tr>
               </thead>
               <tbody>
                 {Array.from({ length: 12 }).map((_, i) => (
                   <tr key={i} className="border-b border-primary-border">
-                    <td className="py-3 px-2"><div className="h-3 w-4 bg-primary-border rounded animate-pulse" /></td>
-                    <td className="py-3 px-2">
-                      <div className="flex items-center gap-2">
+                    <td className="py-3.5 px-3"><div className="h-3 w-4 bg-primary-border rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-3">
+                      <div className="flex items-center gap-2.5">
                         <div className="w-6 h-6 rounded-full bg-primary-border animate-pulse" />
                         <div className="space-y-1">
                           <div className="h-3 w-12 bg-primary-border rounded animate-pulse" />
@@ -287,10 +247,10 @@ export default function Markets() {
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-2 text-right"><div className="h-3 w-16 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                    <td className="py-3 px-2 text-right"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                    <td className="py-3 px-2 text-right hidden lg:table-cell"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
-                    <td className="py-3 px-2 text-right hidden xl:table-cell"><div className="h-3 w-20 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3.5 px-3 text-right"><div className="h-3 w-16 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3.5 px-3 text-right"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3.5 px-3 text-right hidden lg:table-cell"><div className="h-3 w-12 bg-primary-border rounded animate-pulse ml-auto" /></td>
+                    <td className="py-3.5 px-3 text-right hidden xl:table-cell"><div className="h-3 w-20 bg-primary-border rounded animate-pulse ml-auto" /></td>
                   </tr>
                 ))}
               </tbody>
@@ -304,31 +264,31 @@ export default function Markets() {
       <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="sticky top-0 bg-primary-bg z-10">
+            <thead className="sticky top-0 bg-primary-card z-10">
               <tr className="border-b border-primary-border">
                 <th
-                  className="text-left text-text-secondary text-xs font-medium py-3 px-2 w-8 cursor-pointer hover:text-text-primary transition-colors select-none"
+                  className="text-left text-text-secondary text-xs font-medium py-3.5 px-3 w-8 cursor-pointer hover:text-text-primary transition-colors select-none"
                   onClick={() => handleSort("market_cap_rank")}
                 >
                   # <SortArrow field="market_cap_rank" />
                 </th>
-                <th className="text-left text-text-secondary text-xs font-medium py-3 px-2 select-none">Coin</th>
+                <th className="text-left text-text-secondary text-xs font-medium py-3.5 px-3 select-none">Coin</th>
                 <th
-                  className="text-right text-text-secondary text-xs font-medium py-3 px-2 cursor-pointer hover:text-text-primary transition-colors select-none whitespace-nowrap"
+                  className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 cursor-pointer hover:text-text-primary transition-colors select-none whitespace-nowrap"
                   onClick={() => handleSort("current_price")}
                 >
                   Price <SortArrow field="current_price" />
                 </th>
-                <th className="text-right text-text-secondary text-xs font-medium py-3 px-2 select-none whitespace-nowrap">24h</th>
-                <th className="text-right text-text-secondary text-xs font-medium py-3 px-2 select-none whitespace-nowrap hidden lg:table-cell">7d</th>
+                <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 select-none whitespace-nowrap">24h</th>
+                <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 select-none whitespace-nowrap hidden lg:table-cell">7d</th>
                 <th
-                  className="text-right text-text-secondary text-xs font-medium py-3 px-2 whitespace-nowrap hidden xl:table-cell cursor-pointer hover:text-text-primary transition-colors select-none"
+                  className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 whitespace-nowrap hidden xl:table-cell cursor-pointer hover:text-text-primary transition-colors select-none"
                   onClick={() => handleSort("market_cap")}
                 >
                   Mkt Cap <SortArrow field="market_cap" />
                 </th>
-                <th className="text-right text-text-secondary text-xs font-medium py-3 px-2 whitespace-nowrap hidden 2xl:table-cell select-none">7D Chart</th>
-                <th className="text-center text-text-secondary text-xs font-medium py-3 px-1 w-8 select-none"></th>
+                <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 whitespace-nowrap hidden 2xl:table-cell select-none">7D Chart</th>
+                <th className="text-center text-text-secondary text-xs font-medium py-3.5 px-3 w-8 select-none"></th>
               </tr>
             </thead>
           </table>
@@ -367,37 +327,37 @@ export default function Markets() {
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
-                    className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
+                    className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-primary-card transition-colors"
                     onClick={() => handleNavigate(coin.id)}
                   >
-                    <td className="py-3 px-2 text-text-secondary text-sm whitespace-nowrap w-8">{coin.market_cap_rank || virtualRow.index + 1}</td>
-                    <td className="py-3 px-2">
-                      <div className="flex items-center gap-2">
+                    <td className="py-3.5 px-3 text-text-secondary text-sm whitespace-nowrap w-8">{coin.market_cap_rank || virtualRow.index + 1}</td>
+                    <td className="py-3.5 px-3">
+                      <div className="flex items-center gap-2.5">
                         <CoinLogo src={coin.image} alt={coin.name} size={24} />
                         <div className="min-w-0">
-                          <p className="text-text-primary font-medium text-sm truncate max-w-[60px] sm:max-w-none">{coin.symbol?.toUpperCase()}</p>
+                          <p className="text-text-primary font-medium text-sm truncate max-w-[80px] sm:max-w-none">{coin.symbol?.toUpperCase()}</p>
                           <p className="text-text-secondary text-xs truncate hidden sm:block">{coin.name}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-2 text-right text-text-primary font-medium text-sm whitespace-nowrap">
+                    <td className="py-3.5 px-3 text-right text-text-primary font-medium text-sm whitespace-nowrap">
                       {formatPrice(coin.current_price)}
                     </td>
-                    <td className="py-3 px-2 text-right whitespace-nowrap">
+                    <td className="py-3.5 px-3 text-right whitespace-nowrap">
                       <PriceChange value={coin.price_change_percentage_24h} />
                     </td>
-                    <td className="py-3 px-2 text-right whitespace-nowrap hidden lg:table-cell">
+                    <td className="py-3.5 px-3 text-right whitespace-nowrap hidden lg:table-cell">
                       <PriceChange value={coin.price_change_percentage_7d_in_currency} />
                     </td>
-                    <td className="py-3 px-2 text-right text-text-secondary text-sm whitespace-nowrap hidden xl:table-cell">
+                    <td className="py-3.5 px-3 text-right text-text-secondary text-sm whitespace-nowrap hidden xl:table-cell">
                       {formatLargeNumber(coin.market_cap)}
                     </td>
-                    <td className="py-3 px-2 text-right hidden 2xl:table-cell">
+                    <td className="py-3.5 px-3 text-right hidden 2xl:table-cell">
                       {coin.sparkline_in_7d?.price && (
                         <Sparkline data={coin.sparkline_in_7d.price} />
                       )}
                     </td>
-                    <td className="py-3 pl-2 text-center w-8">
+                    <td className="py-3.5 px-3 text-center w-8">
                       <motion.button
                         onClick={(e) => {
                           e.stopPropagation();

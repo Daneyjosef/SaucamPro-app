@@ -124,8 +124,8 @@ export default function Dashboard() {
             <motion.button
               key={coin.id}
               onClick={() => navigate(`/trade/${coin.id}`)}
-              className="card min-w-[160px] flex-shrink-0 text-left"
-              whileHover={{ scale: 1.02, backgroundColor: "#1A1F2E" }}
+              className="card min-w-[160px] flex-shrink-0 text-left hover:bg-primary-border/50 transition-colors"
+              whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="flex items-center gap-2 mb-2">
@@ -165,9 +165,7 @@ export default function Dashboard() {
                 {coins?.slice(0, 20).map((coin, idx) => (
                   <motion.tr
                     key={coin.id}
-                    className="border-b border-primary-border cursor-pointer group"
-                    whileHover={{ backgroundColor: "#1A1F2E" }}
-                    transition={{ type: "spring", stiffness: 200 }}
+                    className="border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
                     onClick={() => navigate(`/trade/${coin.id}`)}
                   >
                     <td className="py-3 pr-2 text-text-secondary text-sm w-8">{idx + 1}</td>

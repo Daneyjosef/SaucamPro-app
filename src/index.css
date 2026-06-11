@@ -70,19 +70,20 @@
 }
 
 .light .bg-primary-bg { background-color: #FFFFFF; }
-.light .bg-primary-card { background-color: #FFFFFF; }
+.light .bg-primary-card { background-color: #F5F8FF; }
 .light .border-primary-border { border-color: #DEE6F0; }
 .light .text-text-primary { color: #0A0B0D; }
-.light .text-text-secondary { color: #64748B; }
+.light .text-text-secondary { color: #5A6B87; }
 
-.light .hover\:bg-primary-card:hover { background-color: #F8FAFF; }
-.light .hover\:bg-primary-border:hover { background-color: #EEF2F7; }
+.light .hover\:bg-primary-card:hover { background-color: #EEF4FF; }
+.light .hover\:bg-primary-border:hover { background-color: #E5EDF8; }
 .light .hover\:text-text-primary:hover { color: #0A0B0D; }
 
-.light .sidebar-link:hover { background-color: #F8FAFF; color: #0A0B0D; }
+.light .sidebar-link:hover { background-color: #EEF4FF; color: #0A0B0D; }
 .light .sidebar-link.active { color: #0052FF; background-color: rgba(0, 82, 255, 0.08); }
 
 .light .card {
+  background-color: #F5F8FF;
   border-color: #DEE6F0;
   box-shadow: 0 1px 3px rgba(0, 82, 255, 0.06);
 }
