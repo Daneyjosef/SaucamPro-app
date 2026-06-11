@@ -223,15 +223,23 @@ export default function Markets() {
       {allCoins.length === 0 && isLoading && (
         <div className="card overflow-hidden p-0">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full table-fixed">
+              <colgroup>
+                <col style={{ width: "48px" }} />
+                <col />
+                <col style={{ width: "120px" }} />
+                <col style={{ width: "100px" }} />
+                <col className="hidden lg:table-cell" style={{ width: "100px" }} />
+                <col className="hidden xl:table-cell" style={{ width: "120px" }} />
+              </colgroup>
               <thead>
                 <tr className="border-b border-primary-border">
-                  <th className="py-3 px-3 w-8" />
-                  <th className="py-3 px-3 text-left text-text-secondary text-xs font-medium">Coin</th>
-                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium">Price</th>
-                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium">24h</th>
-                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium hidden lg:table-cell">7d</th>
-                  <th className="py-3 px-3 text-right text-text-secondary text-xs font-medium hidden xl:table-cell">Mkt Cap</th>
+                  <th className="py-3.5 px-3" />
+                  <th className="py-3.5 px-3 text-left text-text-secondary text-xs font-medium">Coin</th>
+                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium">Price</th>
+                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium">24h</th>
+                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium hidden lg:table-cell">7d</th>
+                  <th className="py-3.5 px-3 text-right text-text-secondary text-xs font-medium hidden xl:table-cell">Mkt Cap</th>
                 </tr>
               </thead>
               <tbody>
@@ -239,7 +247,7 @@ export default function Markets() {
                   <tr key={i} className="border-b border-primary-border">
                     <td className="py-3.5 px-3"><div className="h-3 w-4 bg-primary-border rounded animate-pulse" /></td>
                     <td className="py-3.5 px-3">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-primary-border animate-pulse" />
                         <div className="space-y-1">
                           <div className="h-3 w-12 bg-primary-border rounded animate-pulse" />
@@ -259,15 +267,25 @@ export default function Markets() {
         </div>
       )}
 
-      {/* Virtualized Table */}
+      {/* Virtualized Table — uses table-fixed + colgroup to keep header/body columns aligned */}
       {allCoins.length > 0 && (
       <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full table-fixed">
+            <colgroup>
+              <col style={{ width: "48px" }} />
+              <col />
+              <col style={{ width: "120px" }} />
+              <col style={{ width: "100px" }} />
+              <col className="hidden lg:table-cell" style={{ width: "100px" }} />
+              <col className="hidden xl:table-cell" style={{ width: "120px" }} />
+              <col className="hidden 2xl:table-cell" style={{ width: "90px" }} />
+              <col style={{ width: "40px" }} />
+            </colgroup>
             <thead className="sticky top-0 bg-primary-card z-10">
               <tr className="border-b border-primary-border">
                 <th
-                  className="text-left text-text-secondary text-xs font-medium py-3.5 px-3 w-8 cursor-pointer hover:text-text-primary transition-colors select-none"
+                  className="text-left text-text-secondary text-xs font-medium py-3.5 px-3 cursor-pointer hover:text-text-primary transition-colors select-none"
                   onClick={() => handleSort("market_cap_rank")}
                 >
                   # <SortArrow field="market_cap_rank" />
@@ -288,7 +306,7 @@ export default function Markets() {
                   Mkt Cap <SortArrow field="market_cap" />
                 </th>
                 <th className="text-right text-text-secondary text-xs font-medium py-3.5 px-3 whitespace-nowrap hidden 2xl:table-cell select-none">7D Chart</th>
-                <th className="text-center text-text-secondary text-xs font-medium py-3.5 px-3 w-8 select-none"></th>
+                <th className="text-center text-text-secondary text-xs font-medium py-3.5 px-3 select-none"></th>
               </tr>
             </thead>
           </table>
@@ -296,7 +314,17 @@ export default function Markets() {
 
         {/* Virtualized scroll container */}
         <div ref={tableContainerRef} className="overflow-auto" style={{ maxHeight: "calc(100vh - 340px)" }}>
-          <table className="w-full">
+          <table className="w-full table-fixed">
+            <colgroup>
+              <col style={{ width: "48px" }} />
+              <col />
+              <col style={{ width: "120px" }} />
+              <col style={{ width: "100px" }} />
+              <col className="hidden lg:table-cell" style={{ width: "100px" }} />
+              <col className="hidden xl:table-cell" style={{ width: "120px" }} />
+              <col className="hidden 2xl:table-cell" style={{ width: "90px" }} />
+              <col style={{ width: "40px" }} />
+            </colgroup>
             <tbody
               style={{
                 height: `${virtualizer.getTotalSize()}px`,
@@ -330,12 +358,12 @@ export default function Markets() {
                     className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-primary-card transition-colors"
                     onClick={() => handleNavigate(coin.id)}
                   >
-                    <td className="py-3.5 px-3 text-text-secondary text-sm tabular-nums w-8">{coin.market_cap_rank || virtualRow.index + 1}</td>
+                    <td className="py-3.5 px-3 text-text-secondary text-sm tabular-nums">{coin.market_cap_rank || virtualRow.index + 1}</td>
                     <td className="py-3.5 px-3">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2">
                         <CoinLogo src={coin.image} alt={coin.name} size={24} />
                         <div className="min-w-0">
-                          <p className="text-text-primary font-medium text-sm truncate max-w-[80px] sm:max-w-none">{coin.symbol?.toUpperCase()}</p>
+                          <p className="text-text-primary font-medium text-sm truncate">{coin.symbol?.toUpperCase()}</p>
                           <p className="text-text-secondary text-xs truncate hidden sm:block">{coin.name}</p>
                         </div>
                       </div>
@@ -357,7 +385,7 @@ export default function Markets() {
                         <Sparkline data={coin.sparkline_in_7d.price} />
                       )}
                     </td>
-                    <td className="py-3.5 px-3 text-center w-8">
+                    <td className="py-3.5 px-3 text-center">
                       <motion.button
                         onClick={(e) => {
                           e.stopPropagation();
