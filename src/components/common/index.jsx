@@ -159,7 +159,7 @@ export const LiveTicker = React.memo(function LiveTicker({ coins }) {
         {[...coins, ...coins].map((coin, idx) => (
           <motion.button
             key={`${coin.id}-${idx}`}
-            onClick={() => navigate(`/trade/${coin.id}`)}
+            onClick={() => navigate(`/app/trade/${coin.id}`)}
             className="flex items-center gap-2 text-sm hover:text-text-primary transition-colors"
             whileHover={{ scale: 1.05 }}
           >

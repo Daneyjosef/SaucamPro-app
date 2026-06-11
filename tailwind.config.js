@@ -6,16 +6,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          bg: "#0A0B0D",
-          card: "#131722",
-          border: "#1E2330",
-          accent: "#0052FF",
+          bg: "rgb(var(--color-bg) / <alpha-value>)",
+          card: "rgb(var(--color-card) / <alpha-value>)",
+          border: "rgb(var(--color-border) / <alpha-value>)",
+          accent: "rgb(var(--color-accent) / <alpha-value>)",
         },
-        gain: "#05B169",
-        loss: "#F6465D",
+        gain: "rgb(var(--color-gain) / <alpha-value>)",
+        loss: "rgb(var(--color-loss) / <alpha-value>)",
         text: {
-          primary: "#FFFFFF",
-          secondary: "#8A919E",
+          primary: "rgb(var(--color-text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--color-text-secondary) / <alpha-value>)",
         },
       },
       fontFamily: {
@@ -28,11 +28,16 @@ export default {
       animation: {
         marquee: "marquee 30s linear infinite",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        float: "float 6s ease-in-out infinite",
       },
       keyframes: {
         marquee: {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-50%)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
         },
       },
     },

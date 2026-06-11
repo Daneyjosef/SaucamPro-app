@@ -81,7 +81,7 @@ export default function Watchlist() {
                 className="card cursor-pointer"
                 whileHover={{ scale: 1.02, backgroundColor: "#1A1F2E" }}
                 transition={{ type: "spring", stiffness: 300 }}
-                onClick={() => navigate(`/trade/${coin.id}`)}
+                onClick={() => navigate(`/app/trade/${coin.id}`)}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">

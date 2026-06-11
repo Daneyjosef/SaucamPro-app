@@ -8,6 +8,7 @@ import {
   fetchTopMovers,
   searchCoins,
   fetchCategories,
+  fetchCoinsByIds,
 } from "../lib/api";
 
 export const useGlobalData = () =>
@@ -77,4 +78,13 @@ export const useCategories = () =>
     queryKey: ["categories"],
     queryFn: fetchCategories,
     staleTime: 10 * 60 * 1000,
+  });
+
+export const useCoinsByIds = ({ ids = [], currency = "usd", sparkline = false } = {}) =>
+  useQuery({
+    queryKey: ["coins-by-ids", ids.slice().sort().join(","), currency, sparkline],
+    queryFn: () => fetchCoinsByIds({ ids, currency, sparkline }),
+    enabled: ids.length > 0,
+    staleTime: 30 * 1000,
+    refetchInterval: 30 * 1000,
   });

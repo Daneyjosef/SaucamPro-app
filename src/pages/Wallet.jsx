@@ -218,7 +218,7 @@ export default function Wallet() {
                       {[
                         { label: "Send", color: "#F6465D", onClick: () => setSendTarget(asset) },
                         { label: "Receive", color: "#05B169", onClick: () => setReceiveTarget(asset) },
-                        { label: "Trade", color: "#0052FF", onClick: () => { const id = SYMBOL_TO_ID[asset.coin]; if (id) navigate(`/trade/${id}`); } },
+                        { label: "Trade", color: "#0052FF", onClick: () => { const id = SYMBOL_TO_ID[asset.coin]; if (id) navigate(`/app/trade/${id}`); } },
                       ].map((act) => (
                         <motion.button
                           key={act.label}

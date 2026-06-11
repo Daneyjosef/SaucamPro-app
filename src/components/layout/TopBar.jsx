@@ -113,7 +113,7 @@ export default function TopBar() {
   const handleCoinClick = (coinId) => {
     setSearchOpen(false);
     setSearchQuery("");
-    navigate(`/trade/${coinId}`);
+    navigate(`/app/trade/${coinId}`);
   };
 
   return (

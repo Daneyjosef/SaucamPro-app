@@ -1,17 +1,20 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAppStore } from "../../store/useAppStore";
 
 const navItems = [
-  { to: "/", label: "Dashboard" },
-  { to: "/markets", label: "Markets" },
-  { to: "/wallet", label: "Wallet" },
-  { to: "/portfolio", label: "Portfolio" },
-  { to: "/watchlist", label: "Watchlist" },
-  { to: "/settings", label: "Settings" },
+  { to: "/app/dashboard", label: "Dashboard" },
+  { to: "/app/markets", label: "Markets" },
+  { to: "/app/wallet", label: "Wallet" },
+  { to: "/app/portfolio", label: "Portfolio" },
+  { to: "/app/watchlist", label: "Watchlist" },
+  { to: "/app/settings", label: "Settings" },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const signOut = useAppStore((s) => s.signOut);
 
   return (
     <>
@@ -19,7 +22,7 @@ export default function Sidebar() {
       <aside className="hidden md:flex flex-col fixed left-0 top-0 h-screen w-[240px] bg-primary-bg border-r border-primary-border z-50">
         {/* Logo */}
         <div className="px-6 py-6 border-b border-primary-border">
-          <NavLink to="/" className="flex items-center gap-3">
+          <NavLink to="/app/dashboard" className="flex items-center gap-3">
             <div className="w-9 h-9 bg-primary-accent rounded-lg flex items-center justify-center">
               <span className="text-text-primary font-bold text-lg">₿</span>
             </div>
@@ -97,6 +100,17 @@ export default function Sidebar() {
               <p className="text-sm font-medium text-text-primary">Trader</p>
               <p className="text-xs text-text-secondary">Free Account</p>
             </div>
+            <motion.button
+              onClick={() => {
+                signOut();
+                navigate("/");
+              }}
+              className="text-text-secondary hover:text-loss text-xs font-medium transition-colors"
+              whileHover={{ scale: 1.05 }}
+              title="Sign Out"
+            >
+              Sign Out
+            </motion.button>
           </div>
         </div>
       </aside>

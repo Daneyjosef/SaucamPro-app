@@ -117,6 +117,23 @@ export const fetchCategories = async () => {
   return cachedRequest("/coins/categories", {}, 10 * 60 * 1000);
 };
 
+export const fetchCoinsByIds = async ({ ids = [], currency = "usd", sparkline = false } = {}) => {
+  if (!ids.length) return [];
+  return cachedRequest(
+    "/coins/markets",
+    {
+      vs_currency: currency,
+      ids: ids.join(","),
+      order: "market_cap_desc",
+      per_page: 20,
+      page: 1,
+      sparkline,
+      price_change_percentage: "7d",
+    },
+    30 * 1000
+  );
+};
+
 // Clear stale cache entries periodically
 setInterval(() => {
   const now = Date.now();

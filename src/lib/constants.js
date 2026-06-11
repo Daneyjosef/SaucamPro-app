@@ -44,13 +44,14 @@ export const CURRENCIES = [
   { code: "zar", name: "South African Rand", symbol: "R" },
 ];
 
+// Keys must match CoinGecko's category IDs for /coins/markets?category=...
 export const CATEGORY_FILTERS = [
   { key: "all", label: "All" },
-  { key: "defi", label: "DeFi" },
+  { key: "decentralized-finance-defi", label: "DeFi" },
   { key: "layer-1", label: "Layer 1" },
   { key: "layer-2", label: "Layer 2" },
   { key: "stablecoins", label: "Stablecoins" },
-  { key: "nft", label: "NFT" },
+  { key: "non-fungible-tokens-nft", label: "NFT" },
 ];
 
 export const TIME_RANGES = [

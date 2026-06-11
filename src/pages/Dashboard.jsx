@@ -123,7 +123,7 @@ export default function Dashboard() {
           {topMovers?.map((coin) => (
             <motion.button
               key={coin.id}
-              onClick={() => navigate(`/trade/${coin.id}`)}
+              onClick={() => navigate(`/app/trade/${coin.id}`)}
               className="card min-w-[160px] flex-shrink-0 text-left hover:bg-primary-border/50 transition-colors"
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -166,7 +166,7 @@ export default function Dashboard() {
                   <motion.tr
                     key={coin.id}
                     className="border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
-                    onClick={() => navigate(`/trade/${coin.id}`)}
+                    onClick={() => navigate(`/app/trade/${coin.id}`)}
                   >
                     <td className="py-3 pr-2 text-text-secondary text-sm tabular-nums w-8">{idx + 1}</td>
                     <td className="py-3 px-2">

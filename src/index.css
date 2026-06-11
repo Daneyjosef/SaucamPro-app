@@ -4,6 +4,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════
+   THEME — CSS custom properties
+   Light mode is default, .dark overrides
+   ═══════════════════════════════════════ */
+:root {
+  --color-bg: 255 255 255;
+  --color-card: 248 250 252;
+  --color-border: 226 232 240;
+  --color-accent: 0 82 255;
+  --color-text-primary: 15 23 42;
+  --color-text-secondary: 100 116 139;
+  --color-gain: 5 177 105;
+  --color-loss: 246 70 93;
+
+  --toast-bg: #ffffff;
+  --toast-color: #0f172a;
+  --toast-border: #e2e8f0;
+
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+.dark {
+  --color-bg: 10 11 13;
+  --color-card: 19 23 34;
+  --color-border: 30 35 48;
+  --color-accent: 0 82 255;
+  --color-text-primary: 255 255 255;
+  --color-text-secondary: 138 145 158;
+  --color-gain: 5 177 105;
+  --color-loss: 246 70 93;
+
+  --toast-bg: #131722;
+  --toast-color: #ffffff;
+  --toast-border: #1e2330;
+
+  --scrollbar-track: #131722;
+  --scrollbar-thumb: #1e2330;
+  --scrollbar-thumb-hover: #2a3350;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -19,8 +61,8 @@
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #0A0B0D;
-    color: #FFFFFF;
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-text-primary));
   }
 }
 
@@ -52,13 +94,10 @@
   .stats-label {
     @apply text-sm text-text-secondary;
   }
-}
 
-/* ═══════════════════════════════════════
-   DARK MODE only — light mode removed
-   ═══════════════════════════════════════ */
-.dark {
-  color-scheme: dark;
+  .input-field {
+    @apply w-full bg-primary-bg border border-primary-border rounded-lg px-4 py-3 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent focus:ring-1 focus:ring-primary-accent/20 text-sm transition-colors;
+  }
 }
 
 /* ═══════════════════════════════════════
@@ -70,22 +109,21 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #131722;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E2330;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3350;
+  background: var(--scrollbar-thumb-hover);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #1E2330 #131722;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 /* ═══════════════════════════════════════
@@ -98,4 +136,11 @@
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+}
+
+/* Password strength bar */
+.strength-bar {
+  height: 4px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }

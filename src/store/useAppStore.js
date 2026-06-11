@@ -1,8 +1,14 @@
 import { create } from "zustand";
 
 const getInitialTheme = () => {
-  localStorage.setItem("saucampro-theme", "dark");
-  return "dark";
+  const saved = localStorage.getItem("saucampro-theme") || "dark";
+  // Apply immediately to avoid flash
+  if (saved === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+  return saved;
 };
 
 const getInitialCurrency = () => {
@@ -28,17 +34,20 @@ const getInitialWatchlist = () => {
 };
 
 export const useAppStore = create((set, get) => ({
-  // Theme
+  // Theme — light or dark, persisted
   theme: getInitialTheme(),
-  setTheme: () => {
-    // Dark mode only
-    localStorage.setItem("saucampro-theme", "dark");
-    set({ theme: "dark" });
-    document.documentElement.classList.add("dark");
-    document.documentElement.classList.remove("light");
+  setTheme: (theme) => {
+    localStorage.setItem("saucampro-theme", theme);
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    set({ theme });
   },
   toggleTheme: () => {
-    // Dark mode only — no-op
+    const next = get().theme === "dark" ? "light" : "dark";
+    get().setTheme(next);
   },
 
   // Currency
@@ -134,4 +143,47 @@ export const useAppStore = create((set, get) => ({
     set({ notifications: [] });
   },
   unreadCount: () => get().notifications.filter((n) => !n.read).length,
+
+  // Auth — supports both Supabase (via setUser) and local fallback
+  isAuthenticated: !!localStorage.getItem("saucampro-auth"),
+  user: (() => {
+    try {
+      return JSON.parse(localStorage.getItem("saucampro-user") || "null");
+    } catch {
+      return null;
+    }
+  })(),
+
+  // Called by Supabase onAuthStateChange or local auth
+  setUser: (user) => {
+    if (user) {
+      localStorage.setItem("saucampro-auth", "true");
+      localStorage.setItem("saucampro-user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("saucampro-auth");
+      localStorage.removeItem("saucampro-user");
+    }
+    set({ isAuthenticated: !!user, user });
+  },
+
+  // Local auth fallback (used when Supabase is not configured)
+  signUp: (userData) => {
+    const users = JSON.parse(localStorage.getItem("saucampro-users") || "[]");
+    const exists = users.find((u) => u.email === userData.email);
+    if (exists) return { ok: false, error: "Email already registered" };
+    users.push({ ...userData, id: Date.now().toString() });
+    localStorage.setItem("saucampro-users", JSON.stringify(users));
+    get().setUser(userData);
+    return { ok: true };
+  },
+  signIn: (email, password) => {
+    const users = JSON.parse(localStorage.getItem("saucampro-users") || "[]");
+    const user = users.find((u) => u.email === email && u.password === password);
+    if (!user) return { ok: false, error: "Invalid email or password" };
+    get().setUser(user);
+    return { ok: true };
+  },
+  signOut: () => {
+    get().setUser(null);
+  },
 }));
