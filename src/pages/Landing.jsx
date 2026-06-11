@@ -17,7 +17,7 @@ const fadeUp = {
 const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
 
 /* ─── static data ─── */
-const NAV_LINKS = ["Features", "Markets", "Pricing", "About"];
+const NAV_LINKS = ["Features", "Markets", "About"];
 
 const FEATURES = [
   {
@@ -50,35 +50,6 @@ const FEATURES = [
   },
 ];
 
-const PLANS = [
-  {
-    name: "Free",
-    price: "$0",
-    period: "/mo",
-    desc: "Perfect for getting started",
-    features: ["Real-time prices", "10 watchlist coins", "Portfolio tracking", "Basic charts"],
-    cta: "Get started",
-    highlight: false,
-  },
-  {
-    name: "Pro",
-    price: "$9.99",
-    period: "/mo",
-    desc: "For serious traders",
-    features: ["Everything in Free", "Unlimited watchlist", "Advanced charts", "20+ currencies", "Priority support"],
-    cta: "Start Pro",
-    highlight: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    desc: "For institutions & teams",
-    features: ["Everything in Pro", "Dedicated account manager", "API access", "Custom integrations", "SLA guarantee"],
-    cta: "Contact us",
-    highlight: false,
-  },
-];
 
 /* ─── floating orb component ─── */
 function Orb({ x, y, size, color, delay }) {
@@ -403,87 +374,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ════════════════════════════════
-          PRICING
-      ════════════════════════════════ */}
-      <section id="pricing" className="py-20 px-4 border-t border-primary-border">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="text-center mb-14"
-          >
-            <motion.p variants={fadeUp} className="text-primary-accent text-sm font-semibold uppercase tracking-widest mb-3">
-              Pricing
-            </motion.p>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-text-primary mb-3">
-              Simple, transparent pricing
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-text-secondary">
-              No hidden fees. Cancel anytime.
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="grid md:grid-cols-3 gap-6 items-center"
-          >
-            {PLANS.map((plan, i) => (
-              <motion.div
-                key={plan.name}
-                custom={i}
-                variants={fadeUp}
-                className={`card p-7 relative ${
-                  plan.highlight
-                    ? "border-primary-accent border-2 md:scale-105 shadow-xl shadow-primary-accent/10"
-                    : ""
-                }`}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-primary-accent text-white text-xs font-bold px-4 py-1 rounded-full">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                <h3 className="text-text-primary font-bold text-lg mb-1">{plan.name}</h3>
-                <p className="text-text-secondary text-xs mb-4">{plan.desc}</p>
-                <div className="flex items-end gap-1 mb-6">
-                  <span className="text-4xl font-extrabold text-text-primary">{plan.price}</span>
-                  {plan.period && <span className="text-text-secondary text-sm mb-1">{plan.period}</span>}
-                </div>
-                <ul className="space-y-2.5 mb-7">
-                  {plan.features.map((feat) => (
-                    <li key={feat} className="flex items-center gap-2 text-text-secondary text-sm">
-                      <svg className="w-4 h-4 text-gain flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                      {feat}
-                    </li>
-                  ))}
-                </ul>
-                <motion.button
-                  onClick={() => navigate(plan.name === "Enterprise" ? "/signup" : "/signup")}
-                  className={`w-full py-3 rounded-btn text-sm font-semibold transition-colors ${
-                    plan.highlight
-                      ? "bg-primary-accent text-white hover:bg-blue-600"
-                      : "border border-primary-border text-text-primary hover:bg-primary-border/30"
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {plan.cta}
-                </motion.button>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
       {/* ════════════════════════════════
           CTA BANNER
