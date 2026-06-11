@@ -57,6 +57,9 @@ export const fetchCoins = async ({ currency = "usd", page = 1, perPage = 20, ord
     sparkline,
     price_change_percentage: "7d",
   };
+  if (category && category !== "all") {
+    params.category = category;
+  }
   return cachedRequest("/coins/markets", params, 30 * 1000);
 };
 

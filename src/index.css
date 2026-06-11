@@ -59,6 +59,9 @@
    ═══════════════════════════════════════ */
 .light {
   color-scheme: light;
+  --toast-bg: #FFFFFF;
+  --toast-color: #0A0B0D;
+  --toast-border: #DEE6F0;
 }
 
 .light body {
@@ -67,20 +70,25 @@
 }
 
 .light .bg-primary-bg { background-color: #FFFFFF; }
-.light .bg-primary-card { background-color: #F7F8FA; }
-.light .border-primary-border { border-color: #E1E4E8; }
+.light .bg-primary-card { background-color: #FFFFFF; }
+.light .border-primary-border { border-color: #DEE6F0; }
 .light .text-text-primary { color: #0A0B0D; }
-.light .text-text-secondary { color: #6B7280; }
+.light .text-text-secondary { color: #64748B; }
 
-.light .hover\:bg-primary-card:hover { background-color: #F0F1F3; }
-.light .hover\:bg-primary-border:hover { background-color: #E8E9EC; }
+.light .hover\:bg-primary-card:hover { background-color: #F8FAFF; }
+.light .hover\:bg-primary-border:hover { background-color: #EEF2F7; }
 .light .hover\:text-text-primary:hover { color: #0A0B0D; }
 
-.light .sidebar-link:hover { background-color: #F0F1F3; color: #0A0B0D; }
+.light .sidebar-link:hover { background-color: #F8FAFF; color: #0A0B0D; }
 .light .sidebar-link.active { color: #0052FF; background-color: rgba(0, 82, 255, 0.08); }
 
-.light ::-webkit-scrollbar-track { background: #F0F1F3; }
-.light ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+.light .card {
+  border-color: #DEE6F0;
+  box-shadow: 0 1px 3px rgba(0, 82, 255, 0.06);
+}
+
+.light ::-webkit-scrollbar-track { background: #F0F4FF; }
+.light ::-webkit-scrollbar-thumb { background: #C5D0E0; border-radius: 3px; }
 
 /* ═══════════════════════════════════════
    DARK MODE (default — no overrides needed)

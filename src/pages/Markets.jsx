@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCoins, useTrending } from "../hooks/useCoins";
+import { useCoins, useTrending, useSearch } from "../hooks/useCoins";
 import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CoinLogo, PriceChange, Sparkline } from "../components/common";
@@ -11,9 +11,7 @@ import { CATEGORY_FILTERS } from "../lib/constants";
 // Memoized coin row to prevent re-renders of off-screen rows
 const CoinRow = React.memo(({ coin, rank, formatPrice, formatLargeNumber, watchlist, onToggleWatchlist, onNavigate }) => (
   <motion.tr
-    className="border-b border-primary-border cursor-pointer group"
-    whileHover={{ backgroundColor: "#1A1F2E" }}
-    transition={{ type: "spring", stiffness: 200 }}
+    className="border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
     onClick={() => onNavigate(coin.id)}
   >
     <td className="py-3 px-4 text-text-secondary text-sm whitespace-nowrap">{rank}</td>
@@ -77,12 +75,23 @@ export default function Markets() {
   const tableContainerRef = useRef(null);
   const loaderRef = useRef(null);
 
+  // Pass category to the API so filter actually changes results
   const { data: newCoins, isLoading } = useCoins({
     currency,
     page,
     perPage: 20,
     sparkline: true,
+    category: activeCategory !== "all" ? activeCategory : undefined,
   });
+
+  // API search for when user types in the search bar
+  const { data: searchResults } = useSearch(searchQuery);
+
+  // Reset page and clear coins when category changes
+  useEffect(() => {
+    setPage(1);
+    setAllCoins([]);
+  }, [activeCategory]);
 
   // Append data on new page — memoized dedup
   useEffect(() => {
@@ -114,23 +123,37 @@ export default function Markets() {
     };
   }, [isLoading]);
 
-  // Memoized filter + sort
+  // Memoized filter + sort — uses API search results when available
   const filteredCoins = useMemo(() => {
     let list = allCoins;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      list = list.filter(
-        (c) =>
-          c.name?.toLowerCase().includes(q) ||
-          c.symbol?.toLowerCase().includes(q)
-      );
+      // If API returned search results, prefer those coin IDs
+      if (searchResults?.length) {
+        const searchIds = new Set(searchResults.map((r) => r.id));
+        list = list.filter((c) => searchIds.has(c.id));
+        // If we couldn't match via IDs, fall back to client-side filtering
+        if (list.length === 0) {
+          list = allCoins.filter(
+            (c) =>
+              c.name?.toLowerCase().includes(q) ||
+              c.symbol?.toLowerCase().includes(q)
+          );
+        }
+      } else {
+        list = list.filter(
+          (c) =>
+            c.name?.toLowerCase().includes(q) ||
+            c.symbol?.toLowerCase().includes(q)
+        );
+      }
     }
     return list.sort((a, b) => {
       const dir = sortDir === "asc" ? 1 : -1;
       const key = sortField === "current_price" ? "current_price" : sortField;
       return ((a[key] || 0) - (b[key] || 0)) * dir;
     });
-  }, [allCoins, searchQuery, sortField, sortDir]);
+  }, [allCoins, searchQuery, searchResults, sortField, sortDir]);
 
   // Virtualizer
   const virtualizer = useVirtualizer({
@@ -198,16 +221,16 @@ export default function Markets() {
         </div>
       )}
 
-      {/* Filters */}
+      {/* Filters — streamlined layout */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex gap-1 bg-primary-card rounded-lg p-1">
+        <div className="flex gap-1 border border-primary-border rounded-lg p-0.5">
           {CATEGORY_FILTERS.map((cat) => (
             <motion.button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 activeCategory === cat.key
-                  ? "bg-primary-accent text-text-primary"
+                  ? "bg-primary-accent text-white shadow-sm"
                   : "text-text-secondary hover:text-text-primary"
               }`}
               whileTap={{ scale: 0.95 }}
@@ -217,14 +240,22 @@ export default function Markets() {
           ))}
         </div>
 
-        <div className="flex-1 min-w-[200px] max-w-sm ml-auto">
+        <div className="flex-1 min-w-[200px] max-w-xs ml-auto relative">
           <input
             type="text"
             placeholder="Search coins..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-primary-card border border-primary-border rounded-lg px-4 py-2 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent text-sm"
+            className="w-full border border-primary-border rounded-lg px-4 py-2 pr-10 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent focus:ring-1 focus:ring-primary-accent/20 text-sm bg-transparent"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary text-lg leading-none"
+            >
+              ×
+            </button>
+          )}
         </div>
       </div>
 
@@ -273,7 +304,7 @@ export default function Markets() {
       <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="sticky top-0 bg-primary-card z-10">
+            <thead className="sticky top-0 bg-primary-bg z-10">
               <tr className="border-b border-primary-border">
                 <th
                   className="text-left text-text-secondary text-xs font-medium py-3 px-2 w-8 cursor-pointer hover:text-text-primary transition-colors select-none"
@@ -336,7 +367,7 @@ export default function Markets() {
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
-                    className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-[#1A1F2E] transition-colors"
+                    className="absolute w-full border-b border-primary-border cursor-pointer group hover:bg-primary-card/50 transition-colors"
                     onClick={() => handleNavigate(coin.id)}
                   >
                     <td className="py-3 px-2 text-text-secondary text-sm whitespace-nowrap w-8">{coin.market_cap_rank || virtualRow.index + 1}</td>
