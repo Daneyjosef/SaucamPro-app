@@ -6,12 +6,12 @@ import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CoinLogo, PriceChange, Sparkline } from "../components/common";
 import { CATEGORY_FILTERS } from "../lib/constants";
+import { useWatchlist } from "../hooks/useWatchlist";
 
 export default function Markets() {
   const navigate = useNavigate();
   const currency = useAppStore((s) => s.currency);
-  const toggleWatchlist = useAppStore((s) => s.toggleWatchlist);
-  const watchlist = useAppStore((s) => s.watchlist);
+  const { watchlistIds, isWatched, toggle } = useWatchlist();
   const { formatPrice, formatLargeNumber } = useCurrency();
 
   const [activeCategory, setActiveCategory] = useState("all");
@@ -106,7 +106,10 @@ export default function Markets() {
   }, []);
 
   const handleNavigate = useCallback((id) => navigate(`/app/trade/${id}`), [navigate]);
-  const handleToggleWatchlist = useCallback((id) => toggleWatchlist(id), [toggleWatchlist]);
+  const handleToggleWatchlist = useCallback(
+    (id, symbol) => toggle({ coinId: id, coinSymbol: symbol?.toUpperCase() }),
+    [toggle]
+  );
 
   const SortArrow = useCallback(
     ({ field }) => {
@@ -319,15 +322,18 @@ export default function Markets() {
                       </td>
                       <td className="py-3 pl-2 pr-4 text-center w-8">
                         <motion.button
-                          onClick={(e) => { e.stopPropagation(); handleToggleWatchlist(coin.id); }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleWatchlist(coin.id, coin.symbol);
+                          }}
                           className={`text-base ${
-                            watchlist.includes(coin.id)
+                            isWatched(coin.id)
                               ? "text-yellow-400"
                               : "text-text-secondary opacity-0 group-hover:opacity-100"
                           }`}
                           whileTap={{ scale: 1.4 }}
                         >
-                          {watchlist.includes(coin.id) ? "★" : "☆"}
+                          {isWatched(coin.id) ? "★" : "☆"}
                         </motion.button>
                       </td>
                     </motion.tr>

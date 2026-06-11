@@ -1,33 +1,28 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { useAppStore } from "../store/useAppStore";
 import { useCurrency } from "../hooks/useCurrency";
 import { DonutChart } from "../components/charts";
 import { AddHoldingModal } from "../components/modals/AddHoldingModal";
 import { PriceChange, AnimatedCounter } from "../components/common";
+import { usePortfolio, useRemoveHolding } from "../hooks/usePortfolio";
 
 export default function Portfolio() {
-  const { portfolio, removeFromPortfolio } = useAppStore();
-  const { formatPrice, formatLargeNumber, formatPercent } = useCurrency();
+  const { data: portfolio = [], isLoading } = usePortfolio();
+  const removeHolding = useRemoveHolding();
+  const { formatPrice } = useCurrency();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const totalValue = useMemo(
-    () => portfolio.reduce((sum, a) => sum + a.amount * a.buyPrice, 0),
+    () => portfolio.reduce((sum, a) => sum + Number(a.amount) * Number(a.avg_buy_price), 0),
     [portfolio]
   );
-  const totalCost = useMemo(
-    () => portfolio.reduce((sum, a) => sum + a.amount * a.buyPrice, 0),
-    [portfolio]
-  );
-  const totalPnL = totalValue - totalCost;
-  const pnlPercent = totalCost > 0 ? (totalPnL / totalCost) * 100 : 0;
+  const pnlPercent = 0; // live P&L requires current prices — placeholder
 
-  // Donut chart data
   const donutData = useMemo(
     () =>
       portfolio.map((a) => ({
-        name: a.coin,
-        value: a.amount * a.buyPrice,
+        name: a.coin_symbol,
+        value: Number(a.amount) * Number(a.avg_buy_price),
       })),
     [portfolio]
   );
@@ -69,8 +64,8 @@ export default function Portfolio() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
         >
-          <p className="stats-label">Total Cost</p>
-          <AnimatedCounter value={totalCost} className="stats-value" />
+          <p className="stats-label">Holdings</p>
+          <p className="stats-value">{portfolio.length}</p>
         </motion.div>
         <motion.div
           className="card"
@@ -80,10 +75,8 @@ export default function Portfolio() {
         >
           <p className="stats-label">Total P&L</p>
           <p className={`stats-value ${pnlPercent >= 0 ? "text-gain" : "text-loss"}`}>
-            {formatPrice(Math.abs(totalPnL))}
-            <span className="text-sm ml-2">
-              {pnlPercent >= 0 ? "+" : "-"}{Math.abs(pnlPercent).toFixed(2)}%
-            </span>
+            {formatPrice(0)}
+            <span className="text-sm ml-2 text-text-secondary">Add live prices to track</span>
           </p>
         </motion.div>
       </div>
@@ -117,7 +110,11 @@ export default function Portfolio() {
           <div className="p-4 border-b border-primary-border">
             <h3 className="text-lg font-bold text-text-primary">Holdings</h3>
           </div>
-          {portfolio.length > 0 ? (
+          {isLoading ? (
+            <div className="p-8 flex justify-center">
+              <div className="w-6 h-6 border-2 border-primary-accent border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : portfolio.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -141,23 +138,29 @@ export default function Portfolio() {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 bg-primary-accent/20 rounded-full flex items-center justify-center text-primary-accent font-bold text-xs">
-                            {asset.coin?.slice(0, 2)}
+                            {asset.coin_symbol?.slice(0, 2)}
                           </div>
-                          <span className="text-text-primary font-medium">{asset.coin}</span>
+                          <div>
+                            <p className="text-text-primary font-medium">{asset.coin_symbol}</p>
+                            <p className="text-text-secondary text-xs">{asset.coin_id}</p>
+                          </div>
                         </div>
                       </td>
-                      <td className="py-3 px-2 text-right text-text-primary text-sm">{asset.amount}</td>
+                      <td className="py-3 px-2 text-right text-text-primary text-sm">
+                        {Number(asset.amount).toLocaleString(undefined, { maximumFractionDigits: 8 })}
+                      </td>
                       <td className="py-3 px-2 text-right text-text-secondary text-sm">
-                        {formatPrice(asset.buyPrice)}
+                        {formatPrice(Number(asset.avg_buy_price))}
                       </td>
                       <td className="py-3 px-2 text-right text-text-primary font-medium text-sm">
-                        {formatPrice(asset.amount * asset.buyPrice)}
+                        {formatPrice(Number(asset.amount) * Number(asset.avg_buy_price))}
                       </td>
                       <td className="py-3 px-2 text-center">
                         <motion.button
-                          onClick={() => removeFromPortfolio(asset.id)}
+                          onClick={() => removeHolding.mutate(asset.id)}
                           className="text-text-secondary hover:text-loss transition-colors text-sm"
                           whileTap={{ scale: 0.9 }}
+                          disabled={removeHolding.isPending}
                         >
                           ✕
                         </motion.button>
@@ -171,7 +174,10 @@ export default function Portfolio() {
             <div className="py-12 text-center text-text-secondary">
               <p className="text-4xl mb-3">💼</p>
               <p className="text-sm">No holdings yet</p>
-              <button onClick={() => setIsModalOpen(true)} className="text-primary-accent text-sm mt-2 hover:underline">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="text-primary-accent text-sm mt-2 hover:underline"
+              >
                 Add your first holding
               </button>
             </div>

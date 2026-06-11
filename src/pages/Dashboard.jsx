@@ -6,6 +6,8 @@ import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { PortfolioAreaChart } from "../components/charts";
 import { AnimatedCounter, PriceChange, CoinLogo, Sparkline } from "../components/common";
+import { useWatchlist } from "../hooks/useWatchlist";
+import { usePortfolio } from "../hooks/usePortfolio";
 
 const stagger = {
   animate: { transition: { staggerChildren: 0.07 } },
@@ -19,10 +21,9 @@ const fadeInUp = {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { formatPrice, formatLargeNumber, formatPercent } = useCurrency();
-  const watchlist = useAppStore((s) => s.watchlist);
-  const toggleWatchlist = useAppStore((s) => s.toggleWatchlist);
-  const portfolio = useAppStore((s) => s.portfolio);
   const currency = useAppStore((s) => s.currency);
+  const { watchlistIds, isWatched, toggle } = useWatchlist();
+  const { data: portfolio = [] } = usePortfolio();
   const [chartRange, setChartRange] = useState("7");
 
   const { data: globalData } = useGlobalData();
@@ -34,14 +35,14 @@ export default function Dashboard() {
     const days = chartRange === "1" ? 1 : chartRange === "7" ? 7 : chartRange === "30" ? 30 : chartRange === "365" ? 365 : 7;
     const points = days * 24;
     const now = Date.now();
-    const baseValue = portfolio.reduce((sum, a) => sum + a.amount * a.buyPrice, 10000) || 10000;
+    const baseValue = portfolio.reduce((sum, a) => sum + Number(a.amount) * Number(a.avg_buy_price), 10000) || 10000;
     return Array.from({ length: Math.min(points, 168) }, (_, i) => ({
       date: new Date(now - (Math.min(points, 168) - 1 - i) * 3600000).toISOString(),
       value: baseValue * (1 + Math.sin(i / 15) * 0.05 + Math.random() * 0.02),
     }));
   }, [chartRange, portfolio]);
 
-  const totalValue = portfolio.reduce((s, a) => s + a.amount * a.buyPrice, 0);
+  const totalValue = portfolio.reduce((s, a) => s + Number(a.amount) * Number(a.avg_buy_price), 0);
   const bestPerformer = coins?.[0];
 
   return (
@@ -201,12 +202,12 @@ export default function Dashboard() {
                       <motion.button
                         onClick={(e) => {
                           e.stopPropagation();
-                          toggleWatchlist(coin.id);
+                          toggle({ coinId: coin.id, coinSymbol: coin.symbol?.toUpperCase() });
                         }}
-                        className={`text-base ${watchlist.includes(coin.id) ? "text-yellow-400" : "text-text-secondary opacity-0 group-hover:opacity-100"}`}
+                        className={`text-base ${isWatched(coin.id) ? "text-yellow-400" : "text-text-secondary opacity-0 group-hover:opacity-100"}`}
                         whileTap={{ scale: 1.4 }}
                       >
-                        {watchlist.includes(coin.id) ? "★" : "☆"}
+                        {isWatched(coin.id) ? "★" : "☆"}
                       </motion.button>
                     </td>
                   </motion.tr>
