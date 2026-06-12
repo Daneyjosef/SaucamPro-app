@@ -33,26 +33,14 @@ async function cachedRequest(axiosInstance, url, params = {}, ttl = 30000) {
   return promise;
 }
 
-// Backend price proxy — all main price data routes through here
-const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
-
-const pricesApi = axios.create({
-  baseURL: `${BACKEND_URL}/api/prices`,
-  timeout: 15000,
-  headers: { Accept: "application/json" },
-});
-
-// Direct CoinGecko — used only for search, trending, categories, and by-ids
 const cgApi = axios.create({
   baseURL: API_BASE_URL,
   timeout: 15000,
   headers: { Accept: "application/json" },
 });
 
-// ─── Price proxy endpoints ────────────────────────────────────
-
 export const fetchGlobalData = async () => {
-  const data = await cachedRequest(pricesApi, "/global", {}, 5 * 60 * 1000);
+  const data = await cachedRequest(cgApi, "/global", {}, 5 * 60 * 1000);
   return data.data;
 };
 
@@ -65,29 +53,36 @@ export const fetchCoins = async ({
   category,
 } = {}) => {
   const params = {
-    currency,
+    vs_currency: currency,
     page,
-    perPage,
+    per_page: Math.min(Number(perPage), 250),
     order,
-    sparkline: String(sparkline),
+    sparkline,
+    price_change_percentage: "1h,24h,7d",
   };
   if (category && category !== "all") params.category = category;
-  return cachedRequest(pricesApi, "/markets", params, 30 * 1000);
+  return cachedRequest(cgApi, "/coins/markets", params, 30 * 1000);
 };
 
 export const fetchCoinById = async (id) => {
-  return cachedRequest(pricesApi, `/coin/${id}`, {}, 60 * 1000);
+  return cachedRequest(cgApi, `/coins/${id}`, {
+    localization: false,
+    tickers: false,
+    community_data: false,
+    developer_data: false,
+    sparkline: false,
+  }, 60 * 1000);
 };
 
 export const fetchMarketChart = async (id, { currency = "usd", days = "7" } = {}) => {
-  return cachedRequest(pricesApi, `/chart/${id}`, { days, currency }, 30 * 1000);
+  return cachedRequest(cgApi, `/coins/${id}/market_chart`, { vs_currency: currency, days }, 30 * 1000);
 };
 
 export const fetchTopMovers = async ({ currency = "usd" } = {}) => {
   const data = await cachedRequest(
-    pricesApi,
-    "/markets",
-    { currency, order: "volume_desc", perPage: "50", sparkline: "false" },
+    cgApi,
+    "/coins/markets",
+    { vs_currency: currency, order: "volume_desc", per_page: 50, page: 1, sparkline: false, price_change_percentage: "24h" },
     30 * 1000
   );
   return data
@@ -98,8 +93,6 @@ export const fetchTopMovers = async ({ currency = "usd" } = {}) => {
     )
     .slice(0, 8);
 };
-
-// ─── Direct CoinGecko endpoints ───────────────────────────────
 
 export const fetchTrending = async () => {
   const data = await cachedRequest(cgApi, "/search/trending", {}, 5 * 60 * 1000);
