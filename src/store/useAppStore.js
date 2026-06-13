@@ -11,7 +11,9 @@ const getInitialTheme = () => {
 };
 
 const getInitialCurrency = () => {
-  return localStorage.getItem("saucampro-currency") || "usd";
+  const saved = localStorage.getItem("saucampro-currency");
+  if (!saved) localStorage.setItem("saucampro-currency", "usd");
+  return saved || "usd";
 };
 
 export const useAppStore = create((set, get) => ({
