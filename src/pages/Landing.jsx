@@ -228,8 +228,127 @@ function CurrencySwitcher() {
   );
 }
 
-/* ─── static data ─── */
-const NAV_LINKS = ["Features", "Markets", "About"];
+/* ─── nav dropdown data ─── */
+const NAV_DROPDOWNS = [
+  {
+    label: "Buy",
+    heading: "Buy crypto",
+    desc: "Use a card, Apple Pay or Google Pay to buy crypto fast. We also accept bank transfers and wires.",
+    coins: [
+      { name: "Buy Bitcoin", sym: "BTC", img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+      { name: "Buy Dogecoin", sym: "DOGE", img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
+      { name: "Buy Ethereum", sym: "ETH", img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+      { name: "Buy Cardano", sym: "ADA", img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
+      { name: "Buy Polygon", sym: "POL", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
+      { name: "Buy Avalanche", sym: "AVAX", img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
+      { name: "Buy Solana", sym: "SOL", img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+      { name: "Buy XRP", sym: "XRP", img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
+    ],
+  },
+  {
+    label: "Sell",
+    heading: "Sell crypto",
+    desc: "Sell your crypto at the best available rate directly to your bank account, debit card, or SaucamPro Balance.",
+    coins: [
+      { name: "Sell Bitcoin", sym: "BTC", img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+      { name: "Sell Ethereum", sym: "ETH", img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+      { name: "Sell Solana", sym: "SOL", img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+      { name: "Sell Dogecoin", sym: "DOGE", img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
+      { name: "Sell Polygon", sym: "POL", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
+      { name: "Sell Cardano", sym: "ADA", img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
+      { name: "Sell Tether", sym: "USDT", img: "https://assets.coingecko.com/coins/images/325/small/Tether.png" },
+      { name: "Sell USDC", sym: "USDC", img: "https://assets.coingecko.com/coins/images/6319/small/usdc.png" },
+    ],
+  },
+  {
+    label: "Trade",
+    heading: "Trade crypto",
+    desc: "Swap one cryptocurrency for another at real-time market rates. No hidden fees, just fast and simple trading.",
+    coins: [
+      { name: "Trade Bitcoin", sym: "BTC", img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+      { name: "Trade Ethereum", sym: "ETH", img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+      { name: "Trade Solana", sym: "SOL", img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+      { name: "Trade XRP", sym: "XRP", img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
+      { name: "Trade Avalanche", sym: "AVAX", img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
+      { name: "Trade Chainlink", sym: "LINK", img: "https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png" },
+      { name: "Trade Polkadot", sym: "DOT", img: "https://assets.coingecko.com/coins/images/12171/small/polkadot.png" },
+      { name: "Trade Uniswap", sym: "UNI", img: "https://assets.coingecko.com/coins/images/12504/small/uniswap-uni.png" },
+    ],
+  },
+];
+
+/* ─── nav dropdown component ─── */
+function NavDropdown({ item, navigate }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className={`flex items-center gap-1 text-sm font-semibold transition-colors px-1 py-2 ${open ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
+      >
+        {item.label}
+        <svg className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="absolute left-0 top-full mt-3 z-50 w-[540px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+          >
+            <div className="flex">
+              {/* Left panel */}
+              <div className="w-48 bg-gray-50 p-6 flex flex-col justify-between border-r border-gray-100">
+                <div>
+                  <h3 className="text-gray-900 font-bold text-base mb-3">{item.heading}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+                <button
+                  onClick={() => { navigate("/signup"); setOpen(false); }}
+                  className="mt-6 text-xs font-semibold text-primary-accent hover:underline text-left"
+                >
+                  Show all assets →
+                </button>
+              </div>
+
+              {/* Right panel — coin grid */}
+              <div className="flex-1 p-3">
+                <div className="grid grid-cols-2 gap-0.5">
+                  {item.coins.map((coin) => (
+                    <button
+                      key={coin.sym}
+                      onClick={() => { navigate("/signup"); setOpen(false); }}
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors text-left group"
+                    >
+                      <img src={coin.img} alt={coin.sym} className="w-8 h-8 rounded-full flex-shrink-0" />
+                      <div>
+                        <p className="text-gray-900 text-sm font-semibold leading-tight group-hover:text-primary-accent transition-colors">{coin.name}</p>
+                        <p className="text-gray-400 text-xs">{coin.sym}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 const FEATURES = [
   {
@@ -371,12 +490,10 @@ export default function Landing() {
             <img src="/favicon.png" alt="SaucamPro" className="h-8 sm:h-9 w-auto" />
           </div>
 
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-7">
-            {NAV_LINKS.map((link) => (
-              <button key={link} onClick={() => navigate("/signup")} className="text-text-secondary hover:text-text-primary text-sm font-medium transition-colors">
-                {link}
-              </button>
+          {/* Desktop nav dropdowns */}
+          <div className="hidden md:flex items-center gap-6">
+            {NAV_DROPDOWNS.map((item) => (
+              <NavDropdown key={item.label} item={item} navigate={navigate} />
             ))}
           </div>
 
@@ -419,9 +536,9 @@ export default function Landing() {
               className="md:hidden bg-primary-bg/95 backdrop-blur-xl border-b border-primary-border overflow-hidden"
             >
               <div className="px-4 py-4 flex flex-col gap-1">
-                {NAV_LINKS.map((link) => (
-                  <button key={link} onClick={() => { navigate("/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-medium py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
-                    {link}
+                {NAV_DROPDOWNS.map((item) => (
+                  <button key={item.label} onClick={() => { navigate("/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
+                    {item.label}
                   </button>
                 ))}
                 <button onClick={() => { navigate("/login"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-medium py-2.5 transition-colors">
