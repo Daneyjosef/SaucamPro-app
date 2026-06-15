@@ -235,14 +235,14 @@ const NAV_DROPDOWNS = [
     heading: "Buy crypto",
     desc: "Use a card, Apple Pay or Google Pay to buy crypto fast. We also accept bank transfers and wires.",
     coins: [
-      { name: "Buy Bitcoin", sym: "BTC", img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-      { name: "Buy Dogecoin", sym: "DOGE", img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
-      { name: "Buy Ethereum", sym: "ETH", img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-      { name: "Buy Cardano", sym: "ADA", img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
-      { name: "Buy Polygon", sym: "POL", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
-      { name: "Buy Avalanche", sym: "AVAX", img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
-      { name: "Buy Solana", sym: "SOL", img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-      { name: "Buy XRP", sym: "XRP", img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
+      { name: "Buy Bitcoin",   sym: "BTC",  id: "bitcoin",       img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+      { name: "Buy Dogecoin",  sym: "DOGE", id: "dogecoin",      img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
+      { name: "Buy Ethereum",  sym: "ETH",  id: "ethereum",      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+      { name: "Buy Cardano",   sym: "ADA",  id: "cardano",       img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
+      { name: "Buy Polygon",   sym: "POL",  id: "matic-network", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
+      { name: "Buy Avalanche", sym: "AVAX", id: "avalanche-2",   img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
+      { name: "Buy Solana",    sym: "SOL",  id: "solana",        img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+      { name: "Buy XRP",       sym: "XRP",  id: "ripple",        img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
     ],
   },
   {
@@ -250,14 +250,14 @@ const NAV_DROPDOWNS = [
     heading: "Sell crypto",
     desc: "Sell your crypto at the best available rate directly to your bank account, debit card, or SaucamPro Balance.",
     coins: [
-      { name: "Sell Bitcoin", sym: "BTC", img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-      { name: "Sell Ethereum", sym: "ETH", img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-      { name: "Sell Solana", sym: "SOL", img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-      { name: "Sell Dogecoin", sym: "DOGE", img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
-      { name: "Sell Polygon", sym: "POL", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
-      { name: "Sell Cardano", sym: "ADA", img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
-      { name: "Sell Tether", sym: "USDT", img: "https://assets.coingecko.com/coins/images/325/small/Tether.png" },
-      { name: "Sell USDC", sym: "USDC", img: "https://assets.coingecko.com/coins/images/6319/small/usdc.png" },
+      { name: "Sell Bitcoin",  sym: "BTC",  id: "bitcoin",       img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+      { name: "Sell Ethereum", sym: "ETH",  id: "ethereum",      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+      { name: "Sell Solana",   sym: "SOL",  id: "solana",        img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+      { name: "Sell Dogecoin", sym: "DOGE", id: "dogecoin",      img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
+      { name: "Sell Polygon",  sym: "POL",  id: "matic-network", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
+      { name: "Sell Cardano",  sym: "ADA",  id: "cardano",       img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
+      { name: "Sell Tether",   sym: "USDT", id: "tether",        img: "https://assets.coingecko.com/coins/images/325/small/Tether.png" },
+      { name: "Sell USDC",     sym: "USDC", id: "usd-coin",      img: "https://assets.coingecko.com/coins/images/6319/small/usdc.png" },
     ],
   },
   {
@@ -265,14 +265,14 @@ const NAV_DROPDOWNS = [
     heading: "Trade crypto",
     desc: "Swap one cryptocurrency for another at real-time market rates. No hidden fees, just fast and simple trading.",
     coins: [
-      { name: "Trade Bitcoin", sym: "BTC", img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-      { name: "Trade Ethereum", sym: "ETH", img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-      { name: "Trade Solana", sym: "SOL", img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-      { name: "Trade XRP", sym: "XRP", img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
-      { name: "Trade Avalanche", sym: "AVAX", img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
-      { name: "Trade Chainlink", sym: "LINK", img: "https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png" },
-      { name: "Trade Polkadot", sym: "DOT", img: "https://assets.coingecko.com/coins/images/12171/small/polkadot.png" },
-      { name: "Trade Uniswap", sym: "UNI", img: "https://assets.coingecko.com/coins/images/12504/small/uniswap-uni.png" },
+      { name: "Trade Bitcoin",   sym: "BTC",  id: "bitcoin",       img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+      { name: "Trade Ethereum",  sym: "ETH",  id: "ethereum",      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+      { name: "Trade Solana",    sym: "SOL",  id: "solana",        img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+      { name: "Trade XRP",       sym: "XRP",  id: "ripple",        img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
+      { name: "Trade Avalanche", sym: "AVAX", id: "avalanche-2",   img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
+      { name: "Trade Chainlink", sym: "LINK", id: "chainlink",     img: "https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png" },
+      { name: "Trade Polkadot",  sym: "DOT",  id: "polkadot",     img: "https://assets.coingecko.com/coins/images/12171/small/polkadot.png" },
+      { name: "Trade Uniswap",   sym: "UNI",  id: "uniswap",      img: "https://assets.coingecko.com/coins/images/12504/small/uniswap-uni.png" },
     ],
   },
 ];
@@ -310,7 +310,7 @@ function NavDropdown({ item, navigate }) {
                   <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                 </div>
                 <button
-                  onClick={() => { navigate("/signup"); setOpen(false); }}
+                  onClick={() => { navigate("/buy"); setOpen(false); }}
                   className="mt-6 text-xs font-semibold text-primary-accent hover:underline text-left"
                 >
                   Show all assets →
@@ -323,7 +323,7 @@ function NavDropdown({ item, navigate }) {
                   {item.coins.map((coin) => (
                     <button
                       key={coin.sym}
-                      onClick={() => { navigate("/signup"); setOpen(false); }}
+                      onClick={() => { navigate(`/buy/${coin.id}`); setOpen(false); }}
                       className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors text-left group"
                     >
                       <img src={coin.img} alt={coin.sym} className="w-8 h-8 rounded-full flex-shrink-0" />
