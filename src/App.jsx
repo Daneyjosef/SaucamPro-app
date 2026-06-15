@@ -25,6 +25,15 @@ const Watchlist = lazy(() => import("./pages/Watchlist"));
 const Settings = lazy(() => import("./pages/Settings"));
 const BuyCoin = lazy(() => import("./pages/BuyCoin"));
 const SellCoin = lazy(() => import("./pages/SellCoin"));
+const TradePage = lazy(() => import("./pages/info/TradePage"));
+const InvestPage = lazy(() => import("./pages/info/InvestPage"));
+const SpendPage = lazy(() => import("./pages/info/SpendPage"));
+const PaymentsPage = lazy(() => import("./pages/info/PaymentsPage"));
+const AboutPage = lazy(() => import("./pages/info/AboutPage"));
+const PrivacyPage = lazy(() => import("./pages/info/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/info/TermsPage"));
+const ContactPage = lazy(() => import("./pages/info/ContactPage"));
+const HelpPage = lazy(() => import("./pages/info/HelpPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -134,6 +143,15 @@ function AppContent() {
             <Route path="/buy" element={<BuyCoin />} />
             <Route path="/sell/:coinId" element={<SellCoin />} />
             <Route path="/sell" element={<SellCoin />} />
+            <Route path="/trade" element={<TradePage />} />
+            <Route path="/invest" element={<InvestPage />} />
+            <Route path="/spend" element={<SpendPage />} />
+            <Route path="/payments" element={<PaymentsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/help" element={<HelpPage />} />
 
             {/* Protected app routes */}
             <Route

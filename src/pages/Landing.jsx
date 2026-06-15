@@ -762,8 +762,8 @@ export default function Landing() {
             <div>
               <h4 className="text-text-primary font-semibold text-sm mb-4">Products</h4>
               <ul className="space-y-2.5 text-text-secondary text-sm">
-                {["Trade", "Invest", "Spend", "Payments"].map((l) => (
-                  <li key={l} className="hover:text-text-primary cursor-pointer transition-colors">{l}</li>
+                {[["Trade", "/trade"], ["Invest", "/invest"], ["Spend", "/spend"], ["Payments", "/payments"]].map(([l, href]) => (
+                  <li key={l} onClick={() => navigate(href)} className="hover:text-text-primary cursor-pointer transition-colors">{l}</li>
                 ))}
               </ul>
             </div>
@@ -771,17 +771,18 @@ export default function Landing() {
             <div>
               <h4 className="text-text-primary font-semibold text-sm mb-4">Company</h4>
               <ul className="space-y-2.5 text-text-secondary text-sm">
-                {["About", "Blog", "Careers", "Press"].map((l) => (
-                  <li key={l} className="hover:text-text-primary cursor-pointer transition-colors">{l}</li>
-                ))}
+                <li onClick={() => navigate("/about")} className="hover:text-text-primary cursor-pointer transition-colors">About</li>
+                <li className="cursor-default opacity-50">Blog</li>
+                <li className="cursor-default opacity-50">Careers</li>
+                <li className="cursor-default opacity-50">Press</li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-text-primary font-semibold text-sm mb-4">Legal</h4>
               <ul className="space-y-2.5 text-text-secondary text-sm">
-                {["Privacy Policy", "Terms of Use", "Contact", "Help Center"].map((l) => (
-                  <li key={l} className="hover:text-text-primary cursor-pointer transition-colors">{l}</li>
+                {[["Privacy Policy", "/privacy"], ["Terms of Use", "/terms"], ["Contact", "/contact"], ["Help Center", "/help"]].map(([l, href]) => (
+                  <li key={l} onClick={() => navigate(href)} className="hover:text-text-primary cursor-pointer transition-colors">{l}</li>
                 ))}
               </ul>
             </div>
