@@ -282,22 +282,15 @@ function NavDropdown({ item, navigate }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
-  useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
   return (
-    <div className="relative" ref={ref}>
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className={`flex items-center gap-1 text-sm font-semibold transition-colors px-1 py-2 ${open ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
-      >
+    <div
+      className="relative"
+      ref={ref}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button className={`text-sm font-semibold transition-colors px-1 py-2 ${open ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}>
         {item.label}
-        <svg className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
       </button>
 
       <AnimatePresence>
