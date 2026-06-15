@@ -232,6 +232,7 @@ function CurrencySwitcher() {
 const NAV_DROPDOWNS = [
   {
     label: "Buy",
+    route: "buy",
     heading: "Buy crypto",
     desc: "Use a card, Apple Pay or Google Pay to buy crypto fast. We also accept bank transfers and wires.",
     coins: [
@@ -247,6 +248,7 @@ const NAV_DROPDOWNS = [
   },
   {
     label: "Sell",
+    route: "sell",
     heading: "Sell crypto",
     desc: "Sell your crypto at the best available rate directly to your bank account, debit card, or SaucamPro Balance.",
     coins: [
@@ -262,6 +264,7 @@ const NAV_DROPDOWNS = [
   },
   {
     label: "Trade",
+    route: "buy",
     heading: "Trade crypto",
     desc: "Swap one cryptocurrency for another at real-time market rates. No hidden fees, just fast and simple trading.",
     coins: [
@@ -310,7 +313,7 @@ function NavDropdown({ item, navigate }) {
                   <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                 </div>
                 <button
-                  onClick={() => { navigate("/buy"); setOpen(false); }}
+                  onClick={() => { navigate(`/${item.route}`); setOpen(false); }}
                   className="mt-6 text-xs font-semibold text-primary-accent hover:underline text-left"
                 >
                   Show all assets →
@@ -323,7 +326,7 @@ function NavDropdown({ item, navigate }) {
                   {item.coins.map((coin) => (
                     <button
                       key={coin.sym}
-                      onClick={() => { navigate(`/buy/${coin.id}`); setOpen(false); }}
+                      onClick={() => { navigate(`/${item.route}/${coin.id}`); setOpen(false); }}
                       className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors text-left group"
                     >
                       <img src={coin.img} alt={coin.sym} className="w-8 h-8 rounded-full flex-shrink-0" />

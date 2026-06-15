@@ -24,6 +24,7 @@ const Wallet = lazy(() => import("./pages/Wallet"));
 const Watchlist = lazy(() => import("./pages/Watchlist"));
 const Settings = lazy(() => import("./pages/Settings"));
 const BuyCoin = lazy(() => import("./pages/BuyCoin"));
+const SellCoin = lazy(() => import("./pages/SellCoin"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -131,6 +132,8 @@ function AppContent() {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/buy/:coinId" element={<BuyCoin />} />
             <Route path="/buy" element={<BuyCoin />} />
+            <Route path="/sell/:coinId" element={<SellCoin />} />
+            <Route path="/sell" element={<SellCoin />} />
 
             {/* Protected app routes */}
             <Route
