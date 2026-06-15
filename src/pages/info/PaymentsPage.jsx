@@ -5,7 +5,7 @@ import InfoLayout from "../../components/layout/InfoLayout";
 const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, type: "spring", stiffness: 280, damping: 24 } }) };
 
 const FEATURES = [
-  { icon: "⚡", title: "Instant settlement", desc: "Receive crypto payments and settle to your NGN bank account in real time. No waiting, no delays." },
+  { icon: "⚡", title: "Instant settlement", desc: "Receive crypto payments and settle to your local bank account in real time. No waiting, no delays." },
   { icon: "🌍", title: "Accept any currency", desc: "Accept Bitcoin, Ethereum, USDT and more. We handle the conversion so you always receive NGN." },
   { icon: "🔗", title: "Payment links", desc: "Generate shareable payment links in seconds. No website or technical knowledge required." },
   { icon: "🖥️", title: "Developer API", desc: "Integrate crypto payments into your app or website with our clean, well-documented REST API." },
@@ -16,7 +16,7 @@ const FEATURES = [
 const STEPS = [
   { n: "01", title: "Create an account", desc: "Sign up for SaucamPro and complete business verification. Takes less than 10 minutes." },
   { n: "02", title: "Get your payment address", desc: "We assign you a unique crypto payment address. Share it, embed it, or use the API." },
-  { n: "03", title: "Accept payments", desc: "Customers pay in crypto. We notify you instantly and settle NGN to your bank account." },
+  { n: "03", title: "Accept payments", desc: "Customers pay in crypto. We notify you instantly and settle funds to your local bank account." },
 ];
 
 export default function PaymentsPage() {
@@ -32,7 +32,7 @@ export default function PaymentsPage() {
             Accept crypto payments<br className="hidden sm:block" /> for your business
           </motion.h1>
           <motion.p variants={fadeUp} custom={2} className="text-gray-500 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-            The easiest way for Nigerian businesses to accept Bitcoin, Ethereum, and USDT — and settle directly to your NGN bank account.
+            The easiest way for businesses worldwide to accept Bitcoin, Ethereum, and USDT — and settle directly to your local bank account.
           </motion.p>
           <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/signup")} className="bg-gray-900 text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-700 transition-colors text-base">
@@ -104,7 +104,7 @@ export default function PaymentsPage() {
       {/* CTA */}
       <section className="px-5 sm:px-10 py-20 text-center bg-green-600">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Start accepting crypto payments today</h2>
-        <p className="text-green-100 mb-8 text-base max-w-md mx-auto">Join hundreds of Nigerian businesses already using SaucamPro Payments.</p>
+        <p className="text-green-100 mb-8 text-base max-w-md mx-auto">Join businesses worldwide already using SaucamPro Payments.</p>
         <button onClick={() => navigate("/signup")} className="bg-white text-green-600 font-bold px-10 py-4 rounded-full hover:bg-green-50 transition-colors text-base">
           Get started free
         </button>

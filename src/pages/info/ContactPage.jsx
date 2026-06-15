@@ -5,9 +5,9 @@ import InfoLayout from "../../components/layout/InfoLayout";
 const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, type: "spring", stiffness: 280, damping: 24 } }) };
 
 const CHANNELS = [
-  { icon: "💬", title: "Live chat", desc: "Chat with our support team in real time. Available Monday–Friday, 8am–8pm WAT.", action: "Start a chat", href: "#" },
+  { icon: "💬", title: "Live chat", desc: "Chat with our support team in real time. Available Monday–Friday, 8am–8pm GMT.", action: "Start a chat", href: "#" },
   { icon: "📧", title: "Email support", desc: "Send us a message and we'll get back to you within 24 hours.", action: "support@saucampro.com", href: "mailto:support@saucampro.com" },
-  { icon: "📞", title: "Phone support", desc: "Speak directly with our team. Available Monday–Friday, 9am–5pm WAT.", action: "+234 800 000 0000", href: "tel:+2348000000000" },
+  { icon: "📞", title: "Phone support", desc: "Speak directly with our team. Available Monday–Friday, 9am–5pm GMT.", action: "+1 800 000 0000", href: "tel:+18000000000" },
   { icon: "🐦", title: "Twitter / X", desc: "Tweet us or send a DM. We monitor our social channels closely.", action: "@SaucamPro", href: "#" },
 ];
 
@@ -102,12 +102,12 @@ export default function ContactPage() {
           <h2 className="text-xl font-bold text-gray-900 mb-6">Our offices</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 text-left">
-              <p className="font-bold text-gray-900 mb-1">Lagos HQ</p>
-              <p className="text-gray-400 text-sm">Victoria Island, Lagos<br />Lagos State, Nigeria</p>
+              <p className="font-bold text-gray-900 mb-1">Global HQ</p>
+              <p className="text-gray-400 text-sm">SaucamPro International<br />contact@saucampro.com</p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 text-left">
-              <p className="font-bold text-gray-900 mb-1">Abuja Office</p>
-              <p className="text-gray-400 text-sm">Central Business District<br />Abuja, FCT, Nigeria</p>
+              <p className="font-bold text-gray-900 mb-1">Support</p>
+              <p className="text-gray-400 text-sm">24 / 7 online support<br />support@saucampro.com</p>
             </div>
           </div>
         </div>

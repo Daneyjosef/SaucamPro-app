@@ -746,7 +746,7 @@ export default function Landing() {
                 <img src="/favicon.png" alt="SaucamPro" className="h-8 w-auto" />
               </div>
               <p className="text-text-secondary text-xs leading-relaxed mb-4">
-                Nigeria's SEC-licensed digital assets platform — secure, transparent, and built for modern traders.
+                A licensed global digital assets platform — secure, transparent, and built for modern traders.
               </p>
               <div className="flex gap-3">
                 {["twitter", "telegram", "instagram"].map((s) => (
@@ -790,7 +790,7 @@ export default function Landing() {
 
           <div className="border-t border-primary-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-text-secondary text-xs">
             <span>&copy; 2026 SaucamPro. All rights reserved.</span>
-            <span>SEC-Licensed · Built in Nigeria 🇳🇬</span>
+            <span>Licensed · Regulated · Trusted Globally</span>
           </div>
         </div>
       </footer>

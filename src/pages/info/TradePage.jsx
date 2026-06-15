@@ -9,7 +9,7 @@ const FEATURES = [
   { icon: "📈", title: "Live market data", desc: "Access real-time prices, charts, and order books across hundreds of cryptocurrency pairs." },
   { icon: "🔒", title: "Secure by design", desc: "Your assets are protected by bank-grade encryption, cold storage, and multi-factor authentication." },
   { icon: "💰", title: "Competitive fees", desc: "Transparent, low fees with no hidden charges. Pay less, keep more of your gains." },
-  { icon: "🌍", title: "Naira support", desc: "Fund your account directly in NGN via bank transfer. No FX hassle, no delays." },
+  { icon: "🌍", title: "Multi-currency support", desc: "Fund your account in your local currency via bank transfer, card, or crypto. Fast, simple, no friction." },
   { icon: "📱", title: "Trade anywhere", desc: "Our mobile-optimised platform lets you trade on the go, whenever opportunity strikes." },
 ];
 
@@ -35,7 +35,7 @@ export default function TradePage() {
             Buy, sell and swap<br className="hidden sm:block" /> crypto instantly
           </motion.h1>
           <motion.p variants={fadeUp} custom={2} className="text-gray-500 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-            The fastest, easiest way to trade cryptocurrency. Get started in minutes with as little as ₦1,000.
+            The fastest, easiest way to trade cryptocurrency. Get started in minutes, from anywhere in the world.
           </motion.p>
           <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/signup")} className="bg-gray-900 text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-700 transition-colors text-base">
@@ -52,7 +52,7 @@ export default function TradePage() {
       <section className="px-5 sm:px-10 py-14 bg-white border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">Popular trading pairs</h2>
-          <p className="text-gray-400 text-center mb-10 text-sm">Trade the world's most liquid cryptocurrencies</p>
+          <p className="text-gray-400 text-center mb-10 text-sm">Buy and sell the world's most liquid cryptocurrencies</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {COINS.map((coin, i) => (
               <motion.button
@@ -98,7 +98,7 @@ export default function TradePage() {
       {/* CTA */}
       <section className="px-5 sm:px-10 py-20 text-center bg-gray-900">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to start trading?</h2>
-        <p className="text-gray-400 mb-8 text-base max-w-md mx-auto">Join thousands of Nigerians trading crypto on SaucamPro every day.</p>
+        <p className="text-gray-400 mb-8 text-base max-w-md mx-auto">Join hundreds of thousands of traders on SaucamPro every day.</p>
         <button onClick={() => navigate("/signup")} className="bg-white text-gray-900 font-bold px-10 py-4 rounded-full hover:bg-gray-100 transition-colors text-base">
           Create a free account
         </button>

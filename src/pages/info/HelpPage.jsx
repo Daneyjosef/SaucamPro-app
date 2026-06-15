@@ -8,15 +8,15 @@ const CATEGORIES = [
     icon: "🚀", title: "Getting started", faqs: [
       { q: "How do I create a SaucamPro account?", a: "Creating a SaucamPro account takes less than two minutes. Visit our sign-up page, enter your email address and a secure password, verify your email, and complete our KYC process by providing your BVN or NIN and a valid government-issued ID." },
       { q: "What documents do I need to verify my identity?", a: "We accept a National ID Card (NIN slip), Bank Verification Number (BVN), International Passport, or Driver's Licence. You'll also need to take a selfie for biometric verification. All documents must be current and clearly legible." },
-      { q: "Is SaucamPro available outside Nigeria?", a: "SaucamPro currently serves users in Nigeria. We are expanding to other African markets and will announce availability in new countries on our website and social channels." },
+      { q: "Where is SaucamPro available?", a: "SaucamPro is a global platform available in eligible jurisdictions worldwide. We are continuously expanding and will announce availability in new regions on our website and social channels." },
     ]
   },
   {
     icon: "💳", title: "Deposits & withdrawals", faqs: [
-      { q: "How do I fund my SaucamPro account?", a: "You can fund your account via bank transfer (all Nigerian banks supported), USSD, or debit card. Funds are credited instantly for most methods. Go to Wallet → Deposit and choose your preferred method." },
-      { q: "How long do withdrawals take?", a: "NGN withdrawals to Nigerian bank accounts are processed within 5–30 minutes during business hours (8am–8pm WAT). Crypto withdrawals are sent to the blockchain immediately after internal processing, which typically takes 10–30 minutes." },
-      { q: "What are the minimum and maximum deposit amounts?", a: "The minimum deposit is ₦500. There is no maximum deposit limit, though very large deposits may require additional verification under our AML policy." },
-      { q: "Are there fees for deposits and withdrawals?", a: "Naira deposits are free. Naira withdrawals attract a small fee of ₦50 per transaction. Crypto withdrawals incur the standard network (gas) fee for the relevant blockchain, which varies with network congestion." },
+      { q: "How do I fund my SaucamPro account?", a: "You can fund your account via bank transfer, debit/credit card, or crypto deposit. Funds are credited instantly for most methods. Go to Wallet → Deposit and choose your preferred method." },
+      { q: "How long do withdrawals take?", a: "Fiat withdrawals to your bank account are processed within 5–30 minutes during business hours. Crypto withdrawals are sent to the blockchain immediately after internal processing, which typically takes 10–30 minutes." },
+      { q: "What are the minimum and maximum deposit amounts?", a: "The minimum deposit is $1 (or local equivalent). There is no maximum deposit limit, though very large deposits may require additional verification under our AML policy." },
+      { q: "Are there fees for deposits and withdrawals?", a: "Fiat deposits are free. Fiat withdrawals may attract a small processing fee depending on your region. Crypto withdrawals incur the standard network (gas) fee for the relevant blockchain, which varies with network congestion." },
     ]
   },
   {
@@ -31,14 +31,14 @@ const CATEGORIES = [
     icon: "🔒", title: "Security", faqs: [
       { q: "How does SaucamPro keep my funds safe?", a: "We store the majority of customer digital assets in offline cold storage, use AES-256 encryption for data at rest and TLS 1.3 for data in transit, and conduct regular third-party security audits. We also maintain a reserve fund to cover unexpected events." },
       { q: "What is two-factor authentication (2FA) and should I enable it?", a: "2FA adds an extra layer of security by requiring a one-time code (from an app like Google Authenticator or via SMS) in addition to your password. We strongly recommend enabling 2FA. Go to Settings → Security to set it up." },
-      { q: "What should I do if I think my account has been compromised?", a: "Immediately contact our support team via live chat at support@saucampro.com or call +234 800 000 0000. We will temporarily freeze your account, investigate the incident, and guide you through securing it. Change your password and 2FA immediately if you still have access." },
+      { q: "What should I do if I think my account has been compromised?", a: "Immediately contact our support team via live chat or email support@saucampro.com. We will temporarily freeze your account, investigate the incident, and guide you through securing it. Change your password and 2FA immediately if you still have access." },
     ]
   },
   {
     icon: "🏛️", title: "Compliance & legal", faqs: [
-      { q: "Is SaucamPro regulated?", a: "Yes. SaucamPro holds a Digital Asset Exchange Operator (DAEO) licence issued by the Securities and Exchange Commission of Nigeria (SEC). We comply fully with all applicable Nigerian regulations including AML/CFT, KYC, and data protection laws." },
-      { q: "Do I need to pay taxes on my crypto gains?", a: "In Nigeria, capital gains from cryptocurrency trading may be subject to Capital Gains Tax (CGT). SaucamPro does not provide tax advice. We recommend consulting a qualified Nigerian tax professional. We can provide transaction history exports to assist with your tax filings." },
-      { q: "Why has my account been restricted?", a: "Account restrictions may be applied for a number of reasons including incomplete KYC, suspicious activity detected by our fraud prevention systems, or a request from a competent Nigerian regulatory authority. Contact support@saucampro.com for assistance." },
+      { q: "Is SaucamPro regulated?", a: "Yes. SaucamPro is a fully licensed digital asset exchange operator. We comply with applicable AML/CFT, KYC, and data protection regulations in all jurisdictions we operate in." },
+      { q: "Do I need to pay taxes on my crypto gains?", a: "Tax obligations on cryptocurrency vary by country. SaucamPro does not provide tax advice. We recommend consulting a qualified tax professional in your jurisdiction. We can provide transaction history exports to assist with your tax filings." },
+      { q: "Why has my account been restricted?", a: "Account restrictions may be applied for a number of reasons including incomplete KYC, suspicious activity detected by our fraud prevention systems, or a request from a competent regulatory authority. Contact support@saucampro.com for assistance." },
     ]
   },
 ];
@@ -131,7 +131,7 @@ export default function HelpPage() {
       {/* STILL NEED HELP */}
       <section className="px-5 sm:px-10 py-14 bg-gray-50 border-t border-gray-100 text-center">
         <h2 className="text-xl font-bold text-gray-900 mb-2">Still need help?</h2>
-        <p className="text-gray-400 text-sm mb-6">Our support team is available 7 days a week, 8am–10pm WAT.</p>
+        <p className="text-gray-400 text-sm mb-6">Our support team is available 7 days a week, 24 hours a day.</p>
         <button onClick={() => navigate("/contact")} className="bg-gray-900 text-white font-semibold px-8 py-3 rounded-full hover:bg-gray-700 transition-colors text-sm">
           Contact support
         </button>

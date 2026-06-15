@@ -5,11 +5,11 @@ const SECTIONS = [
     title: "1. Acceptance of terms",
     body: `By accessing or using the SaucamPro platform and services, you agree to be bound by these Terms of Use, our Privacy Policy, and any additional terms and conditions that apply to specific features of our services. If you do not agree to these terms, you must not access or use our services.
 
-These Terms of Use constitute a legally binding agreement between you and SaucamPro Limited, a company incorporated in Nigeria and licensed by the Securities and Exchange Commission of Nigeria (SEC) as a Digital Asset Exchange Operator.`
+These Terms of Use constitute a legally binding agreement between you and SaucamPro, a licensed global digital asset exchange operator.`
   },
   {
     title: "2. Eligibility",
-    body: `To use SaucamPro, you must be at least 18 years of age, a resident of Nigeria or an eligible jurisdiction, capable of entering into a legally binding contract, not be a person prohibited from using our services under applicable Nigerian law, and successfully complete our identity verification (KYC) process.
+    body: `To use SaucamPro, you must be at least 18 years of age, a resident of an eligible jurisdiction, capable of entering into a legally binding contract, not be a person prohibited from using our services under applicable law, and successfully complete our identity verification (KYC) process.
 
 By creating an account, you represent and warrant that you meet all of the eligibility requirements listed above.`
   },
@@ -19,13 +19,13 @@ By creating an account, you represent and warrant that you meet all of the eligi
   },
   {
     title: "4. Identity verification (KYC)",
-    body: `In compliance with Nigerian SEC and CBN regulations on Know Your Customer (KYC) and Anti-Money Laundering (AML), you are required to verify your identity before using certain features of our platform. This may include providing a valid government-issued ID (NIN, BVN, international passport, or driver's licence), proof of address, and selfie or biometric verification. We reserve the right to refuse or suspend service where KYC requirements are not met.`
+    body: `In compliance with applicable AML/CFT regulations, you are required to verify your identity before using certain features of our platform. This may include providing a valid government-issued ID, proof of address, and selfie or biometric verification. We reserve the right to refuse or suspend service where KYC requirements are not met.`
   },
   {
     title: "5. Prohibited activities",
     body: `You agree not to use SaucamPro to engage in any illegal activity, including but not limited to money laundering, terrorism financing, tax evasion, or fraud; circumvent, disable, or interfere with security features; use the platform to transmit any unsolicited advertising or spam; impersonate any person or entity; access or use another user's account without authorisation; or violate any applicable laws or regulations.
 
-Violation of these prohibitions may result in immediate termination of your account and referral to the relevant Nigerian authorities.`
+Violation of these prohibitions may result in immediate termination of your account and referral to competent authorities.`
   },
   {
     title: "6. Trading and transactions",
@@ -39,13 +39,13 @@ SaucamPro charges fees as disclosed on our platform. We reserve the right to cha
   },
   {
     title: "8. Limitation of liability",
-    body: `To the fullest extent permitted by Nigerian law, SaucamPro and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or goodwill, arising out of or in connection with your use of our services, even if we have been advised of the possibility of such damages.
+    body: `To the fullest extent permitted by applicable law, SaucamPro and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or goodwill, arising out of or in connection with your use of our services, even if we have been advised of the possibility of such damages.
 
 Our total liability to you for any claim arising from the use of our services shall not exceed the amount of fees paid by you to SaucamPro in the twelve (12) months preceding the claim.`
   },
   {
     title: "9. Governing law",
-    body: `These Terms of Use shall be governed by and construed in accordance with the laws of the Federal Republic of Nigeria. Any dispute arising out of or in connection with these terms shall be subject to the exclusive jurisdiction of the courts of Lagos State, Nigeria.`
+    body: `These Terms of Use shall be governed by and construed in accordance with the applicable laws of the jurisdiction in which SaucamPro operates. Any dispute arising out of or in connection with these terms shall be subject to the exclusive jurisdiction of the competent courts in the relevant jurisdiction.`
   },
   {
     title: "10. Changes to terms",
@@ -53,7 +53,7 @@ Our total liability to you for any claim arising from the use of our services sh
   },
   {
     title: "11. Contact",
-    body: `If you have any questions about these Terms of Use, please contact us at:\n\nEmail: legal@saucampro.com\nAddress: SaucamPro Limited, Lagos, Nigeria`
+    body: `If you have any questions about these Terms of Use, please contact us at:\n\nEmail: legal@saucampro.com`
   },
 ];
 

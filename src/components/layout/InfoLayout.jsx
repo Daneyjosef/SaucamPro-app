@@ -56,7 +56,7 @@ export default function InfoLayout({ children }) {
               <button onClick={() => navigate("/")} className="flex items-center gap-2 mb-4">
                 <img src="/favicon.png" alt="SaucamPro" className="h-8 w-auto" />
               </button>
-              <p className="text-gray-400 text-xs leading-relaxed">Nigeria's SEC-licensed digital assets platform — secure, transparent, and built for modern traders.</p>
+              <p className="text-gray-400 text-xs leading-relaxed">A licensed global digital assets platform — secure, transparent, and built for modern traders.</p>
             </div>
             <div>
               <h4 className="font-semibold text-sm mb-4">Products</h4>
@@ -86,7 +86,7 @@ export default function InfoLayout({ children }) {
           </div>
           <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-gray-400 text-xs">
             <span>&copy; 2026 SaucamPro. All rights reserved.</span>
-            <span>SEC-Licensed · Built in Nigeria 🇳🇬</span>
+            <span>Licensed · Regulated · Trusted Globally</span>
           </div>
         </div>
       </footer>

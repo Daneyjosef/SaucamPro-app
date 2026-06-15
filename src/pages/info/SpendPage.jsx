@@ -8,7 +8,7 @@ const USECASES = [
   { icon: "🛍️", title: "Shop online", desc: "Pay at thousands of online merchants worldwide using your crypto balance. Converted at the best available rate." },
   { icon: "🍔", title: "Food & dining", desc: "Order from your favourite restaurants and food delivery platforms. Pay with Bitcoin, Ethereum, or any supported coin." },
   { icon: "✈️", title: "Travel & hotels", desc: "Book flights, hotels, and experiences using crypto. Access global travel at your fingertips." },
-  { icon: "⛽", title: "Bills & utilities", desc: "Pay electricity, data, airtime, and other bills directly from your SaucamPro wallet — no conversion needed." },
+  { icon: "⛽", title: "Bills & utilities", desc: "Pay electricity, internet, subscriptions, and other bills directly from your SaucamPro wallet." },
   { icon: "🎮", title: "Gaming & entertainment", desc: "Fund gaming wallets, buy gift cards, and pay for streaming services with crypto." },
   { icon: "💸", title: "Peer-to-peer payments", desc: "Send crypto to friends and family instantly. No bank required, no delays, ultra-low fees." },
 ];
@@ -26,7 +26,7 @@ export default function SpendPage() {
             Spend crypto<br className="hidden sm:block" /> anywhere in the world
           </motion.h1>
           <motion.p variants={fadeUp} custom={2} className="text-gray-500 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-            Use your crypto for everyday purchases. Pay bills, shop online, send money to friends — all with the tap of a button.
+            Use your crypto for everyday purchases — anywhere in the world. Shop online, pay bills, send money to friends, all with the tap of a button.
           </motion.p>
           <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/signup")} className="bg-gray-900 text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-700 transition-colors text-base">

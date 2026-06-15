@@ -9,14 +9,14 @@ const FEATURES = [
   { icon: "📊", title: "Portfolio tracking", desc: "See your entire crypto portfolio in one place. Track performance, P&L, and allocation at a glance." },
   { icon: "🎯", title: "Price alerts", desc: "Set target prices and get notified the moment a coin hits your level. Never miss a market move again." },
   { icon: "🛡️", title: "Non-custodial option", desc: "Keep control of your private keys. SaucamPro supports self-custody wallets via WalletConnect." },
-  { icon: "💳", title: "Easy funding", desc: "Fund your account with Naira via bank transfer, USSD, or card. Withdraw to any Nigerian bank instantly." },
+  { icon: "💳", title: "Easy funding", desc: "Fund your account via bank transfer, card, or crypto. Withdraw to your local bank account in minutes." },
   { icon: "📰", title: "Crypto news", desc: "Stay informed with curated market news, analysis, and on-chain data — all inside the app." },
 ];
 
 const PLANS = [
-  { name: "Starter", amount: "₦5,000", period: "/ month", desc: "Perfect for beginners building their first crypto portfolio.", features: ["Up to 5 assets", "Weekly recurring buys", "Basic price alerts", "Portfolio dashboard"] },
-  { name: "Growth", amount: "₦15,000", period: "/ month", desc: "For active investors who want more control and automation.", features: ["Unlimited assets", "Daily recurring buys", "Advanced alerts", "P&L analytics", "Priority support"], highlight: true },
-  { name: "Pro", amount: "₦40,000", period: "/ month", desc: "For power users and professional portfolio managers.", features: ["Everything in Growth", "API access", "Multi-wallet tracking", "Tax report export", "Dedicated account manager"] },
+  { name: "Starter", amount: "Free", period: "", desc: "Perfect for beginners building their first crypto portfolio.", features: ["Up to 5 assets", "Weekly recurring buys", "Basic price alerts", "Portfolio dashboard"] },
+  { name: "Growth", amount: "$9", period: "/ month", desc: "For active investors who want more control and automation.", features: ["Unlimited assets", "Daily recurring buys", "Advanced alerts", "P&L analytics", "Priority support"], highlight: true },
+  { name: "Pro", amount: "$29", period: "/ month", desc: "For power users and professional portfolio managers.", features: ["Everything in Growth", "API access", "Multi-wallet tracking", "Tax report export", "Dedicated account manager"] },
 ];
 
 export default function InvestPage() {
@@ -32,7 +32,7 @@ export default function InvestPage() {
             Grow your crypto<br className="hidden sm:block" /> portfolio over time
           </motion.h1>
           <motion.p variants={fadeUp} custom={2} className="text-gray-500 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-            Invest in crypto the smart way. Set up recurring buys, track your portfolio performance, and build long-term wealth — all in one place.
+            Invest in crypto the smart way. Set up recurring buys, track your portfolio performance, and build long-term wealth — from anywhere in the world.
           </motion.p>
           <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/signup")} className="bg-gray-900 text-white font-semibold px-8 py-4 rounded-full hover:bg-gray-700 transition-colors text-base">
@@ -53,7 +53,7 @@ export default function InvestPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               { step: "01", title: "Create your account", desc: "Sign up in minutes with your email. Complete a quick identity verification to unlock full investment features." },
-              { step: "02", title: "Fund your account", desc: "Add Naira to your SaucamPro wallet via bank transfer, USSD, or debit card. Funds arrive instantly." },
+              { step: "02", title: "Fund your account", desc: "Add funds to your SaucamPro wallet via bank transfer, card, or crypto. Funds arrive instantly." },
               { step: "03", title: "Start investing", desc: "Buy your first crypto, set up a recurring investment plan, and watch your portfolio grow over time." },
             ].map((s, i) => (
               <motion.div key={s.step} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
@@ -110,7 +110,7 @@ export default function InvestPage() {
       {/* CTA */}
       <section className="px-5 sm:px-10 py-20 text-center bg-blue-600">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">The best time to invest was yesterday.<br />The second best time is now.</h2>
-        <p className="text-blue-100 mb-8 text-base max-w-md mx-auto">Start building your crypto portfolio today with as little as ₦1,000.</p>
+        <p className="text-blue-100 mb-8 text-base max-w-md mx-auto">Start building your crypto portfolio today with as little as $1.</p>
         <button onClick={() => navigate("/signup")} className="bg-white text-blue-600 font-bold px-10 py-4 rounded-full hover:bg-blue-50 transition-colors text-base">
           Start for free
         </button>

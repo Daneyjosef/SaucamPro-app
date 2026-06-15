@@ -9,15 +9,15 @@ We also automatically collect certain information when you use our services, inc
   },
   {
     title: "2. How we use your information",
-    body: `We use the information we collect to provide, maintain, and improve our services; process transactions and send related information including confirmations and receipts; verify your identity and prevent fraud; comply with legal obligations including AML/CFT requirements imposed by the Nigerian Securities and Exchange Commission and the Central Bank of Nigeria; send technical notices, updates, security alerts, and support messages; respond to your comments and questions; and monitor and analyse usage trends.`
+    body: `We use the information we collect to provide, maintain, and improve our services; process transactions and send related information including confirmations and receipts; verify your identity and prevent fraud; comply with legal obligations including AML/CFT requirements imposed by applicable regulatory authorities; send technical notices, updates, security alerts, and support messages; respond to your comments and questions; and monitor and analyse usage trends.`
   },
   {
     title: "3. Sharing of information",
-    body: `We do not sell your personal information. We may share your information with third-party service providers that perform services on our behalf, such as payment processing, identity verification, data analysis, customer service, and fraud prevention. We may disclose your information if required by law, regulation, or legal process, including requests from regulatory bodies such as the SEC, CBN, EFCC, or other competent Nigerian authorities.`
+    body: `We do not sell your personal information. We may share your information with third-party service providers that perform services on our behalf, such as payment processing, identity verification, data analysis, customer service, and fraud prevention. We may disclose your information if required by law, regulation, or legal process, including requests from competent regulatory or government authorities in any jurisdiction we operate.`
   },
   {
     title: "4. Data retention",
-    body: `We retain personal information for as long as necessary to provide our services, comply with legal obligations, resolve disputes, and enforce our agreements. In accordance with Nigerian AML/CFT regulations, transaction records and KYC documentation are retained for a minimum of five (5) years after the end of a customer relationship.`
+    body: `We retain personal information for as long as necessary to provide our services, comply with legal obligations, resolve disputes, and enforce our agreements. In accordance with applicable AML/CFT regulations, transaction records and KYC documentation are retained for a minimum of five (5) years after the end of a customer relationship.`
   },
   {
     title: "5. Security",
@@ -37,7 +37,7 @@ We also automatically collect certain information when you use our services, inc
   },
   {
     title: "9. Contact us",
-    body: `If you have any questions about this Privacy Policy or our privacy practices, please contact our Data Protection Officer at:\n\nEmail: privacy@saucampro.com\nAddress: SaucamPro Limited, Lagos, Nigeria`
+    body: `If you have any questions about this Privacy Policy or our privacy practices, please contact our Data Protection Officer at:\n\nEmail: privacy@saucampro.com`
   },
 ];
 
@@ -55,7 +55,7 @@ export default function PrivacyPage() {
       <section className="px-5 sm:px-10 py-12 bg-white">
         <div className="max-w-3xl mx-auto">
           <p className="text-gray-500 leading-relaxed mb-10">
-            SaucamPro Limited ("SaucamPro", "we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform and services. Please read this policy carefully. By accessing or using SaucamPro, you agree to this Privacy Policy.
+            SaucamPro ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform and services. Please read this policy carefully. By accessing or using SaucamPro, you agree to this Privacy Policy.
           </p>
 
           <div className="space-y-10">
