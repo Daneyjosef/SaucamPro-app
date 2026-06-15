@@ -268,7 +268,7 @@ function HeroTicker({ coins }) {
   if (!coins.length) return null;
   const items = [...coins, ...coins];
   return (
-    <div className="overflow-hidden w-full mt-10 mb-2">
+    <div className="overflow-hidden w-screen relative left-1/2 -translate-x-1/2 mt-10 mb-2">
       <div className="flex animate-marquee w-max gap-4">
         {items.map((coin, i) => (
           <div key={`${coin.id}-${i}`} className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm flex-shrink-0">
@@ -365,7 +365,7 @@ export default function Landing() {
 
       {/* ════════ NAVBAR ════════ */}
       <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-primary-bg/90 backdrop-blur-xl border-b border-primary-border shadow-sm" : "bg-transparent"}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        <div className="w-full px-5 sm:px-10 lg:px-20 flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
             <img src="/favicon.png" alt="SaucamPro" className="h-8 sm:h-9 w-auto" />
@@ -443,8 +443,8 @@ export default function Landing() {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-transparent pointer-events-none" />
         </motion.div>
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-5 sm:px-10 lg:px-16 pt-24 sm:pt-32 pb-16 sm:pb-24">
-          <div className="max-w-xl">
+        <div className="relative z-10 w-full px-5 sm:px-10 lg:px-20 pt-24 sm:pt-32 pb-16 sm:pb-24">
+          <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: "easeOut" }}>
               <motion.span
                 initial={{ opacity: 0, y: -12 }}
