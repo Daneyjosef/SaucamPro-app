@@ -13,15 +13,6 @@ const VALUES = [
   { icon: "🚀", title: "Constant improvement", desc: "We ship fast, listen to feedback, and iterate. Our community drives our roadmap and we build in public." },
 ];
 
-const TEAM = [
-  { name: "Adebayo Okafor", role: "Chief Executive Officer", initials: "AO" },
-  { name: "Chinyere Eze", role: "Chief Technology Officer", initials: "CE" },
-  { name: "Emeka Nwosu", role: "Chief Compliance Officer", initials: "EN" },
-  { name: "Fatima Bello", role: "Head of Product", initials: "FB" },
-  { name: "Gbenga Adeyemi", role: "Head of Growth", initials: "GA" },
-  { name: "Ifeoma Obi", role: "Head of Operations", initials: "IO" },
-];
-
 const STATS = [
   { value: "50,000+", label: "Registered users" },
   { value: "₦2B+", label: "Transaction volume" },
@@ -82,23 +73,6 @@ export default function AboutPage() {
                 <div className="text-3xl mb-4">{v.icon}</div>
                 <h3 className="font-bold text-gray-900 mb-2">{v.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{v.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TEAM */}
-      <section className="px-5 sm:px-10 py-14 bg-white border-t border-gray-100">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">Meet the team</h2>
-          <p className="text-gray-400 text-center mb-10 text-sm">The people building SaucamPro</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-            {TEAM.map((person, i) => (
-              <motion.div key={person.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="text-center">
-                <div className="w-16 h-16 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold text-lg mx-auto mb-3">{person.initials}</div>
-                <p className="font-semibold text-gray-900 text-sm">{person.name}</p>
-                <p className="text-gray-400 text-xs mt-0.5">{person.role}</p>
               </motion.div>
             ))}
           </div>
