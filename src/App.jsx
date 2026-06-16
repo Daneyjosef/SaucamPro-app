@@ -114,14 +114,17 @@ function AppContent() {
 
   // Supabase session init — runs once, keeps auth state in sync
   useEffect(() => {
-    if (!isSupabaseConfigured || !supabase) return;
+    if (!isSupabaseConfigured || !supabase) {
+      setUser(null, false);
+      return;
+    }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      setUser(session?.user ?? null, false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      setUser(session?.user ?? null, false);
     });
 
     return () => subscription.unsubscribe();

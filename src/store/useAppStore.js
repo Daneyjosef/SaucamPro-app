@@ -71,6 +71,7 @@ export const useAppStore = create((set, get) => ({
   unreadCount: () => get().notifications.filter((n) => !n.read).length,
 
   // Auth — supports both Supabase (via setUser) and local fallback
+  authLoading: true,
   isAuthenticated: !!localStorage.getItem("saucampro-auth"),
   user: (() => {
     try {
@@ -80,7 +81,7 @@ export const useAppStore = create((set, get) => ({
     }
   })(),
 
-  setUser: (user) => {
+  setUser: (user, loading = false) => {
     if (user) {
       localStorage.setItem("saucampro-auth", "true");
       localStorage.setItem("saucampro-user", JSON.stringify(user));
@@ -88,7 +89,7 @@ export const useAppStore = create((set, get) => ({
       localStorage.removeItem("saucampro-auth");
       localStorage.removeItem("saucampro-user");
     }
-    set({ isAuthenticated: !!user, user });
+    set({ isAuthenticated: !!user, user, authLoading: loading });
   },
 
   // Local auth fallback (used when Supabase is not configured)
