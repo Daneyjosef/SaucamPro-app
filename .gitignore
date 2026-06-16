@@ -2,3 +2,12 @@ node_modules
 dist/
 .next/
 node_modules/.vite/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+server/.env
+
+# Claude Code local settings
+.claude/
