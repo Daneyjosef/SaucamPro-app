@@ -49,7 +49,8 @@ const MOCK_TX = [
 
 export default function Wallet() {
   const navigate = useNavigate();
-  const { portfolio, removeFromPortfolio } = useAppStore();
+  const portfolio = useAppStore((s) => s.portfolio ?? []);
+  const removeFromPortfolio = useAppStore((s) => s.removeFromPortfolio);
   const currency = useAppStore((s) => s.currency);
   const { formatPrice } = useCurrency();
   const [modalOpen, setModalOpen] = useState(false);
@@ -155,7 +156,7 @@ export default function Wallet() {
                 <motion.button
                   key={action}
                   onClick={() => {
-                    if (action === "Buy") navigate("/markets");
+                    if (action === "Buy") navigate("/app/markets");
                     else if (action === "Send") setSendTarget(assets[0]);
                     else setReceiveTarget(assets[0]);
                   }}

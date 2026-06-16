@@ -82,7 +82,7 @@ export default function Login() {
     setGoogleLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/app/dashboard` },
+      options: { redirectTo: `${window.location.origin}/onboarding` },
     });
     if (error) {
       toast.error(error.message);

@@ -448,6 +448,7 @@ function MarketPreview({ coins }) {
 
 export default function Landing() {
   const navigate = useNavigate();
+  const isAuthenticated = useAppStore((s) => s.isAuthenticated);
   const [coins, setCoins] = useState([]);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -496,21 +497,34 @@ export default function Landing() {
           {/* Right controls */}
           <div className="flex items-center gap-1 sm:gap-2">
             <CurrencySwitcher />
-            <motion.button
-              onClick={() => navigate("/login")}
-              className="hidden sm:block text-text-secondary hover:text-text-primary font-medium text-sm px-3 py-2 rounded-btn transition-colors border border-transparent hover:border-primary-border"
-              whileHover={{ scale: 1.02 }}
-            >
-              Log In
-            </motion.button>
-            <motion.button
-              onClick={() => navigate("/signup")}
-              className="bg-primary-accent text-white font-semibold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-btn hover:bg-blue-600 transition-colors shadow-sm shadow-primary-accent/20"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-            >
-              Get Started
-            </motion.button>
+            {isAuthenticated ? (
+              <motion.button
+                onClick={() => navigate("/app/dashboard")}
+                className="bg-primary-accent text-white font-semibold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-btn hover:bg-blue-600 transition-colors shadow-sm shadow-primary-accent/20"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                Go to Dashboard
+              </motion.button>
+            ) : (
+              <>
+                <motion.button
+                  onClick={() => navigate("/login")}
+                  className="hidden sm:block text-text-secondary hover:text-text-primary font-medium text-sm px-3 py-2 rounded-btn transition-colors border border-transparent hover:border-primary-border"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  Log In
+                </motion.button>
+                <motion.button
+                  onClick={() => navigate("/signup")}
+                  className="bg-primary-accent text-white font-semibold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-btn hover:bg-blue-600 transition-colors shadow-sm shadow-primary-accent/20"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  Get Started
+                </motion.button>
+              </>
+            )}
             {/* Mobile hamburger */}
             <button onClick={() => setMenuOpen((o) => !o)} className="md:hidden ml-1 p-2 text-text-secondary hover:text-text-primary">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -537,9 +551,15 @@ export default function Landing() {
                     {item.label}
                   </button>
                 ))}
-                <button onClick={() => { navigate("/login"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-medium py-2.5 transition-colors">
-                  Log In
-                </button>
+                {isAuthenticated ? (
+                  <button onClick={() => { navigate("/app/dashboard"); setMenuOpen(false); }} className="text-left text-primary-accent font-semibold text-sm py-2.5 transition-colors">
+                    Go to Dashboard
+                  </button>
+                ) : (
+                  <button onClick={() => { navigate("/login"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-medium py-2.5 transition-colors">
+                    Log In
+                  </button>
+                )}
               </div>
             </motion.div>
           )}
@@ -580,12 +600,12 @@ export default function Landing() {
 
               <div className="flex items-center gap-3 mb-6">
                 <motion.button
-                  onClick={() => navigate("/signup")}
+                  onClick={() => navigate(isAuthenticated ? "/app/dashboard" : "/signup")}
                   className="bg-primary-accent text-white font-semibold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-3.5 rounded-btn hover:bg-blue-600 transition-colors shadow-xl shadow-primary-accent/30"
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                 >
-                  Buy Crypto
+                  {isAuthenticated ? "Go to Dashboard" : "Buy Crypto"}
                 </motion.button>
               </div>
 
@@ -712,28 +732,40 @@ export default function Landing() {
       <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="max-w-2xl mx-auto text-center">
           <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-3">
-            Join 50,000+ traders on SaucamPro
+            {isAuthenticated ? "Welcome back to SaucamPro" : "Join 50,000+ traders on SaucamPro"}
           </motion.h2>
           <motion.p variants={fadeUp} className="text-text-secondary mb-8 text-sm sm:text-base">
-            Get started in minutes. No credit card required.
+            {isAuthenticated ? "Your portfolio is waiting." : "Get started in minutes. No credit card required."}
           </motion.p>
-          <motion.form variants={fadeUp} onSubmit={handleEmailCTA} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              placeholder="Enter your email"
-              className="flex-1 bg-primary-card border border-primary-border rounded-btn px-4 py-3 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent text-sm"
-            />
+          {isAuthenticated ? (
             <motion.button
-              type="submit"
-              className="bg-primary-accent text-white font-semibold px-7 py-3 rounded-btn hover:bg-blue-600 transition-colors text-sm whitespace-nowrap"
+              variants={fadeUp}
+              onClick={() => navigate("/app/dashboard")}
+              className="bg-primary-accent text-white font-semibold px-8 py-3 rounded-btn hover:bg-blue-600 transition-colors text-sm"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
-              Get started
+              Go to Dashboard
             </motion.button>
-          </motion.form>
+          ) : (
+            <motion.form variants={fadeUp} onSubmit={handleEmailCTA} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+                placeholder="Enter your email"
+                className="flex-1 bg-primary-card border border-primary-border rounded-btn px-4 py-3 text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent text-sm"
+              />
+              <motion.button
+                type="submit"
+                className="bg-primary-accent text-white font-semibold px-7 py-3 rounded-btn hover:bg-blue-600 transition-colors text-sm whitespace-nowrap"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Get started
+              </motion.button>
+            </motion.form>
+          )}
         </motion.div>
       </section>
 

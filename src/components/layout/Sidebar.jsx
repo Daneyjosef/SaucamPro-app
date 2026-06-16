@@ -11,10 +11,26 @@ const navItems = [
   { to: "/app/settings", label: "Settings" },
 ];
 
+function getDisplayName(user) {
+  return (
+    user?.user_metadata?.username ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    user?.name ||
+    user?.email?.split("@")[0] ||
+    "Trader"
+  );
+}
+
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const signOut = useAppStore((s) => s.signOut);
+  const user = useAppStore((s) => s.user);
+
+  const displayName = getDisplayName(user);
+  const avatarUrl = user?.user_metadata?.avatar_url;
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <>
@@ -90,15 +106,21 @@ export default function Sidebar() {
         <div className="px-4 py-4 border-t border-primary-border">
           <div className="flex items-center gap-3 px-2">
             <motion.div
-              className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-accent to-purple-600 flex items-center justify-center text-text-primary font-bold text-sm cursor-pointer"
+              className="w-9 h-9 rounded-full flex-shrink-0 overflow-hidden"
               whileHover={{ scale: 1.08, rotate: -5 }}
               whileTap={{ scale: 0.95 }}
             >
-              U
+              {avatarUrl ? (
+                <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-primary-accent to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                  {initial}
+                </div>
+              )}
             </motion.div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-text-primary">Trader</p>
-              <p className="text-xs text-text-secondary">Free Account</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-text-primary truncate">{displayName}</p>
+              <p className="text-xs text-text-secondary truncate">{user?.email || "Free Account"}</p>
             </div>
             <motion.button
               onClick={() => {

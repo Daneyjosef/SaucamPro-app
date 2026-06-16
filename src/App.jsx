@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState, Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
@@ -34,6 +34,28 @@ const PrivacyPage = lazy(() => import("./pages/info/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/info/TermsPage"));
 const ContactPage = lazy(() => import("./pages/info/ContactPage"));
 const HelpPage = lazy(() => import("./pages/info/HelpPage"));
+const Onboarding = lazy(() => import("./pages/Onboarding"));
+
+class ErrorBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-4">
+          <p className="text-text-secondary text-sm">Something went wrong on this page.</p>
+          <button
+            className="px-4 py-2 bg-primary-accent text-white rounded-lg text-sm font-semibold"
+            onClick={() => this.setState({ error: null })}
+          >
+            Try again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,18 +102,20 @@ function AppLayout() {
         <LiveTicker coins={tickerCoins} />
         <main className="p-4 md:p-6">
           <div className="max-w-7xl mx-auto w-full">
-            <Suspense fallback={<Spinner />}>
-              <Routes>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="markets" element={<Markets />} />
-                <Route path="trade/:coinId" element={<Trade />} />
-                <Route path="wallet" element={<Wallet />} />
-                <Route path="portfolio" element={<Portfolio />} />
-                <Route path="watchlist" element={<Watchlist />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="*" element={<Dashboard />} />
-              </Routes>
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={<Spinner />}>
+                <Routes>
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="markets" element={<Markets />} />
+                  <Route path="trade/:coinId" element={<Trade />} />
+                  <Route path="wallet" element={<Wallet />} />
+                  <Route path="portfolio" element={<Portfolio />} />
+                  <Route path="watchlist" element={<Watchlist />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="*" element={<Dashboard />} />
+                </Routes>
+              </Suspense>
+            </ErrorBoundary>
           </div>
         </main>
       </div>
@@ -155,6 +179,16 @@ function AppContent() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/help" element={<HelpPage />} />
+
+            {/* Onboarding — protected but outside the app shell */}
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <Onboarding />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Protected app routes */}
             <Route

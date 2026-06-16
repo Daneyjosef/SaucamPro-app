@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { supabase, isSupabaseConfigured } from "../lib/supabase";
 
 const getInitialTheme = () => {
   const saved = localStorage.getItem("saucampro-theme") || "dark";
@@ -111,5 +112,37 @@ export const useAppStore = create((set, get) => ({
   },
   signOut: () => {
     get().setUser(null);
+    if (isSupabaseConfigured && supabase) {
+      supabase.auth.signOut(); // terminates server session; onAuthStateChange confirms cleanup
+    }
+  },
+
+  // Portfolio — local holdings, persisted to localStorage
+  portfolio: (() => {
+    try {
+      return JSON.parse(localStorage.getItem("saucampro-portfolio") || "[]");
+    } catch {
+      return [];
+    }
+  })(),
+  addToPortfolio: (holding) => {
+    const item = {
+      id: Date.now().toString(),
+      coin: (holding.coin_symbol || holding.coin || "").toUpperCase(),
+      amount: Number(holding.amount),
+      buyPrice: Number(holding.avg_buy_price ?? holding.buyPrice ?? 0),
+    };
+    set((state) => {
+      const portfolio = [...state.portfolio, item];
+      localStorage.setItem("saucampro-portfolio", JSON.stringify(portfolio));
+      return { portfolio };
+    });
+  },
+  removeFromPortfolio: (id) => {
+    set((state) => {
+      const portfolio = state.portfolio.filter((p) => p.id !== id);
+      localStorage.setItem("saucampro-portfolio", JSON.stringify(portfolio));
+      return { portfolio };
+    });
   },
 }));
