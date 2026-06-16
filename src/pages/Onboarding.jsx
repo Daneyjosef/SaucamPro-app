@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAppStore } from "../store/useAppStore";
@@ -14,21 +14,20 @@ export default function Onboarding() {
     user?.user_metadata?.full_name || user?.user_metadata?.name || "";
   const avatarUrl = user?.user_metadata?.avatar_url;
 
+  // All hooks must come before any early return
   const [username, setUsername] = useState(googleName);
   const [loading, setLoading] = useState(false);
   const [edited, setEdited] = useState(false);
-
-  // Returning user who already completed onboarding — skip straight to dashboard
-  useEffect(() => {
-    if (user?.id && localStorage.getItem(`saucampro-onboarded-${user.id}`)) {
-      navigate("/app/dashboard", { replace: true });
-    }
-  }, [user, navigate]);
 
   // Keep input in sync if user loads asynchronously
   useEffect(() => {
     if (!edited && googleName) setUsername(googleName);
   }, [googleName, edited]);
+
+  // Synchronous check — returning user never sees the form at all
+  if (user?.id && localStorage.getItem(`saucampro-onboarded-${user.id}`)) {
+    return <Navigate to="/app/dashboard" replace />;
+  }
 
   const initial = username.trim().charAt(0).toUpperCase() || "?";
 
@@ -47,13 +46,13 @@ export default function Onboarding() {
           data: { username: name },
         });
         if (error) throw error;
+        // Flag before setUser so any re-render triggered by the store update
+        // already sees it and the form never flashes again
+        if (user?.id) localStorage.setItem(`saucampro-onboarded-${user.id}`, "true");
         setUser(data.user);
       } else {
+        if (user?.id) localStorage.setItem(`saucampro-onboarded-${user.id}`, "true");
         setUser({ ...user, name });
-      }
-
-      if (user?.id) {
-        localStorage.setItem(`saucampro-onboarded-${user.id}`, "true");
       }
 
       toast.success(`Welcome, ${name}!`);
