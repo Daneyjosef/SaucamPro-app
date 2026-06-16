@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { supabase } from "../lib/supabase";
+import { serverApi } from "../lib/serverApi";
 import { useAppStore } from "../store/useAppStore";
 
 const KEY = ["portfolio"];
@@ -9,14 +9,7 @@ export function usePortfolio() {
   const isAuthenticated = useAppStore((s) => s.isAuthenticated);
   return useQuery({
     queryKey: KEY,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("portfolios")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw new Error(error.message);
-      return data;
-    },
+    queryFn: () => serverApi.get("/api/portfolio").then((r) => r.portfolio),
     enabled: isAuthenticated,
     staleTime: 60 * 1000,
   });
@@ -24,14 +17,8 @@ export function usePortfolio() {
 
 export function useAddHolding() {
   const qc = useQueryClient();
-  const user = useAppStore((s) => s.user);
   return useMutation({
-    mutationFn: async (data) => {
-      const { error } = await supabase
-        .from("portfolios")
-        .insert({ ...data, user_id: user.id });
-      if (error) throw new Error(error.message);
-    },
+    mutationFn: (data) => serverApi.post("/api/portfolio", data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: KEY });
       toast.success("Holding added");
@@ -43,14 +30,10 @@ export function useAddHolding() {
 export function useRemoveHolding() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (id) => {
-      const { error } = await supabase
-        .from("portfolios")
-        .delete()
-        .eq("id", id);
-      if (error) throw new Error(error.message);
+    mutationFn: (id) => serverApi.delete(`/api/portfolio/${id}`),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: KEY });
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: KEY }),
     onError: (err) => toast.error(err.message || "Failed to remove holding"),
   });
 }
@@ -58,13 +41,7 @@ export function useRemoveHolding() {
 export function useUpdateHolding() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...data }) => {
-      const { error } = await supabase
-        .from("portfolios")
-        .update(data)
-        .eq("id", id);
-      if (error) throw new Error(error.message);
-    },
+    mutationFn: ({ id, ...data }) => serverApi.put(`/api/portfolio/${id}`, data),
     onSuccess: () => qc.invalidateQueries({ queryKey: KEY }),
     onError: (err) => toast.error(err.message || "Failed to update holding"),
   });

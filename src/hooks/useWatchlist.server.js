@@ -1,24 +1,20 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { supabase } from "../lib/supabase";
+import { serverApi } from "../lib/serverApi";
 import { useAppStore } from "../store/useAppStore";
 
 const KEY = ["watchlist"];
 
 export function useWatchlist() {
   const isAuthenticated = useAppStore((s) => s.isAuthenticated);
-  const user = useAppStore((s) => s.user);
   const qc = useQueryClient();
 
   const query = useQuery({
     queryKey: KEY,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("watchlists")
-        .select("coin_id");
-      if (error) throw new Error(error.message);
-      return data.map((w) => w.coin_id);
-    },
+    queryFn: () =>
+      serverApi
+        .get("/api/watchlist")
+        .then((r) => r.watchlist.map((w) => w.coin_id)),
     enabled: isAuthenticated,
     staleTime: 60 * 1000,
   });
@@ -26,16 +22,12 @@ export function useWatchlist() {
   const mutation = useMutation({
     mutationFn: async ({ coinId, coinSymbol, willBeWatched }) => {
       if (!willBeWatched) {
-        const { error } = await supabase
-          .from("watchlists")
-          .delete()
-          .eq("coin_id", coinId);
-        if (error) throw new Error(error.message);
+        await serverApi.delete(`/api/watchlist/${coinId}`);
       } else {
-        const { error } = await supabase
-          .from("watchlists")
-          .insert({ coin_id: coinId, coin_symbol: coinSymbol, user_id: user.id });
-        if (error) throw new Error(error.message);
+        await serverApi.post("/api/watchlist", {
+          coin_id: coinId,
+          coin_symbol: coinSymbol,
+        });
       }
     },
     onMutate: async ({ coinId, willBeWatched }) => {
@@ -43,7 +35,9 @@ export function useWatchlist() {
       const prev = qc.getQueryData(KEY) ?? [];
       qc.setQueryData(
         KEY,
-        willBeWatched ? [...prev, coinId] : prev.filter((id) => id !== coinId)
+        willBeWatched
+          ? [...prev, coinId]
+          : prev.filter((id) => id !== coinId)
       );
       return { prev };
     },

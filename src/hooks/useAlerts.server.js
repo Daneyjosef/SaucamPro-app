@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { supabase } from "../lib/supabase";
+import { serverApi } from "../lib/serverApi";
 import { useAppStore } from "../store/useAppStore";
 
 const KEY = ["alerts"];
@@ -9,14 +9,7 @@ export function useAlerts() {
   const isAuthenticated = useAppStore((s) => s.isAuthenticated);
   return useQuery({
     queryKey: KEY,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("price_alerts")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw new Error(error.message);
-      return data;
-    },
+    queryFn: () => serverApi.get("/api/alerts").then((r) => r.alerts),
     enabled: isAuthenticated,
     staleTime: 30 * 1000,
   });
@@ -24,14 +17,8 @@ export function useAlerts() {
 
 export function useCreateAlert() {
   const qc = useQueryClient();
-  const user = useAppStore((s) => s.user);
   return useMutation({
-    mutationFn: async (data) => {
-      const { error } = await supabase
-        .from("price_alerts")
-        .insert({ ...data, user_id: user.id });
-      if (error) throw new Error(error.message);
-    },
+    mutationFn: (data) => serverApi.post("/api/alerts", data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: KEY });
       toast.success("Price alert created");
@@ -43,13 +30,7 @@ export function useCreateAlert() {
 export function useDeleteAlert() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (id) => {
-      const { error } = await supabase
-        .from("price_alerts")
-        .delete()
-        .eq("id", id);
-      if (error) throw new Error(error.message);
-    },
+    mutationFn: (id) => serverApi.delete(`/api/alerts/${id}`),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: KEY });
       toast.success("Alert deleted");
