@@ -36,7 +36,12 @@ async function cachedRequest(axiosInstance, url, params = {}, ttl = 30000) {
 const cgApi = axios.create({
   baseURL: API_BASE_URL,
   timeout: 15000,
-  headers: { Accept: "application/json" },
+  headers: {
+    Accept: "application/json",
+    ...(import.meta.env.VITE_COINGECKO_API_KEY
+      ? { "x-cg-demo-api-key": import.meta.env.VITE_COINGECKO_API_KEY }
+      : {}),
+  },
 });
 
 export const fetchGlobalData = async () => {
@@ -61,7 +66,7 @@ export const fetchCoins = async ({
     price_change_percentage: "1h,24h,7d",
   };
   if (category && category !== "all") params.category = category;
-  return cachedRequest(cgApi, "/coins/markets", params, 30 * 1000);
+  return cachedRequest(cgApi, "/coins/markets", params, 2 * 60 * 1000);
 };
 
 export const fetchCoinById = async (id) => {
@@ -75,7 +80,7 @@ export const fetchCoinById = async (id) => {
 };
 
 export const fetchMarketChart = async (id, { currency = "usd", days = "7" } = {}) => {
-  return cachedRequest(cgApi, `/coins/${id}/market_chart`, { vs_currency: currency, days }, 30 * 1000);
+  return cachedRequest(cgApi, `/coins/${id}/market_chart`, { vs_currency: currency, days }, 2 * 60 * 1000);
 };
 
 export const fetchTopMovers = async ({ currency = "usd" } = {}) => {
@@ -83,7 +88,7 @@ export const fetchTopMovers = async ({ currency = "usd" } = {}) => {
     cgApi,
     "/coins/markets",
     { vs_currency: currency, order: "volume_desc", per_page: 50, page: 1, sparkline: false, price_change_percentage: "24h" },
-    30 * 1000
+    2 * 60 * 1000
   );
   return data
     .sort(

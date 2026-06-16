@@ -62,8 +62,8 @@ const queryClient = new QueryClient({
     queries: {
       retry: 2,
       refetchOnWindowFocus: false,
-      staleTime: 30 * 1000,
-      gcTime: 5 * 60 * 1000,
+      staleTime: 2 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
     },
   },
 });
@@ -86,7 +86,7 @@ function AppLayout() {
     queryClient.prefetchQuery({
       queryKey: ["coins", currency, 1, 20, "market_cap_desc", true, undefined],
       queryFn: () => fetchCoins({ currency, page: 1, perPage: 20, sparkline: true }),
-      staleTime: 30 * 1000,
+      staleTime: 2 * 60 * 1000,
     });
   }, [currency, queryClient]);
 
