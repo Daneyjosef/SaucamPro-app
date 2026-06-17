@@ -42,7 +42,7 @@ export default function SettingsPanel({ open, onClose }) {
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ type: "spring", stiffness: 340, damping: 32 }}
-          className="absolute inset-0 bg-white rounded-3xl z-20 flex flex-col overflow-hidden"
+          className="absolute inset-0 bg-white rounded-3xl z-20 flex flex-col overflow-y-auto"
         >
           {/* Header */}
           <div className="flex items-center px-5 pt-5 pb-4 border-b border-gray-100">
@@ -59,12 +59,12 @@ export default function SettingsPanel({ open, onClose }) {
           </div>
 
           {/* Sign-in section */}
-          <div className="flex flex-col items-center px-6 pt-8 pb-6 border-b border-gray-100">
-            <div className="w-16 h-16 rounded-full bg-gray-900 flex items-center justify-center mb-4 shadow-lg">
+          <div className="flex flex-col items-center px-6 pt-5 pb-5 border-b border-gray-100">
+            <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center mb-3 shadow-lg">
               <img src="/favicon.png" alt="SaucamPro" className="w-10 h-10 object-contain" />
             </div>
-            <p className="font-bold text-gray-900 text-lg mb-1">Welcome to SaucamPro</p>
-            <p className="text-gray-400 text-sm text-center mb-5">Sign in to unlock the full experience</p>
+            <p className="font-bold text-gray-900 text-base mb-1">Welcome to SaucamPro</p>
+            <p className="text-gray-400 text-xs text-center mb-4">Sign in to unlock the full experience</p>
             <button
               onClick={() => { onClose(); navigate("/login"); }}
               className="w-full py-3.5 rounded-2xl bg-gray-900 text-white font-bold text-sm hover:bg-gray-700 transition-colors"
@@ -74,7 +74,7 @@ export default function SettingsPanel({ open, onClose }) {
           </div>
 
           {/* Menu items */}
-          <div className="px-4 py-3 flex-1">
+          <div className="px-4 py-3">
             <div className="bg-gray-50 rounded-2xl overflow-hidden divide-y divide-gray-100">
               {MENU_ITEMS.map((item) => (
                 <button
