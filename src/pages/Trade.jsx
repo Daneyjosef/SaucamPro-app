@@ -18,7 +18,7 @@ export default function Trade() {
   const [tradeType, setTradeType] = useState("buy");
   const [amount, setAmount] = useState("");
 
-  const { data: coin, isLoading: coinLoading } = useCoinById(coinId);
+  const { data: coin, isLoading: coinLoading, isError: coinError, refetch } = useCoinById(coinId);
   const { data: chartData } = useMarketChart(coinId, {
     currency,
     days: timeRange,
@@ -32,10 +32,20 @@ export default function Trade() {
     );
   }
 
-  if (!coin) {
+  if (coinError || !coin) {
     return (
-      <div className="card text-center py-12">
-        <p className="text-text-secondary">Coin not found</p>
+      <div className="card text-center py-12 space-y-4">
+        <p className="text-text-secondary">
+          {coinError ? "Failed to load coin data — you may be rate limited." : "Coin not found."}
+        </p>
+        {coinError && (
+          <button
+            onClick={() => refetch()}
+            className="px-4 py-2 bg-primary-accent text-white rounded-lg text-sm font-semibold"
+          >
+            Retry
+          </button>
+        )}
       </div>
     );
   }

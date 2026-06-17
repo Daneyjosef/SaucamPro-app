@@ -13,7 +13,7 @@ export default function Watchlist() {
 
   const { watchlistIds, toggle, isLoading: watchlistLoading } = useWatchlist();
 
-  const { data: watchedCoins = [], isLoading: coinsLoading } = useCoinsByIds({
+  const { data: watchedCoins = [], isLoading: coinsLoading, isError: coinsError, refetch: refetchCoins } = useCoinsByIds({
     ids: watchlistIds,
     currency,
     sparkline: true,
@@ -47,6 +47,17 @@ export default function Watchlist() {
               <div className="w-14 h-3 bg-primary-border rounded" />
             </div>
           ))}
+        </div>
+      ) : coinsError || (watchlistIds.length > 0 && !coinsLoading && watchedCoins.length === 0) ? (
+        <div className="card text-center py-16 space-y-4">
+          <p className="text-text-secondary">Failed to load coin prices — you may be rate limited.</p>
+          <motion.button
+            onClick={() => refetchCoins()}
+            className="btn-primary"
+            whileTap={{ scale: 0.96 }}
+          >
+            Retry
+          </motion.button>
         </div>
       ) : watchlistIds.length === 0 ? (
         <div className="card text-center py-16">
