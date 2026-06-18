@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fetchCoins } from "../lib/api";
@@ -6,7 +6,7 @@ import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES, CURRENCY_SYMBOLS } from "../lib/constants";
 
-/* ─── animation presets ─── */
+/* â”€â”€â”€ animation presets â”€â”€â”€ */
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   visible: (i = 0) => ({
@@ -17,7 +17,7 @@ const fadeUp = {
 };
 const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
 
-/* ─── animated mockup: Trade ─── */
+/* â”€â”€â”€ animated mockup: Trade â”€â”€â”€ */
 function TradeMockup() {
   const amounts = ["$50", "$100", "$200", "$500"];
   const [selected, setSelected] = useState(1);
@@ -41,7 +41,7 @@ function TradeMockup() {
         {amounts[selected]}
       </motion.p>
       <motion.p key={`sub-${selected}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-400 text-[11px] text-center mb-4">
-        ≈ {values[amounts[selected]]}
+        â‰ˆ {values[amounts[selected]]}
       </motion.p>
       <div className="flex gap-1.5 justify-center mb-4 flex-wrap">
         {amounts.map((a, i) => (
@@ -71,7 +71,7 @@ function TradeMockup() {
   );
 }
 
-/* ─── animated mockup: Portfolio ─── */
+/* â”€â”€â”€ animated mockup: Portfolio â”€â”€â”€ */
 function PortfolioMockup() {
   const holdings = [
     { sym: "BTC", name: "Bitcoin", val: 8200, color: "bg-orange-100 text-orange-600", base: 2.1 },
@@ -98,7 +98,7 @@ function PortfolioMockup() {
         ${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
       </motion.p>
       <motion.p animate={{ color: totalPct >= 0 ? "#10b981" : "#f87171" }} className="text-[11px] font-semibold mb-4 tabular-nums">
-        {totalPct >= 0 ? "▲" : "▼"} {totalPct >= 0 ? "+" : ""}{totalPct}% today
+        {totalPct >= 0 ? "â–²" : "â–¼"} {totalPct >= 0 ? "+" : ""}{totalPct}% today
       </motion.p>
       {holdings.map((h, i) => (
         <div key={h.sym} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
@@ -118,7 +118,7 @@ function PortfolioMockup() {
   );
 }
 
-/* ─── animated mockup: Watchlist ─── */
+/* â”€â”€â”€ animated mockup: Watchlist â”€â”€â”€ */
 function WatchlistMockup() {
   const base = [
     { sym: "BTC", price: 67420, pct: 1.8 },
@@ -172,7 +172,7 @@ function WatchlistMockup() {
   );
 }
 
-/* ─── currency switcher ─── */
+/* â”€â”€â”€ currency switcher â”€â”€â”€ */
 function CurrencySwitcher() {
   const currency = useAppStore((s) => s.currency);
   const setCurrency = useAppStore((s) => s.setCurrency);
@@ -228,7 +228,7 @@ function CurrencySwitcher() {
   );
 }
 
-/* ─── nav dropdown data ─── */
+/* â”€â”€â”€ nav dropdown data â”€â”€â”€ */
 const NAV_DROPDOWNS = [
   {
     label: "Buy",
@@ -280,7 +280,7 @@ const NAV_DROPDOWNS = [
   },
 ];
 
-/* ─── nav dropdown component ─── */
+/* â”€â”€â”€ nav dropdown component â”€â”€â”€ */
 function NavDropdown({ item, navigate }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -316,11 +316,11 @@ function NavDropdown({ item, navigate }) {
                   onClick={() => { navigate(`/${item.route}`); setOpen(false); }}
                   className="mt-6 text-xs font-semibold text-primary-accent hover:underline text-left"
                 >
-                  Show all assets →
+                  Show all assets â†’
                 </button>
               </div>
 
-              {/* Right panel — coin grid */}
+              {/* Right panel â€” coin grid */}
               <div className="flex-1 p-3">
                 <div className="grid grid-cols-2 gap-0.5">
                   {item.coins.map((coin) => (
@@ -377,7 +377,7 @@ const FEATURES = [
   },
 ];
 
-/* ─── live ticker strip ─── */
+/* â”€â”€â”€ live ticker strip â”€â”€â”€ */
 function HeroTicker({ coins }) {
   const { formatPrice } = useCurrency();
   if (!coins.length) return null;
@@ -400,8 +400,8 @@ function HeroTicker({ coins }) {
   );
 }
 
-/* ─── market preview table ─── */
-function MarketPreview({ coins }) {
+/* â”€â”€â”€ market preview table â”€â”€â”€ */
+function MarketPreview({ coins, isAuthenticated }) {
   const navigate = useNavigate();
   const { formatPrice, formatLargeNumber } = useCurrency();
   return (
@@ -418,7 +418,7 @@ function MarketPreview({ coins }) {
         </thead>
         <tbody>
           {coins.map((coin, idx) => (
-            <tr key={coin.id} onClick={() => navigate("/signup")} className="border-b border-primary-border last:border-0 cursor-pointer hover:bg-primary-border/20 transition-colors">
+            <tr key={coin.id} onClick={() => navigate(isAuthenticated ? `/app/trade/${coin.id}` : "/signup")} className="border-b border-primary-border last:border-0 cursor-pointer hover:bg-primary-border/20 transition-colors">
               <td className="py-3 px-3 sm:px-4 text-text-secondary text-sm">{idx + 1}</td>
               <td className="py-3 px-3 sm:px-4">
                 <div className="flex items-center gap-2">
@@ -479,7 +479,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-primary-bg text-text-primary overflow-x-hidden">
 
-      {/* ════════ NAVBAR ════════ */}
+      {/* â•â•â•â•â•â•â•â• NAVBAR â•â•â•â•â•â•â•â• */}
       <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-primary-bg/90 backdrop-blur-xl border-b border-primary-border shadow-sm" : "bg-transparent"}`}>
         <div className="w-full px-5 sm:px-10 lg:px-20 flex items-center justify-between h-16">
           {/* Logo */}
@@ -547,7 +547,7 @@ export default function Landing() {
             >
               <div className="px-4 py-4 flex flex-col gap-1">
                 {NAV_DROPDOWNS.map((item) => (
-                  <button key={item.label} onClick={() => { navigate("/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
+                  <button key={item.label} onClick={() => { navigate(isAuthenticated ? "/app/markets" : "/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
                     {item.label}
                   </button>
                 ))}
@@ -566,7 +566,7 @@ export default function Landing() {
         </AnimatePresence>
       </nav>
 
-      {/* ════════ HERO ════════ */}
+      {/* â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â• */}
       <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-center bg-[#0A0B0D]">
         {/* Scroll-shrinking video */}
         <motion.div style={{ scale: videoScale, borderRadius: videoBorderRadius }} className="absolute inset-0 overflow-hidden origin-top">
@@ -586,7 +586,7 @@ export default function Landing() {
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-accent/10 text-primary-accent border border-primary-accent/20 mb-5 backdrop-blur-sm"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-primary-accent animate-pulse" />
-                Live market data · 10,000+ coins
+                Live market data Â· 10,000+ coins
               </motion.span>
 
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.15] text-white mb-5 drop-shadow-2xl">
@@ -595,7 +595,7 @@ export default function Landing() {
               </h1>
 
               <p className="text-white/70 text-base sm:text-lg md:text-xl mb-8 leading-relaxed drop-shadow-lg">
-                Real-time markets, portfolio analytics, and enterprise-grade security — everything you need in one place.
+                Real-time markets, portfolio analytics, and enterprise-grade security â€” everything you need in one place.
               </p>
 
               <div className="flex items-center gap-3 mb-6">
@@ -610,9 +610,9 @@ export default function Landing() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-xs sm:text-sm text-white/50">
-                <span>⭐ 4.6★ App Store</span>
-                <span>⭐ 4.5★ Google Play</span>
-                <span>🔒 SEC-Licensed</span>
+                <span>â­ 4.6â˜… App Store</span>
+                <span>â­ 4.5â˜… Google Play</span>
+                <span>ðŸ”’ SEC-Licensed</span>
               </div>
             </motion.div>
           </div>
@@ -621,7 +621,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ════════ ACTIONS CARDS ════════ */}
+      {/* â•â•â•â•â•â•â•â• ACTIONS CARDS â•â•â•â•â•â•â•â• */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 bg-primary-bg">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -633,6 +633,7 @@ export default function Landing() {
                 title: "Trade",
                 desc: "Buy and sell crypto instantly at real-time market rates. Fast execution with live CoinGecko price feeds.",
                 cta: "Start Trading",
+                appRoute: "/app/markets",
               },
               {
                 bg: "bg-gradient-to-br from-[#e8f0ff] via-[#d4e4ff] to-[#c5d8f8]",
@@ -640,6 +641,7 @@ export default function Landing() {
                 title: "Track",
                 desc: "Monitor your entire crypto portfolio in one place. Track P&L, analyse performance and manage holdings.",
                 cta: "Track Portfolio",
+                appRoute: "/app/portfolio",
               },
               {
                 bg: "bg-gradient-to-br from-[#1a0a40] via-[#2d1070] to-[#160840]",
@@ -647,6 +649,7 @@ export default function Landing() {
                 title: "Watch & Alert",
                 desc: "Add coins to your watchlist and set price alerts. Get notified the moment your target price is hit.",
                 cta: "Set Alerts",
+                appRoute: "/app/watchlist",
               },
             ].map((card, i) => (
               <motion.div
@@ -663,7 +666,7 @@ export default function Landing() {
                 <div className="bg-[#F5F5F0] p-6 sm:p-7 flex-1 flex flex-col">
                   <h3 className="text-gray-900 text-xl sm:text-2xl font-bold mb-2">{card.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed mb-5 flex-1">{card.desc}</p>
-                  <button onClick={() => navigate("/signup")} className="self-start bg-gray-900 text-white text-sm font-semibold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full hover:bg-gray-700 transition-colors">
+                  <button onClick={() => navigate(isAuthenticated ? card.appRoute : "/signup")} className="self-start bg-gray-900 text-white text-sm font-semibold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full hover:bg-gray-700 transition-colors">
                     {card.cta}
                   </button>
                 </div>
@@ -674,7 +677,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ════════ FEATURES ════════ */}
+      {/* â•â•â•â•â•â•â•â• FEATURES â•â•â•â•â•â•â•â• */}
       <section id="features" className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="text-center mb-10 sm:mb-14">
@@ -703,32 +706,32 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ════════ LIVE MARKET PREVIEW ════════ */}
+      {/* â•â•â•â•â•â•â•â• LIVE MARKET PREVIEW â•â•â•â•â•â•â•â• */}
       <section id="markets" className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <div className="max-w-4xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="text-center mb-8 sm:mb-10">
             <motion.p variants={fadeUp} className="text-primary-accent text-xs sm:text-sm font-semibold uppercase tracking-widest mb-3">Live markets</motion.p>
             <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-3">Top cryptocurrencies right now</motion.h2>
-            <motion.p variants={fadeUp} className="text-text-secondary text-sm sm:text-base">Prices update every 30 seconds — no refresh needed.</motion.p>
+            <motion.p variants={fadeUp} className="text-text-secondary text-sm sm:text-base">Prices update every 30 seconds â€” no refresh needed.</motion.p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 260, damping: 22 }}>
             {coins.length > 0 ? (
-              <MarketPreview coins={coins.slice(0, 5)} />
+              <MarketPreview coins={coins.slice(0, 5)} isAuthenticated={isAuthenticated} />
             ) : (
               <div className="card py-12 text-center text-text-secondary text-sm">Loading market data...</div>
             )}
           </motion.div>
 
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mt-6">
-            <motion.button onClick={() => navigate("/signup")} className="text-primary-accent font-semibold text-sm hover:underline" whileHover={{ scale: 1.04 }}>
-              See all markets →
+            <motion.button onClick={() => navigate(isAuthenticated ? "/app/markets" : "/signup")} className="text-primary-accent font-semibold text-sm hover:underline" whileHover={{ scale: 1.04 }}>
+              See all markets â†’
             </motion.button>
           </motion.div>
         </div>
       </section>
 
-      {/* ════════ CTA BANNER ════════ */}
+      {/* â•â•â•â•â•â•â•â• CTA BANNER â•â•â•â•â•â•â•â• */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="max-w-2xl mx-auto text-center">
           <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-3">
@@ -769,7 +772,7 @@ export default function Landing() {
         </motion.div>
       </section>
 
-      {/* ════════ FOOTER ════════ */}
+      {/* â•â•â•â•â•â•â•â• FOOTER â•â•â•â•â•â•â•â• */}
       <footer className="border-t border-primary-border py-10 sm:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
@@ -778,7 +781,7 @@ export default function Landing() {
                 <img src="/favicon.png" alt="SaucamPro" className="h-8 w-auto" />
               </div>
               <p className="text-text-secondary text-xs leading-relaxed mb-4">
-                A licensed global digital assets platform — secure, transparent, and built for modern traders.
+                A licensed global digital assets platform â€” secure, transparent, and built for modern traders.
               </p>
               <div className="flex gap-3">
                 {["twitter", "telegram", "instagram"].map((s) => (
@@ -822,7 +825,7 @@ export default function Landing() {
 
           <div className="border-t border-primary-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-text-secondary text-xs">
             <span>&copy; 2026 SaucamPro. All rights reserved.</span>
-            <span>Licensed · Regulated · Trusted Globally</span>
+            <span>Licensed Â· Regulated Â· Trusted Globally</span>
           </div>
         </div>
       </footer>
