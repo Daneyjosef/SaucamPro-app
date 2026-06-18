@@ -143,9 +143,18 @@ function AppContent() {
       return;
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null, false);
-    });
+    // If the URL contains an auth callback (PKCE code or implicit token), Supabase will
+    // exchange it asynchronously and fire onAuthStateChange. Calling getSession() first
+    // would return null and clear authLoading before the exchange completes, causing
+    // ProtectedRoute to redirect to /login before the session is established.
+    const params = new URLSearchParams(window.location.search);
+    const isAuthCallback = params.has("code") || window.location.hash.includes("access_token");
+
+    if (!isAuthCallback) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUser(session?.user ?? null, false);
+      });
+    }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null, false);
