@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fetchCoins } from "../lib/api";
@@ -479,7 +479,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-primary-bg text-text-primary overflow-x-hidden">
 
-      {/* â•â•â•â•â•â•â•â• NAVBAR â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ NAVBAR ================================================================ */}
       <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-primary-bg/90 backdrop-blur-xl border-b border-primary-border shadow-sm" : "bg-transparent"}`}>
         <div className="w-full px-5 sm:px-10 lg:px-20 flex items-center justify-between h-16">
           {/* Logo */}
@@ -566,7 +566,7 @@ export default function Landing() {
         </AnimatePresence>
       </nav>
 
-      {/* â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ HERO ================================================================ */}
       <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-center bg-[#0A0B0D]">
         {/* Scroll-shrinking video */}
         <motion.div style={{ scale: videoScale, borderRadius: videoBorderRadius }} className="absolute inset-0 overflow-hidden origin-top">
@@ -609,11 +609,6 @@ export default function Landing() {
                 </motion.button>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-xs sm:text-sm text-white/50">
-                <span>â­ 4.6â˜… App Store</span>
-                <span>â­ 4.5â˜… Google Play</span>
-                <span>ðŸ”’ SEC-Licensed</span>
-              </div>
             </motion.div>
           </div>
 
@@ -621,7 +616,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â• ACTIONS CARDS â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ ACTIONS CARDS ================================================================ */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 bg-primary-bg">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -677,7 +672,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â• FEATURES â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ FEATURES ================================================================ */}
       <section id="features" className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="text-center mb-10 sm:mb-14">
@@ -706,7 +701,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â• LIVE MARKET PREVIEW â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ LIVE MARKET PREVIEW ================================================================ */}
       <section id="markets" className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <div className="max-w-4xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="text-center mb-8 sm:mb-10">
@@ -731,7 +726,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â• CTA BANNER â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ CTA BANNER ================================================================ */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-primary-border">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="max-w-2xl mx-auto text-center">
           <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-3">
@@ -772,7 +767,7 @@ export default function Landing() {
         </motion.div>
       </section>
 
-      {/* â•â•â•â•â•â•â•â• FOOTER â•â•â•â•â•â•â•â• */}
+      {/* ================================================================ FOOTER ================================================================ */}
       <footer className="border-t border-primary-border py-10 sm:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
@@ -825,7 +820,7 @@ export default function Landing() {
 
           <div className="border-t border-primary-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-text-secondary text-xs">
             <span>&copy; 2026 SaucamPro. All rights reserved.</span>
-            <span>Licensed Â· Regulated Â· Trusted Globally</span>
+            <span>Licensed &middot; Regulated &middot; Trusted Globally</span>
           </div>
         </div>
       </footer>

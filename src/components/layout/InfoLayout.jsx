@@ -86,7 +86,7 @@ export default function InfoLayout({ children }) {
           </div>
           <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-gray-400 text-xs">
             <span>&copy; 2026 SaucamPro. All rights reserved.</span>
-            <span>Licensed · Regulated · Trusted Globally</span>
+            <span>Licensed &middot; Regulated &middot; Trusted Globally</span>
           </div>
         </div>
       </footer>
