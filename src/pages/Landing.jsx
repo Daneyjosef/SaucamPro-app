@@ -6,7 +6,7 @@ import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES, CURRENCY_SYMBOLS } from "../lib/constants";
 
-/* â”€â”€â”€ animation presets â”€â”€â”€ */
+/* ─── animation presets ─── */
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   visible: (i = 0) => ({
@@ -17,7 +17,7 @@ const fadeUp = {
 };
 const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
 
-/* â”€â”€â”€ animated mockup: Trade â”€â”€â”€ */
+/* ─── animated mockup: Trade ─── */
 function TradeMockup() {
   const amounts = ["$50", "$100", "$200", "$500"];
   const [selected, setSelected] = useState(1);
@@ -41,7 +41,7 @@ function TradeMockup() {
         {amounts[selected]}
       </motion.p>
       <motion.p key={`sub-${selected}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-400 text-[11px] text-center mb-4">
-        â‰ˆ {values[amounts[selected]]}
+        ≈ {values[amounts[selected]]}
       </motion.p>
       <div className="flex gap-1.5 justify-center mb-4 flex-wrap">
         {amounts.map((a, i) => (
@@ -71,7 +71,7 @@ function TradeMockup() {
   );
 }
 
-/* â”€â”€â”€ animated mockup: Portfolio â”€â”€â”€ */
+/* ─── animated mockup: Portfolio ─── */
 function PortfolioMockup() {
   const holdings = [
     { sym: "BTC", name: "Bitcoin", val: 8200, color: "bg-orange-100 text-orange-600", base: 2.1 },
@@ -98,7 +98,7 @@ function PortfolioMockup() {
         ${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
       </motion.p>
       <motion.p animate={{ color: totalPct >= 0 ? "#10b981" : "#f87171" }} className="text-[11px] font-semibold mb-4 tabular-nums">
-        {totalPct >= 0 ? "â–²" : "â–¼"} {totalPct >= 0 ? "+" : ""}{totalPct}% today
+        {totalPct >= 0 ? "▲" : "▼"} {totalPct >= 0 ? "+" : ""}{totalPct}% today
       </motion.p>
       {holdings.map((h, i) => (
         <div key={h.sym} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
@@ -118,7 +118,7 @@ function PortfolioMockup() {
   );
 }
 
-/* â”€â”€â”€ animated mockup: Watchlist â”€â”€â”€ */
+/* ─── animated mockup: Watchlist ─── */
 function WatchlistMockup() {
   const base = [
     { sym: "BTC", price: 67420, pct: 1.8 },
@@ -172,7 +172,7 @@ function WatchlistMockup() {
   );
 }
 
-/* â”€â”€â”€ currency switcher â”€â”€â”€ */
+/* ─── currency switcher ─── */
 function CurrencySwitcher() {
   const currency = useAppStore((s) => s.currency);
   const setCurrency = useAppStore((s) => s.setCurrency);
@@ -228,7 +228,7 @@ function CurrencySwitcher() {
   );
 }
 
-/* â”€â”€â”€ nav dropdown data â”€â”€â”€ */
+/* ─── nav dropdown data ─── */
 const NAV_DROPDOWNS = [
   {
     label: "Buy",
@@ -280,7 +280,7 @@ const NAV_DROPDOWNS = [
   },
 ];
 
-/* â”€â”€â”€ nav dropdown component â”€â”€â”€ */
+/* ─── nav dropdown component ─── */
 function NavDropdown({ item, navigate }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -316,11 +316,11 @@ function NavDropdown({ item, navigate }) {
                   onClick={() => { navigate(`/${item.route}`); setOpen(false); }}
                   className="mt-6 text-xs font-semibold text-primary-accent hover:underline text-left"
                 >
-                  Show all assets â†’
+                  Show all assets →
                 </button>
               </div>
 
-              {/* Right panel â€” coin grid */}
+              {/* Right panel — coin grid */}
               <div className="flex-1 p-3">
                 <div className="grid grid-cols-2 gap-0.5">
                   {item.coins.map((coin) => (
@@ -377,7 +377,7 @@ const FEATURES = [
   },
 ];
 
-/* â”€â”€â”€ live ticker strip â”€â”€â”€ */
+/* ─── live ticker strip ─── */
 function HeroTicker({ coins }) {
   const { formatPrice } = useCurrency();
   if (!coins.length) return null;
@@ -400,7 +400,7 @@ function HeroTicker({ coins }) {
   );
 }
 
-/* â”€â”€â”€ market preview table â”€â”€â”€ */
+/* ─── market preview table ─── */
 function MarketPreview({ coins, isAuthenticated }) {
   const navigate = useNavigate();
   const { formatPrice, formatLargeNumber } = useCurrency();
@@ -586,7 +586,7 @@ export default function Landing() {
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-accent/10 text-primary-accent border border-primary-accent/20 mb-5 backdrop-blur-sm"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-primary-accent animate-pulse" />
-                Live market data Â· 10,000+ coins
+                Live market data · 10,000+ coins
               </motion.span>
 
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.15] text-white mb-5 drop-shadow-2xl">
@@ -595,7 +595,7 @@ export default function Landing() {
               </h1>
 
               <p className="text-white/70 text-base sm:text-lg md:text-xl mb-8 leading-relaxed drop-shadow-lg">
-                Real-time markets, portfolio analytics, and enterprise-grade security â€” everything you need in one place.
+                Real-time markets, portfolio analytics, and enterprise-grade security — everything you need in one place.
               </p>
 
               <div className="flex items-center gap-3 mb-6">
@@ -707,7 +707,7 @@ export default function Landing() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="text-center mb-8 sm:mb-10">
             <motion.p variants={fadeUp} className="text-primary-accent text-xs sm:text-sm font-semibold uppercase tracking-widest mb-3">Live markets</motion.p>
             <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-3">Top cryptocurrencies right now</motion.h2>
-            <motion.p variants={fadeUp} className="text-text-secondary text-sm sm:text-base">Prices update every 30 seconds â€” no refresh needed.</motion.p>
+            <motion.p variants={fadeUp} className="text-text-secondary text-sm sm:text-base">Prices update every 30 seconds — no refresh needed.</motion.p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 260, damping: 22 }}>
@@ -720,7 +720,7 @@ export default function Landing() {
 
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mt-6">
             <motion.button onClick={() => navigate(isAuthenticated ? "/app/markets" : "/signup")} className="text-primary-accent font-semibold text-sm hover:underline" whileHover={{ scale: 1.04 }}>
-              See all markets â†’
+              See all markets →
             </motion.button>
           </motion.div>
         </div>
@@ -776,7 +776,7 @@ export default function Landing() {
                 <img src="/favicon.png" alt="SaucamPro" className="h-8 w-auto" />
               </div>
               <p className="text-text-secondary text-xs leading-relaxed mb-4">
-                A licensed global digital assets platform â€” secure, transparent, and built for modern traders.
+                A licensed global digital assets platform — secure, transparent, and built for modern traders.
               </p>
               <div className="flex gap-3">
                 {["twitter", "telegram", "instagram"].map((s) => (
