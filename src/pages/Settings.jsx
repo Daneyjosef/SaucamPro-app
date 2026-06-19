@@ -1,9 +1,23 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES } from "../lib/constants";
 
+function getDisplayName(user) {
+  return (
+    user?.user_metadata?.username ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    user?.name ||
+    user?.email?.split("@")[0] ||
+    "Trader"
+  );
+}
+
 export default function Settings() {
-  const { currency, setCurrency } = useAppStore();
+  const { currency, setCurrency, signOut, user } = useAppStore();
+  const navigate = useNavigate();
+  const displayName = getDisplayName(user);
 
   return (
     <motion.div
@@ -120,6 +134,29 @@ export default function Settings() {
               </label>
             </label>
           ))}
+        </div>
+      </motion.div>
+
+      {/* Account */}
+      <motion.div
+        className="card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18 }}
+      >
+        <h3 className="text-lg font-bold text-text-primary mb-4">Account</h3>
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-text-primary text-sm font-medium truncate">{displayName}</p>
+            <p className="text-text-secondary text-xs truncate">{user?.email || "Free Account"}</p>
+          </div>
+          <motion.button
+            onClick={() => { signOut(); navigate("/"); }}
+            className="flex-shrink-0 bg-loss/10 text-loss text-sm font-semibold px-4 py-2 rounded-lg hover:bg-loss/20 transition-colors"
+            whileTap={{ scale: 0.96 }}
+          >
+            Sign Out
+          </motion.button>
         </div>
       </motion.div>
 
