@@ -12,5 +12,3 @@ server/.env
 # Claude Code local settings
 .claude/
 
-# Internal docs
-docs/
