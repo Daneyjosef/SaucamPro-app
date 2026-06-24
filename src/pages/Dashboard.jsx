@@ -6,8 +6,8 @@ import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { PortfolioAreaChart } from "../components/charts";
 import { AnimatedCounter, PriceChange, CoinLogo, Sparkline } from "../components/common";
-import { useWatchlist } from "../hooks/useWatchlist";
-import { usePortfolio } from "../hooks/usePortfolio";
+import { useWatchlist } from "../hooks/useWatchlist.server";
+import { usePortfolio } from "../hooks/usePortfolio.server";
 
 const stagger = {
   animate: { transition: { staggerChildren: 0.07 } },

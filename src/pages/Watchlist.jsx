@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CoinLogo, PriceChange, Sparkline } from "../components/common";
-import { useWatchlist } from "../hooks/useWatchlist";
+import { useWatchlist } from "../hooks/useWatchlist.server";
 import { useCoinsByIds } from "../hooks/useCoins";
 
 export default function Watchlist() {

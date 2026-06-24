@@ -6,7 +6,7 @@ import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CoinLogo, PriceChange, Sparkline } from "../components/common";
 import { CATEGORY_FILTERS } from "../lib/constants";
-import { useWatchlist } from "../hooks/useWatchlist";
+import { useWatchlist } from "../hooks/useWatchlist.server";
 
 export default function Markets() {
   const navigate = useNavigate();
