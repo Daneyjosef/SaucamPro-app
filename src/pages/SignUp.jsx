@@ -5,6 +5,15 @@ import toast from "react-hot-toast";
 import { useAppStore } from "../store/useAppStore";
 import { supabase, isSupabaseConfigured } from "../lib/supabase";
 
+const GoogleIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 48 48">
+    <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.3 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l5.9-5.9C34.4 5.1 29.5 3 24 3 12.9 3 4 11.9 4 23s8.9 20 20 20c11 0 20-8 20-20 0-1.3-.1-2.7-.4-4z" />
+    <path fill="#FF3D00" d="m6.3 14.7 6.5 4.8C14.5 15.1 18.9 12 24 12c3.1 0 5.9 1.1 8.1 2.9l5.9-5.9C34.4 5.1 29.5 3 24 3c-7.6 0-14.2 4.2-17.7 10.7z" />
+    <path fill="#4CAF50" d="M24 43c5.3 0 10.1-1.9 13.8-5.1l-6.4-5.4C29.4 34.3 26.8 35 24 35c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.9 39 16.5 43 24 43z" />
+    <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.4 5.4C41.4 35.2 44 29.6 44 23c0-1.3-.1-2-.4-3z" />
+  </svg>
+);
+
 const fieldVariants = {
   hidden: { opacity: 0, y: 16 },
   visible: (i) => ({
@@ -39,9 +48,26 @@ export default function SignUp() {
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const strength = useMemo(() => getStrength(password), [password]);
   const passwordsMatch = confirmPassword ? password === confirmPassword : null;
+
+  const handleGoogleSignUp = async () => {
+    if (!isSupabaseConfigured || !supabase) {
+      toast.error("Supabase is not configured. Add your env vars to enable Google sign-up.");
+      return;
+    }
+    setGoogleLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/onboarding` },
+    });
+    if (error) {
+      toast.error(error.message);
+      setGoogleLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -136,6 +162,42 @@ export default function SignUp() {
           >
             Start managing your crypto portfolio today
           </motion.p>
+
+          {/* Google OAuth */}
+          <motion.button
+            custom={2}
+            variants={fieldVariants}
+            initial="hidden"
+            animate="visible"
+            onClick={handleGoogleSignUp}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-3 border border-primary-border rounded-lg py-3 text-sm font-medium text-text-primary hover:bg-primary-border/30 transition-colors mb-6 disabled:opacity-50"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+          >
+            <AnimatePresence mode="wait">
+              {googleLoading ? (
+                <motion.div
+                  key="spinner"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="w-4 h-4 border-2 border-primary-accent border-t-transparent rounded-full animate-spin"
+                />
+              ) : (
+                <motion.span key="icon" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <GoogleIcon />
+                </motion.span>
+              )}
+            </AnimatePresence>
+            Continue with Google
+          </motion.button>
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-primary-border" />
+            <span className="text-text-secondary text-xs">or sign up with email</span>
+            <div className="flex-1 h-px bg-primary-border" />
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <motion.div custom={2} variants={fieldVariants} initial="hidden" animate="visible">
