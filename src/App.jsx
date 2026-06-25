@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, useState, Component } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useEffect, useRef, useState, Component } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { useAppStore } from "./store/useAppStore";
@@ -123,6 +123,30 @@ function AppLayout() {
   );
 }
 
+function AuthHandler() {
+  const navigate = useNavigate();
+  const user = useAppStore((s) => s.user);
+  const authLoading = useAppStore((s) => s.authLoading);
+  const prevUserId = useRef(undefined);
+
+  useEffect(() => {
+    if (authLoading) return;
+
+    const justSignedIn = !prevUserId.current && !!user;
+    prevUserId.current = user?.id ?? null;
+
+    if (justSignedIn && user) {
+      const isOAuth = user.app_metadata?.provider !== "email";
+      const hasOnboarded = localStorage.getItem(`saucampro-onboarded-${user.id}`);
+      if (isOAuth && !hasOnboarded) {
+        navigate("/onboarding", { replace: true });
+      }
+    }
+  }, [user, authLoading, navigate]);
+
+  return null;
+}
+
 function AppContent() {
   const setUser = useAppStore((s) => s.setUser);
   const theme = useAppStore((s) => s.theme);
@@ -166,6 +190,7 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-primary-bg text-text-primary">
       <BrowserRouter>
+        <AuthHandler />
         <Suspense fallback={<div className="min-h-screen bg-primary-bg" />}>
           <Routes>
             {/* Public routes */}
