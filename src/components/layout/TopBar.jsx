@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../store/useAppStore";
 import { CURRENCIES } from "../../lib/constants";
 import { fetchCoins, searchCoins } from "../../lib/api";
+import { CurrencyFlag } from "../common";
 
 const NOTIF_ICONS = {
   portfolio_add: "➕",
@@ -229,8 +230,8 @@ export default function TopBar() {
                         currency === c.code ? "text-primary-accent" : "text-text-secondary"
                       }`}
                     >
-                      <span>
-                        {c.flag} {c.name}
+                      <span className="flex items-center gap-2">
+                        <CurrencyFlag countryCode={c.countryCode} /> {c.name}
                       </span>
                       {currency === c.code && <span className="text-primary-accent">✓</span>}
                     </button>

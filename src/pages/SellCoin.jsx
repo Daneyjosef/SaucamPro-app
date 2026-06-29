@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES, CURRENCY_SYMBOLS } from "../lib/constants";
 import SettingsPanel from "../components/common/SettingsPanel";
+import { CurrencyFlag } from "../components/common";
 
 const COINS = [
   { id: "bitcoin",      sym: "BTC",  name: "Bitcoin",   img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png",      color: "#F7931A" },
@@ -118,7 +119,7 @@ function CurrencyDropdown({ selected, onSelect }) {
                   onClick={() => { onSelect(c.code); setOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors ${selected === c.code ? "bg-gray-50" : ""}`}
                 >
-                  <span className="w-5 text-center font-semibold text-gray-700 text-sm">{c.flag}</span>
+                  <span className="w-5 flex items-center justify-center"><CurrencyFlag countryCode={c.countryCode} /></span>
                   <span className="text-gray-900 text-sm font-medium">{c.code.toUpperCase()}</span>
                   <span className="ml-auto text-gray-400 text-xs truncate">{c.name}</span>
                 </button>

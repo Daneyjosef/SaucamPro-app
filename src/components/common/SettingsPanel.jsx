@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "../../store/useAppStore";
 import { CURRENCIES } from "../../lib/constants";
+import { CurrencyFlag } from "./index";
 
 const BackIcon = () => (
   <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +48,7 @@ function PreferencesPanel({ onBack }) {
                 onClick={() => { setCurrency(c.code); setView(null); }}
                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition-colors text-left"
               >
-                <span className="w-7 text-center font-bold text-gray-700 text-sm">{c.flag}</span>
+                <span className="w-7 flex items-center justify-center"><CurrencyFlag countryCode={c.countryCode} /></span>
                 <span className="text-gray-900 text-sm font-semibold flex-1">{c.code.toUpperCase()}</span>
                 <span className="text-gray-400 text-xs">{c.name}</span>
                 {currency === c.code && (

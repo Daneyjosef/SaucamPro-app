@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES } from "../lib/constants";
+import { CurrencyFlag } from "../components/common";
 
 function getDisplayName(user) {
   return (
@@ -71,7 +72,7 @@ export default function Settings() {
               }`}
               whileTap={{ scale: 0.95 }}
             >
-              <span>{c.flag}</span>
+              <CurrencyFlag countryCode={c.countryCode} />
               <span>{c.code.toUpperCase()}</span>
             </motion.button>
           ))}

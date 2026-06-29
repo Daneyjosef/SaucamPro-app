@@ -4,6 +4,18 @@ import { motion } from "framer-motion";
 import { useAppStore } from "../../store/useAppStore";
 import { CURRENCY_SYMBOLS } from "../../lib/constants";
 
+export const CurrencyFlag = React.memo(function CurrencyFlag({ countryCode, className = "" }) {
+  return (
+    <img
+      src={`https://flagcdn.com/24x18/${countryCode}.png`}
+      srcSet={`https://flagcdn.com/48x36/${countryCode}.png 2x`}
+      alt={countryCode.toUpperCase()}
+      className={`inline-block w-5 h-[15px] rounded-sm object-cover ${className}`}
+      loading="lazy"
+    />
+  );
+});
+
 export const AnimatedCounter = React.memo(function AnimatedCounter({
   value,
   decimals = 2,

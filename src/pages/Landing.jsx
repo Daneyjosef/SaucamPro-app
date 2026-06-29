@@ -5,6 +5,7 @@ import { fetchCoins } from "../lib/api";
 import { useCurrency } from "../hooks/useCurrency";
 import { useAppStore } from "../store/useAppStore";
 import { CURRENCIES, CURRENCY_SYMBOLS } from "../lib/constants";
+import { CurrencyFlag } from "../components/common";
 
 /* ─── animation presets ─── */
 const fadeUp = {
@@ -215,7 +216,7 @@ function CurrencySwitcher() {
                   onClick={() => { setCurrency(c.code); setOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors hover:bg-primary-border/30 ${currency === c.code ? "text-primary-accent font-semibold" : "text-text-secondary"}`}
                 >
-                  <span className="w-5 text-center font-semibold text-text-primary">{c.flag}</span>
+                  <span className="w-5 flex items-center justify-center"><CurrencyFlag countryCode={c.countryCode} /></span>
                   <span>{c.code.toUpperCase()}</span>
                   <span className="ml-auto text-text-secondary text-xs truncate">{c.name}</span>
                 </button>
