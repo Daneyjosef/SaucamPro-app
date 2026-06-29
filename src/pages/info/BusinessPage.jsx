@@ -10,7 +10,7 @@ const SERVICES = [
     slug: "crypto-storage",
     title: "Saucam Crypto Storage",
     desc: "Keep your business's digital assets safe with institutional-grade custody. Multi-signature wallets, cold storage, and 24/7 monitoring protect your holdings around the clock.",
-    image: "/images/business/crypto-storage.jpg",
+    image: "/crypto-storage.jpg",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" />
@@ -23,7 +23,7 @@ const SERVICES = [
     slug: "coin-exchange",
     title: "Saucam Coin Exchange",
     desc: "Swap between cryptocurrencies instantly at competitive, transparent rates. Built for businesses that need fast settlement without slippage surprises.",
-    image: "/images/business/coin-exchange.jpg",
+    image: "/coin-exchange.jpg",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
@@ -35,7 +35,7 @@ const SERVICES = [
     slug: "local-currencies",
     title: "Saucam Coin / Any Local Currencies",
     desc: "Convert Saucam Coin to and from local currencies wherever you operate. Settle payroll, vendors, and invoices in the currency your business needs.",
-    image: "/images/business/local-currencies.jpg",
+    image: "/local-currencies.jpg",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
@@ -47,7 +47,7 @@ const SERVICES = [
     slug: "trade",
     title: "Saucam Trade",
     desc: "Access deep liquidity and real-time market data to execute business-grade trades across hundreds of crypto pairs, with dedicated support when you need it.",
-    image: "/images/business/trade.jpg",
+    image: "/trade.jpg",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -59,7 +59,7 @@ const SERVICES = [
     slug: "buybacks",
     title: "Saucam Buybacks",
     desc: "Manage treasury exposure with structured buyback programs. Sell back at fair market value with predictable, scheduled settlement.",
-    image: "/images/business/buybacks.jpg",
+    image: "/buybacks.jpg",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 12a9 9 0 0115-6.7M21 12a9 9 0 01-15 6.7M3 5v5h5M21 19v-5h-5" />
@@ -71,7 +71,7 @@ const SERVICES = [
     slug: "buy-sale",
     title: "Saucam Buy/Sale",
     desc: "A simple, reliable way for businesses to buy or sell crypto in bulk — cards, bank transfers, or wires, with rates built for volume.",
-    image: "/images/business/buy-sale.jpg",
+    image: "/buy-sale.jpg",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
