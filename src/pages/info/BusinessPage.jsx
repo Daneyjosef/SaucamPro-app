@@ -162,14 +162,14 @@ function ServiceSection({ service, index: i, navigate }) {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex-1 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl"
+          className="group flex-1 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl"
         >
           {!imageFailed ? (
             <img
               src={service.image}
               alt={service.title}
               onError={() => setImageFailed(true)}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover scale-110 transition-transform duration-500 ease-out group-hover:scale-100"
             />
           ) : (
             <div className={`w-full h-full bg-gradient-to-br ${service.gradient} flex items-center justify-center text-white`}>
