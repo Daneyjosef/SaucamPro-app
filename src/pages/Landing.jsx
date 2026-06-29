@@ -275,26 +275,28 @@ function CategoryNav({ navigate, isAuthenticated }) {
 
       <AnimatePresence>
         {active && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute left-0 top-full mt-3 z-50 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden py-2"
-          >
-            {items.map((item, idx) => (
-              <button
-                key={item.label}
-                onClick={() => {
-                  navigate(item.route || (isAuthenticated ? "/app/dashboard" : "/signup"));
-                  setActive(null);
-                }}
-                className={`w-full text-left px-5 py-3.5 text-[15px] font-medium text-gray-900 hover:bg-gray-50 transition-colors ${idx !== items.length - 1 ? "border-b border-gray-100" : ""}`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </motion.div>
+          <div className="absolute left-0 top-full pt-3 z-50 w-72">
+            <motion.div
+              initial={{ opacity: 0, y: 8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.98 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden py-2"
+            >
+              {items.map((item, idx) => (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    navigate(item.route || (isAuthenticated ? "/app/dashboard" : "/signup"));
+                    setActive(null);
+                  }}
+                  className={`w-full text-left px-5 py-3.5 text-[15px] font-medium text-gray-900 hover:bg-gray-50 transition-colors ${idx !== items.length - 1 ? "border-b border-gray-100" : ""}`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>
