@@ -500,6 +500,7 @@ export default function Landing() {
   const [coins, setCoins] = useState([]);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState(null);
   const [emailInput, setEmailInput] = useState("");
   const heroRef = useRef(null);
 
@@ -592,18 +593,48 @@ export default function Landing() {
               className="md:hidden bg-primary-bg/95 backdrop-blur-xl border-b border-primary-border overflow-hidden"
             >
               <div className="px-4 py-4 flex flex-col gap-1">
-                <p className="text-text-secondary text-xs font-semibold uppercase tracking-wide pt-1 pb-1">Personal</p>
-                {PERSONAL_ITEMS.map((item) => (
-                  <button key={item.label} onClick={() => { navigate(`/${item.route}`); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 transition-colors">
-                    {item.label}
-                  </button>
-                ))}
-                <button onClick={() => { navigate("/business"); setMenuOpen(false); }} className="text-left text-text-secondary text-xs font-semibold uppercase tracking-wide pt-3 pb-1 hover:text-text-primary transition-colors">Business</button>
-                {BUSINESS_ITEMS.map((item) => (
-                  <button key={item.label} onClick={() => { navigate(`/business#${item.slug}`); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
-                    {item.label}
-                  </button>
-                ))}
+                <button
+                  onClick={() => setMobileSection((s) => (s === "personal" ? null : "personal"))}
+                  className="w-full flex items-center justify-between text-left text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 transition-colors"
+                >
+                  Personal
+                  <svg className={`w-4 h-4 text-text-secondary transition-transform ${mobileSection === "personal" ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <AnimatePresence>
+                  {mobileSection === "personal" && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
+                      {PERSONAL_ITEMS.map((item) => (
+                        <button key={item.label} onClick={() => { navigate(`/${item.route}`); setMenuOpen(false); setMobileSection(null); }} className="w-full text-left text-text-secondary hover:text-text-primary text-sm font-medium py-2.5 pl-3 border-b border-primary-border/40 transition-colors">
+                          {item.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <button
+                  onClick={() => setMobileSection((s) => (s === "business" ? null : "business"))}
+                  className="w-full flex items-center justify-between text-left text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 transition-colors"
+                >
+                  Business
+                  <svg className={`w-4 h-4 text-text-secondary transition-transform ${mobileSection === "business" ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <AnimatePresence>
+                  {mobileSection === "business" && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
+                      {BUSINESS_ITEMS.map((item) => (
+                        <button key={item.label} onClick={() => { navigate(`/business#${item.slug}`); setMenuOpen(false); setMobileSection(null); }} className="w-full text-left text-text-secondary hover:text-text-primary text-sm font-medium py-2.5 pl-3 border-b border-primary-border/40 transition-colors">
+                          {item.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {isAuthenticated ? (
                   <button onClick={() => { navigate("/app/dashboard"); setMenuOpen(false); }} className="text-left text-primary-accent font-semibold text-sm py-2.5 transition-colors">
                     Go to Dashboard
