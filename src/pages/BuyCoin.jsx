@@ -119,7 +119,7 @@ function CurrencyDropdown({ selected, onSelect }) {
                   onClick={() => { onSelect(c.code); setOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors ${selected === c.code ? "bg-gray-50" : ""}`}
                 >
-                  <span className="w-5 text-center font-semibold text-gray-700 text-sm">{c.symbol}</span>
+                  <span className="w-5 text-center font-semibold text-gray-700 text-sm">{c.flag}</span>
                   <span className="text-gray-900 text-sm font-medium">{c.code.toUpperCase()}</span>
                   <span className="ml-auto text-gray-400 text-xs truncate">{c.name}</span>
                 </button>

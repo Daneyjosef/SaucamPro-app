@@ -230,7 +230,7 @@ export default function TopBar() {
                       }`}
                     >
                       <span>
-                        {c.symbol} {c.name}
+                        {c.flag} {c.name}
                       </span>
                       {currency === c.code && <span className="text-primary-accent">✓</span>}
                     </button>

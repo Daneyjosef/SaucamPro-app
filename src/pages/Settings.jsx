@@ -71,7 +71,7 @@ export default function Settings() {
               }`}
               whileTap={{ scale: 0.95 }}
             >
-              <span>{c.symbol}</span>
+              <span>{c.flag}</span>
               <span>{c.code.toUpperCase()}</span>
             </motion.button>
           ))}
