@@ -282,16 +282,16 @@ const PERSONAL_ITEMS = [
 ];
 
 const BUSINESS_ITEMS = [
-  { label: "Saucam Crypto Storage" },
-  { label: "Saucam Coin Exchange" },
-  { label: "Saucam Coin / Any Local Currencies" },
-  { label: "Saucam Trade" },
-  { label: "Saucam Buybacks" },
-  { label: "Saucam Buy/Sale" },
+  { label: "Saucam Crypto Storage", slug: "crypto-storage" },
+  { label: "Saucam Coin Exchange", slug: "coin-exchange" },
+  { label: "Saucam Coin / Any Local Currencies", slug: "local-currencies" },
+  { label: "Saucam Trade", slug: "trade" },
+  { label: "Saucam Buybacks", slug: "buybacks" },
+  { label: "Saucam Buy/Sale", slug: "buy-sale" },
 ];
 
 /* ─── personal/business category nav ─── */
-function CategoryNav({ navigate, isAuthenticated }) {
+function CategoryNav({ navigate }) {
   const [active, setActive] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
 
@@ -340,7 +340,7 @@ function CategoryNav({ navigate, isAuthenticated }) {
                     key={item.label}
                     onMouseEnter={() => active === "personal" && setHoveredItem(item.label)}
                     onClick={() => {
-                      navigate(item.route ? `/${item.route}` : (isAuthenticated ? "/app/dashboard" : "/signup"));
+                      navigate(item.route ? `/${item.route}` : `/business#${item.slug}`);
                       closeAll();
                     }}
                     className={`w-full text-left px-5 py-3.5 text-[15px] font-medium transition-colors ${
@@ -537,7 +537,7 @@ export default function Landing() {
 
           {/* Desktop nav dropdowns */}
           <div className="hidden md:flex items-center">
-            <CategoryNav navigate={navigate} isAuthenticated={isAuthenticated} />
+            <CategoryNav navigate={navigate} />
           </div>
 
           {/* Right controls */}
@@ -600,7 +600,7 @@ export default function Landing() {
                 ))}
                 <p className="text-text-secondary text-xs font-semibold uppercase tracking-wide pt-3 pb-1">Business</p>
                 {BUSINESS_ITEMS.map((item) => (
-                  <button key={item.label} onClick={() => { navigate(isAuthenticated ? "/app/dashboard" : "/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
+                  <button key={item.label} onClick={() => { navigate(`/business#${item.slug}`); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
                     {item.label}
                   </button>
                 ))}

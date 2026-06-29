@@ -29,6 +29,7 @@ const TradePage = lazy(() => import("./pages/info/TradePage"));
 const InvestPage = lazy(() => import("./pages/info/InvestPage"));
 const SpendPage = lazy(() => import("./pages/info/SpendPage"));
 const PaymentsPage = lazy(() => import("./pages/info/PaymentsPage"));
+const BusinessPage = lazy(() => import("./pages/info/BusinessPage"));
 const AboutPage = lazy(() => import("./pages/info/AboutPage"));
 const PrivacyPage = lazy(() => import("./pages/info/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/info/TermsPage"));
@@ -208,6 +209,7 @@ function AppContent() {
             <Route path="/invest" element={<InvestPage />} />
             <Route path="/spend" element={<SpendPage />} />
             <Route path="/payments" element={<PaymentsPage />} />
+            <Route path="/business" element={<BusinessPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
