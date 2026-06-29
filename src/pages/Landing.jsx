@@ -229,165 +229,71 @@ function CurrencySwitcher() {
   );
 }
 
-/* ─── nav dropdown data ─── */
-const NAV_DROPDOWNS = [
-  {
-    label: "Buy",
-    route: "buy",
-    heading: "Buy crypto",
-    desc: "Use a card, Apple Pay or Google Pay to buy crypto fast. We also accept bank transfers and wires.",
-    coins: [
-      { name: "Buy Bitcoin",   sym: "BTC",  id: "bitcoin",       img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-      { name: "Buy Dogecoin",  sym: "DOGE", id: "dogecoin",      img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
-      { name: "Buy Ethereum",  sym: "ETH",  id: "ethereum",      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-      { name: "Buy Cardano",   sym: "ADA",  id: "cardano",       img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
-      { name: "Buy Polygon",   sym: "POL",  id: "matic-network", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
-      { name: "Buy Avalanche", sym: "AVAX", id: "avalanche-2",   img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
-      { name: "Buy Solana",    sym: "SOL",  id: "solana",        img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-      { name: "Buy XRP",       sym: "XRP",  id: "ripple",        img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
-    ],
-  },
-  {
-    label: "Sell",
-    route: "sell",
-    heading: "Sell crypto",
-    desc: "Sell your crypto at the best available rate directly to your bank account, debit card, or SaucamPro Balance.",
-    coins: [
-      { name: "Sell Bitcoin",  sym: "BTC",  id: "bitcoin",       img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-      { name: "Sell Ethereum", sym: "ETH",  id: "ethereum",      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-      { name: "Sell Solana",   sym: "SOL",  id: "solana",        img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-      { name: "Sell Dogecoin", sym: "DOGE", id: "dogecoin",      img: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
-      { name: "Sell Polygon",  sym: "POL",  id: "matic-network", img: "https://assets.coingecko.com/coins/images/4713/small/polygon.png" },
-      { name: "Sell Cardano",  sym: "ADA",  id: "cardano",       img: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
-      { name: "Sell Tether",   sym: "USDT", id: "tether",        img: "https://assets.coingecko.com/coins/images/325/small/Tether.png" },
-      { name: "Sell USDC",     sym: "USDC", id: "usd-coin",      img: "https://assets.coingecko.com/coins/images/6319/small/usdc.png" },
-    ],
-  },
-  {
-    label: "Trade",
-    route: "buy",
-    heading: "Trade crypto",
-    desc: "Swap one cryptocurrency for another at real-time market rates. No hidden fees, just fast and simple trading.",
-    coins: [
-      { name: "Trade Bitcoin",   sym: "BTC",  id: "bitcoin",       img: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-      { name: "Trade Ethereum",  sym: "ETH",  id: "ethereum",      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-      { name: "Trade Solana",    sym: "SOL",  id: "solana",        img: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-      { name: "Trade XRP",       sym: "XRP",  id: "ripple",        img: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
-      { name: "Trade Avalanche", sym: "AVAX", id: "avalanche-2",   img: "https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png" },
-      { name: "Trade Chainlink", sym: "LINK", id: "chainlink",     img: "https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png" },
-      { name: "Trade Polkadot",  sym: "DOT",  id: "polkadot",     img: "https://assets.coingecko.com/coins/images/12171/small/polkadot.png" },
-      { name: "Trade Uniswap",   sym: "UNI",  id: "uniswap",      img: "https://assets.coingecko.com/coins/images/12504/small/uniswap-uni.png" },
-    ],
-  },
+/* ─── nav category data ─── */
+const PERSONAL_ITEMS = [
+  { label: "Trade", route: "/trade" },
+  { label: "Buy", route: "/buy" },
+  { label: "Sell", route: "/sell" },
 ];
 
-const SERVICES = [
-  "Saucam Crypto Storage",
-  "Saucam Coin Exchange",
-  "Saucam Coin / Any Local Currencies",
-  "Saucam Trade",
-  "Saucam Buybacks",
-  "Saucam Buy/Sale",
+const BUSINESS_ITEMS = [
+  { label: "Saucam Crypto Storage" },
+  { label: "Saucam Coin Exchange" },
+  { label: "Saucam Coin / Any Local Currencies" },
+  { label: "Saucam Trade" },
+  { label: "Saucam Buybacks" },
+  { label: "Saucam Buy/Sale" },
 ];
 
-/* ─── services dropdown component ─── */
-function ServicesDropdown({ navigate, isAuthenticated }) {
-  const [open, setOpen] = useState(false);
+/* ─── personal/business category nav ─── */
+function CategoryNav({ navigate, isAuthenticated }) {
+  const [active, setActive] = useState(null);
+  const items = active === "personal" ? PERSONAL_ITEMS : active === "business" ? BUSINESS_ITEMS : [];
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <button className={`text-sm font-semibold transition-colors px-1 py-2 ${open ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}>
-        Services
+    <div className="relative flex items-center gap-1" onMouseLeave={() => setActive(null)}>
+      <button
+        onMouseEnter={() => setActive("personal")}
+        onClick={() => setActive((a) => (a === "personal" ? null : "personal"))}
+        className={`flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${active === "personal" ? "bg-primary-border text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
+      >
+        Personal
+        <svg className={`w-3.5 h-3.5 transition-transform ${active === "personal" ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <button
+        onMouseEnter={() => setActive("business")}
+        onClick={() => setActive((a) => (a === "business" ? null : "business"))}
+        className={`flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${active === "business" ? "bg-primary-border text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
+      >
+        Business
+        <svg className={`w-3.5 h-3.5 transition-transform ${active === "business" ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
       </button>
 
       <AnimatePresence>
-        {open && (
+        {active && (
           <motion.div
             initial={{ opacity: 0, y: 8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute left-0 top-full mt-3 z-50 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden p-2"
+            className="absolute left-0 top-full mt-3 z-50 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden py-2"
           >
-            {SERVICES.map((service) => (
+            {items.map((item, idx) => (
               <button
-                key={service}
-                onClick={() => { navigate(isAuthenticated ? "/app/dashboard" : "/signup"); setOpen(false); }}
-                className="w-full text-left px-4 py-2.5 rounded-xl text-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-primary-accent transition-colors"
+                key={item.label}
+                onClick={() => {
+                  navigate(item.route || (isAuthenticated ? "/app/dashboard" : "/signup"));
+                  setActive(null);
+                }}
+                className={`w-full text-left px-5 py-3.5 text-[15px] font-medium text-gray-900 hover:bg-gray-50 transition-colors ${idx !== items.length - 1 ? "border-b border-gray-100" : ""}`}
               >
-                {service}
+                {item.label}
               </button>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-/* ─── nav dropdown component ─── */
-function NavDropdown({ item, navigate }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  return (
-    <div
-      className="relative"
-      ref={ref}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <button className={`text-sm font-semibold transition-colors px-1 py-2 ${open ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}>
-        {item.label}
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute left-0 top-full mt-3 z-50 w-[540px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
-          >
-            <div className="flex">
-              {/* Left panel */}
-              <div className="w-48 bg-gray-50 p-6 flex flex-col justify-between border-r border-gray-100">
-                <div>
-                  <h3 className="text-gray-900 font-bold text-base mb-3">{item.heading}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-                <button
-                  onClick={() => { navigate(`/${item.route}`); setOpen(false); }}
-                  className="mt-6 text-xs font-semibold text-primary-accent hover:underline text-left"
-                >
-                  Show all assets →
-                </button>
-              </div>
-
-              {/* Right panel — coin grid */}
-              <div className="flex-1 p-3">
-                <div className="grid grid-cols-2 gap-0.5">
-                  {item.coins.map((coin) => (
-                    <button
-                      key={coin.sym}
-                      onClick={() => { navigate(`/${item.route}/${coin.id}`); setOpen(false); }}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors text-left group"
-                    >
-                      <img src={coin.img} alt={coin.sym} className="w-8 h-8 rounded-full flex-shrink-0" />
-                      <div>
-                        <p className="text-gray-900 text-sm font-semibold leading-tight group-hover:text-primary-accent transition-colors">{coin.name}</p>
-                        <p className="text-gray-400 text-xs">{coin.sym}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -537,11 +443,8 @@ export default function Landing() {
           </div>
 
           {/* Desktop nav dropdowns */}
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_DROPDOWNS.map((item) => (
-              <NavDropdown key={item.label} item={item} navigate={navigate} />
-            ))}
-            <ServicesDropdown navigate={navigate} isAuthenticated={isAuthenticated} />
+          <div className="hidden md:flex items-center">
+            <CategoryNav navigate={navigate} isAuthenticated={isAuthenticated} />
           </div>
 
           {/* Right controls */}
@@ -596,14 +499,18 @@ export default function Landing() {
               className="md:hidden bg-primary-bg/95 backdrop-blur-xl border-b border-primary-border overflow-hidden"
             >
               <div className="px-4 py-4 flex flex-col gap-1">
-                {NAV_DROPDOWNS.map((item) => (
-                  <button key={item.label} onClick={() => { navigate(isAuthenticated ? "/app/markets" : "/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
+                <p className="text-text-secondary text-xs font-semibold uppercase tracking-wide pt-1 pb-1">Personal</p>
+                {PERSONAL_ITEMS.map((item) => (
+                  <button key={item.label} onClick={() => { navigate(item.route); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 transition-colors">
                     {item.label}
                   </button>
                 ))}
-                <button onClick={() => { navigate(isAuthenticated ? "/app/dashboard" : "/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 transition-colors">
-                  Services
-                </button>
+                <p className="text-text-secondary text-xs font-semibold uppercase tracking-wide pt-3 pb-1">Business</p>
+                {BUSINESS_ITEMS.map((item) => (
+                  <button key={item.label} onClick={() => { navigate(isAuthenticated ? "/app/dashboard" : "/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
+                    {item.label}
+                  </button>
+                ))}
                 {isAuthenticated ? (
                   <button onClick={() => { navigate("/app/dashboard"); setMenuOpen(false); }} className="text-left text-primary-accent font-semibold text-sm py-2.5 transition-colors">
                     Go to Dashboard
