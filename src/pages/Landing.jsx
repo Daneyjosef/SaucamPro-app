@@ -281,6 +281,54 @@ const NAV_DROPDOWNS = [
   },
 ];
 
+const SERVICES = [
+  "Saucam Crypto Storage",
+  "Saucam Coin Exchange",
+  "Saucam Coin / Any Local Currencies",
+  "Saucam Trade",
+  "Saucam Buybacks",
+  "Saucam Buy/Sale",
+];
+
+/* ─── services dropdown component ─── */
+function ServicesDropdown({ navigate, isAuthenticated }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button className={`text-sm font-semibold transition-colors px-1 py-2 ${open ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}>
+        Services
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="absolute left-0 top-full mt-3 z-50 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden p-2"
+          >
+            {SERVICES.map((service) => (
+              <button
+                key={service}
+                onClick={() => { navigate(isAuthenticated ? "/app/dashboard" : "/signup"); setOpen(false); }}
+                className="w-full text-left px-4 py-2.5 rounded-xl text-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-primary-accent transition-colors"
+              >
+                {service}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 /* ─── nav dropdown component ─── */
 function NavDropdown({ item, navigate }) {
   const [open, setOpen] = useState(false);
@@ -493,6 +541,7 @@ export default function Landing() {
             {NAV_DROPDOWNS.map((item) => (
               <NavDropdown key={item.label} item={item} navigate={navigate} />
             ))}
+            <ServicesDropdown navigate={navigate} isAuthenticated={isAuthenticated} />
           </div>
 
           {/* Right controls */}
@@ -552,6 +601,9 @@ export default function Landing() {
                     {item.label}
                   </button>
                 ))}
+                <button onClick={() => { navigate(isAuthenticated ? "/app/dashboard" : "/signup"); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 transition-colors">
+                  Services
+                </button>
                 {isAuthenticated ? (
                   <button onClick={() => { navigate("/app/dashboard"); setMenuOpen(false); }} className="text-left text-primary-accent font-semibold text-sm py-2.5 transition-colors">
                     Go to Dashboard
