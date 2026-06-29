@@ -4,7 +4,7 @@ import { useCurrency } from "../hooks/useCurrency";
 import { DonutChart } from "../components/charts";
 import { AddHoldingModal } from "../components/modals/AddHoldingModal";
 import { PriceChange, AnimatedCounter } from "../components/common";
-import { usePortfolio, useRemoveHolding } from "../hooks/usePortfolio";
+import { usePortfolio, useRemoveHolding } from "../hooks/usePortfolio.server";
 
 export default function Portfolio() {
   const { data: portfolio = [], isLoading } = usePortfolio();

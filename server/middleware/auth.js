@@ -27,5 +27,6 @@ export async function verifySupabaseJWT(req, res, next) {
   }
 
   req.user = user;
+  req.token = token;
   next();
 }

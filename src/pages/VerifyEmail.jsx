@@ -1,13 +1,77 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { supabase, isSupabaseConfigured } from "../lib/supabase";
+import { useAppStore } from "../store/useAppStore";
 
 export default function VerifyEmail() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const setUser = useAppStore((s) => s.setUser);
   const email = location.state?.email || "";
+
+  const [digits, setDigits] = useState(["", "", "", "", "", ""]);
+  const [verifying, setVerifying] = useState(false);
   const [resending, setResending] = useState(false);
+  const inputRefs = useRef([]);
+
+  const code = digits.join("");
+
+  const handleDigitChange = (index, value) => {
+    const digit = value.replace(/\D/g, "").slice(-1);
+    const next = [...digits];
+    next[index] = digit;
+    setDigits(next);
+    if (digit && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !digits[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (pasted.length === 6) {
+      setDigits(pasted.split(""));
+      inputRefs.current[5]?.focus();
+    }
+    e.preventDefault();
+  };
+
+  const handleVerify = async () => {
+    if (code.length !== 6) {
+      toast.error("Enter the 6-digit code from your email.");
+      return;
+    }
+    if (!email) {
+      toast.error("Email address not found. Please sign up again.");
+      return;
+    }
+    setVerifying(true);
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token: code,
+        type: "signup",
+      });
+      if (error) {
+        toast.error(error.message);
+        setDigits(["", "", "", "", "", ""]);
+        inputRefs.current[0]?.focus();
+      } else {
+        setUser(data.user);
+        toast.success("Email verified! Welcome to SaucamPro.");
+        navigate("/app/dashboard");
+      }
+    } finally {
+      setVerifying(false);
+    }
+  };
 
   const handleResend = async () => {
     if (!email) {
@@ -22,6 +86,8 @@ export default function VerifyEmail() {
           toast.error(error.message);
         } else {
           toast.success("Verification email resent!");
+          setDigits(["", "", "", "", "", ""]);
+          inputRefs.current[0]?.focus();
         }
       } else {
         await new Promise((r) => setTimeout(r, 600));
@@ -68,14 +134,50 @@ export default function VerifyEmail() {
 
           <h1 className="text-2xl font-bold text-text-primary mb-2">Check your inbox</h1>
           <p className="text-text-secondary text-sm leading-relaxed mb-2">
-            We've sent a verification link to
+            We've sent a verification email to
           </p>
           {email && (
             <p className="text-text-primary font-semibold text-sm mb-4">{email}</p>
           )}
-          <p className="text-text-secondary text-sm leading-relaxed mb-8">
-            Click the link in the email to activate your account. Check your spam folder if you don't see it.
+          <p className="text-text-secondary text-sm leading-relaxed mb-6">
+            Click the link in the email, or enter the 6-digit code below.
           </p>
+
+          {/* OTP input */}
+          <div className="flex justify-center gap-2 mb-4" onPaste={handlePaste}>
+            {digits.map((digit, i) => (
+              <input
+                key={i}
+                ref={(el) => (inputRefs.current[i] = el)}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleDigitChange(i, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(i, e)}
+                className="w-11 h-13 text-center text-xl font-bold rounded-lg border border-primary-border bg-primary-card text-text-primary focus:outline-none focus:border-primary-accent focus:ring-2 focus:ring-primary-accent/20 transition-colors"
+                style={{ height: "3.25rem" }}
+                autoComplete="one-time-code"
+              />
+            ))}
+          </div>
+
+          <motion.button
+            onClick={handleVerify}
+            disabled={verifying || code.length !== 6}
+            className="w-full bg-primary-accent text-white font-semibold py-3 rounded-btn hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm mb-3"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+          >
+            {verifying ? (
+              <span className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Verifying...
+              </span>
+            ) : (
+              "Verify Email"
+            )}
+          </motion.button>
 
           <motion.button
             onClick={handleResend}

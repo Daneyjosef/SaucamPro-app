@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifySupabaseJWT } from "../middleware/auth.js";
-import { anonClient } from "../lib/supabase.js";
+import { getUserClient } from "../lib/supabase.js";
 
 const router = Router();
 router.use(verifySupabaseJWT);
@@ -10,7 +10,7 @@ router.use(verifySupabaseJWT);
 // Returns the authenticated user's watchlist.
 // ─────────────────────────────────────────────────────────────
 router.get("/", async (req, res) => {
-  const { data, error } = await anonClient
+  const { data, error } = await getUserClient(req.token)
     .from("watchlists")
     .select("*")
     .eq("user_id", req.user.id)
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "coin_id and coin_symbol are required" });
   }
 
-  const { data, error } = await anonClient
+  const { data, error } = await getUserClient(req.token)
     .from("watchlists")
     .insert({
       user_id: req.user.id,
@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
 // Remove a coin from the watchlist by coin_id (e.g. "bitcoin").
 // ─────────────────────────────────────────────────────────────
 router.delete("/:coinId", async (req, res) => {
-  const { error, count } = await anonClient
+  const { error, count } = await getUserClient(req.token)
     .from("watchlists")
     .delete({ count: "exact" })
     .eq("user_id", req.user.id)

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifySupabaseJWT } from "../middleware/auth.js";
-import { anonClient } from "../lib/supabase.js";
+import { getUserClient } from "../lib/supabase.js";
 
 const router = Router();
 router.use(verifySupabaseJWT);
@@ -12,7 +12,7 @@ const VALID_DIRECTIONS = new Set(["above", "below"]);
 // Returns all price alerts for the authenticated user.
 // ─────────────────────────────────────────────────────────────
 router.get("/", async (req, res) => {
-  const { data, error } = await anonClient
+  const { data, error } = await getUserClient(req.token)
     .from("price_alerts")
     .select("*")
     .eq("user_id", req.user.id)
@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "target_price must be greater than 0" });
   }
 
-  const { data, error } = await anonClient
+  const { data, error } = await getUserClient(req.token)
     .from("price_alerts")
     .insert({
       user_id: req.user.id,
@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
 // Delete a price alert by its UUID.
 // ─────────────────────────────────────────────────────────────
 router.delete("/:id", async (req, res) => {
-  const { error, count } = await anonClient
+  const { error, count } = await getUserClient(req.token)
     .from("price_alerts")
     .delete({ count: "exact" })
     .eq("id", req.params.id)
