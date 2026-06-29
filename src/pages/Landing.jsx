@@ -314,7 +314,7 @@ function CategoryNav({ navigate }) {
       </button>
       <button
         onMouseEnter={() => { setActive("business"); setHoveredItem(null); }}
-        onClick={() => setActive((a) => (a === "business" ? null : "business"))}
+        onClick={() => { navigate("/business"); closeAll(); }}
         className={`flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${active === "business" ? "bg-primary-border text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
       >
         Business
@@ -598,7 +598,7 @@ export default function Landing() {
                     {item.label}
                   </button>
                 ))}
-                <p className="text-text-secondary text-xs font-semibold uppercase tracking-wide pt-3 pb-1">Business</p>
+                <button onClick={() => { navigate("/business"); setMenuOpen(false); }} className="text-left text-text-secondary text-xs font-semibold uppercase tracking-wide pt-3 pb-1 hover:text-text-primary transition-colors">Business</button>
                 {BUSINESS_ITEMS.map((item) => (
                   <button key={item.label} onClick={() => { navigate(`/business#${item.slug}`); setMenuOpen(false); }} className="text-left text-text-secondary hover:text-text-primary text-sm font-semibold py-2.5 border-b border-primary-border/40 last:border-0 transition-colors">
                     {item.label}
